@@ -1,0 +1,28 @@
+mat-card { 
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.signin-content {
+  padding: 60px 1rem;
+}
+
+.full-width-input {
+  width: 100%;
+}
+
+.mat-card-header{
+  display: flex;
+  justify-content: center;
+}
+
+.login-card{
+  min-width: 20rem;
+  min-height: 14rem;
+}
+
+.login-container{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
