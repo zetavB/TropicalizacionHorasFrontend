@@ -1,5 +1,6 @@
-<mat-sidenav #sidenav mode="side" [(opened)]="opened" (opened)="events.push('open!')"
-(closed)="events.push('close!')">
-Sidenav content 
-</mat-sidenav>
-<p>Sidenav works</p>
+<mat-sidenav class="sidenav" #sidenav mode="side" 
+  [(opened)]="opened" (opened)="events.push('open!')"
+  (closed)="events.push('close!')">
+  <h2>Tropicalización de la Tecnología</h2>
+  
+</mat-sidenav> 

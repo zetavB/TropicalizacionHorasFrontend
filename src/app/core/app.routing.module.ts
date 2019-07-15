@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/login/login.component';
 import { LoginLayoutComponent } from '../layout/login-layout.component';
 import { HomeLayoutComponent } from '../layout/home-layout.component';
-import { SidebarComponent } from '../components/sidebar/sidebar.component';
+import { ProfileComponent } from '../components/profile/profile.component';
+
 
 const routes: Routes = [
   {
@@ -12,7 +13,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: SidebarComponent
+        component: ProfileComponent
       }
     ]
   },
