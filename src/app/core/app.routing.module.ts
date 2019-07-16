@@ -9,21 +9,25 @@ import { ProfileComponent } from '../components/profile/profile.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: ProfileComponent
-      }
-    ]
-  },
-  {
-    path: '',
     component: LoginLayoutComponent,
     children: [
       {
         path: 'login',
         component: LoginComponent
+      },
+      {
+        path: '',
+        component: LoginComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    component: HomeLayoutComponent,
+    children: [
+      {
+        path: 'perfil',
+        component: ProfileComponent
       }
     ]
   },

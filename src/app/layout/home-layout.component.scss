@@ -1,3 +1,5 @@
+@import '../../styles.scss';
+
 .home-layout-container{
   display: flex;
   height: 100vh;
@@ -5,6 +7,18 @@
 
 .sidebar-container{
   max-width: 16rem;
-  background-color: #8ed8f8;
+  background-color: $primary-color;
   height: 100%;
+}
+
+.drawer-content{
+  max-width: 16rem; 
+}
+
+.drawer-title{
+  text-align: center;
+}
+
+.main-content-container{
+  padding: 2rem;
 }

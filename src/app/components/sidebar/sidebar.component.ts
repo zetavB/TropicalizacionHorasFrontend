@@ -11,8 +11,12 @@ export class SidebarComponent implements OnInit {
 
   events: string[] = [];
   opened = true;
+  content = [
+    { id: 11, name: 'Perfil', url: '/profile' },
+    { id: 12, name: 'Cerrar sesión' , url: '/login'}
+  ];
 
   ngOnInit() {
+    this.content = this.content;
   }
-
 }
