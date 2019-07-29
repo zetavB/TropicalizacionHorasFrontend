@@ -20,16 +20,19 @@ export class UserService {
     return this.http.get<Response>(this.url + id).pipe(
       map(
         response => {
-          return new Estudiante(
-            response.response.tipo,
-            response.response.estado,
-            response.response.horasTotales,
-            response.response.proyectos,
-            response.response.fechaFinal,
-            response.response.fechaInicio,
-            response.response.usuario,
-          );
-        })
-    );
+          const estudiante: Estudiante = {
+            tipo: response.response.tipo,
+            estado: response.response.estado,
+            horasTotales: response.response.horasTotales,
+            proyectos: response.response.proyectos,
+            fechaFinal: response.response.fechaFinal,
+            fechaInicio: response.response.fechaInicio,
+            carne: response.response.carne,
+            usuario: response.response.usuario,
+          };
+          console.log(response);
+          return estudiante;
+        }
+    ));
   }
 }

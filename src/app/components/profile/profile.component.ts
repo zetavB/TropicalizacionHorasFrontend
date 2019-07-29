@@ -12,9 +12,21 @@ export class ProfileComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
-  profile: Estudiante = new Estudiante(
-    '', '', 0, [], '', '', new Usuario('', '', '', '')
-    );
+  profile: Estudiante = {
+    tipo: '',
+    estado: '',
+    horasTotales: 0,
+    proyectos: [],
+    fechaFinal: '',
+    fechaInicio: '',
+    carne: '',
+    usuario: {
+      correo: '',
+      nombre: '',
+      apellidos: '',
+      telefono: '',
+    }
+  };
 
   getProfile(): void {
     this.userService.getResponse('estudiante1@estudiante.com')
