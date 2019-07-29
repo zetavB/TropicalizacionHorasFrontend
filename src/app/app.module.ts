@@ -12,7 +12,7 @@ import { LoginLayoutComponent } from './layout/login-layout.component';
 import { HomeLayoutComponent } from './layout/home-layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from './components/header/header.component'; 
 
 @NgModule({
   declarations: [
@@ -29,10 +29,9 @@ import { HeaderComponent } from './components/header/header.component';
     BrowserAnimationsModule,
     CustomMaterialModule,
     FormsModule,
+    HttpClientModule,
     AppRoutingModule,
-    HttpClientModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
