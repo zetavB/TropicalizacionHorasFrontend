@@ -1,4 +1,4 @@
-export class Response{
+export interface Response {
   messages: string;
   errorMessages: string;
   response;

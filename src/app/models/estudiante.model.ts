@@ -1,6 +1,6 @@
 import { Usuario } from './usuario.model';
 
-export class Estudiante {
+export interface Estudiante {
     tipo: string;
     estado: string;
     horasTotales: number;
