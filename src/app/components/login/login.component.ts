@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {TokenService} from '../../services/token.service';
-import {CustomResponse} from '../../entities/custom-response';
+import {Response} from '../../models/response.model';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
         ' "contrasenna": "' + this.password + '"' +
         '}',
         {headers: new HttpHeaders({'Content-Type':  'application/json'})})
-        .subscribe( (response: CustomResponse) => {
+        .subscribe( (response: Response) => {
           this.tokenService.setJwtToken(response.response.toString());
           this.router.navigate(['core']);
         }, error1 => {

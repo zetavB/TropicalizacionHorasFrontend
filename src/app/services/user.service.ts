@@ -18,7 +18,7 @@ export class UserService {
   private url =  environment.serverUrl + '/estudiante/';
 
   projectToStringArray(projects) {
-    let array = [];
+    const array: string[] = [];
     projects.forEach(
       project => array.push(project.nombre.toString())
     );

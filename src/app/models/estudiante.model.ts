@@ -4,7 +4,7 @@ export class Estudiante {
     tipo: string;
     estado: string;
     horasTotales: number;
-    proyectos: [];
+    proyectos: string[];
     fechaFinal: string;
     fechaInicio: string;
     carne: string;
