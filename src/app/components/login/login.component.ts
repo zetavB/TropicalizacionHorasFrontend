@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (this.username === 'admin' && this.password === 'admin') {
-     this.router.navigate(['core']);
+     this.router.navigate(['/perfil']);
     } else {
       this.httpClient.post(environment.serverUrl + '/autenticar/sign-in', '{' +
         ' "correoUsuario": "' + this.username + '",' +
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
         {headers: new HttpHeaders({'Content-Type':  'application/json'})})
         .subscribe( (response: Response) => {
           this.tokenService.setJwtToken(response.response.toString());
-          this.router.navigate(['core']);
+          this.router.navigate(['/perfil']);
         }, error1 => {
           console.log(error1);
           alert('Datos inválidos');
