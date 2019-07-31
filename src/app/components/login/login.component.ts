@@ -18,6 +18,9 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   ngOnInit() {
+    if (this.tokenService.isTokenPresent()) {
+      this.router.navigate(['/perfil']);
+    }
   }
 
   login(): void {

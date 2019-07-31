@@ -5,9 +5,12 @@ import {JwtInfoModel} from '../models/jwt-info.model';
 @Injectable( {providedIn: 'root'} )
 export class TokenService {
   private jwtToken: string;
-  public tokenInfo;
+  public tokenInfo: JwtInfoModel;
 
-  constructor() {}
+  constructor() {
+    this.jwtToken = localStorage.getItem('jwtToken');
+    this.tokenInfo = this.jwtToken != null ? jwt_decode(this.jwtToken) as JwtInfoModel : null;
+  }
 
   setJwtToken(token: string): void {
     this.jwtToken = token;
@@ -22,5 +25,15 @@ export class TokenService {
     } catch (Error) {
       return null;
     }
+  }
+
+  public isTokenPresent(): boolean {
+    return this.jwtToken != null;
+  }
+
+  public eraseToken(): void {
+    this.jwtToken = null;
+    this.tokenInfo = null;
+    localStorage.removeItem('jwtToken');
   }
 }
