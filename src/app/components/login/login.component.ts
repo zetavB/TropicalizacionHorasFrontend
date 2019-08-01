@@ -34,7 +34,8 @@ export class LoginComponent implements OnInit {
         {headers: new HttpHeaders({'Content-Type':  'application/json'})})
         .subscribe( (response: Response) => {
           console.log(response);
-          this.tokenService.setJwtToken(response.response.toString());
+          const token = this.tokenService.setJwtToken(response.response.toString());
+          console.log(token);
           this.router.navigate(['/perfil']);
         }, error1 => {
           console.log(error1);

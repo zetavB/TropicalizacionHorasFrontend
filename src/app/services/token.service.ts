@@ -18,10 +18,11 @@ export class TokenService {
     localStorage.setItem('jwtToken', this.jwtToken);
   }
 
-  private decodeToken(): void {
+  private decodeToken(): JwtInfoModel {
     try {
       this.tokenInfo = jwt_decode(this.jwtToken) as JwtInfoModel;
       console.log(this.tokenInfo);
+      return this.tokenInfo;
     } catch (Error) {
       return null;
     }
