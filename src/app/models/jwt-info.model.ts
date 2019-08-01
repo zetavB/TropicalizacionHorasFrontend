@@ -1,4 +1,4 @@
-export interface  JwtInfoModel {
+export interface JwtInfoModel {
   sub: string;
   nombre: string;
   apellidos: string;

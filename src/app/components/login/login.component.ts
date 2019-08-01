@@ -5,6 +5,9 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {TokenService} from '../../services/token.service';
 import {Response} from '../../models/response.model';
+import { Store } from '@ngrx/store';
+import { JwtInfoModel } from '../../models/jwt-info.model';
+import { UpdateUser } from 'src/app/store/user.actions';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +16,11 @@ import {Response} from '../../models/response.model';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private httpClient: HttpClient, private tokenService: TokenService) { }
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient,
+    private tokenService: TokenService,
+    private store: Store<{email: string}>) { }
 
   username: string;
   password: string;
@@ -34,8 +41,11 @@ export class LoginComponent implements OnInit {
         {headers: new HttpHeaders({'Content-Type':  'application/json'})})
         .subscribe( (response: Response) => {
           console.log(response);
-          const token = this.tokenService.setJwtToken(response.response.toString());
-          console.log(token);
+          this.tokenService.setJwtToken(response.response.toString());
+          const token = this.tokenService.getToken();
+          this.store.dispatch(new UpdateUser(token.sub));
+          console.log('token');
+          console.log(token.sub);
           this.router.navigate(['/perfil']);
         }, error1 => {
           console.log(error1);

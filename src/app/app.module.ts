@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { StoreModule } from '@ngrx/store';
 import { userReducer } from './store/user.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -34,7 +35,10 @@ import { HeaderComponent } from './components/header/header.component';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    StoreModule.forRoot({user: userReducer})
+    StoreModule.forRoot({user: userReducer}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+    }),
   ],
   bootstrap: [AppComponent]
 })

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as jwt_decode from 'jwt-decode';
 import {JwtInfoModel} from '../models/jwt-info.model';
+import { ReturnStatement } from '@angular/compiler';
 
 @Injectable( {providedIn: 'root'} )
 export class TokenService {
@@ -18,11 +19,10 @@ export class TokenService {
     localStorage.setItem('jwtToken', this.jwtToken);
   }
 
-  private decodeToken(): JwtInfoModel {
+  private decodeToken(): void {
     try {
       this.tokenInfo = jwt_decode(this.jwtToken) as JwtInfoModel;
       console.log(this.tokenInfo);
-      return this.tokenInfo;
     } catch (Error) {
       return null;
     }
@@ -36,5 +36,9 @@ export class TokenService {
     this.jwtToken = null;
     this.tokenInfo = null;
     localStorage.removeItem('jwtToken');
+  }
+
+  public getToken(): JwtInfoModel {
+    return this.tokenInfo;
   }
 }

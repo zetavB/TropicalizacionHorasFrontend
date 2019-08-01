@@ -1,7 +1,7 @@
 import { Actions, UserActionTypes } from './user.actions'; 
 
 const initialState = {
-  email: ''
+  email: 'prueba@unmail.com'
 };
 
 export function userReducer(state = initialState, action: Actions) {
