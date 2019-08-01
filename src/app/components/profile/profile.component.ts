@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
     tipo: '',
     estado: '',
     horasTotales: 0,
-    proyectos: [],
+    proyectos: ['', ''],
     fechaFinal: '',
     fechaInicio: '',
     carne: '',
