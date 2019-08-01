@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {TokenService} from '../../services/token.service';
-import {CustomResponse} from '../../entities/custom-response';
+import {Response} from '../../models/response.model';
 
 @Component({
   selector: 'app-login',
@@ -18,20 +18,23 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   ngOnInit() {
+    if (this.tokenService.isTokenPresent()) {
+      this.router.navigate(['/perfil']);
+    }
   }
 
   login(): void {
     if (this.username === 'admin' && this.password === 'admin') {
-     this.router.navigate(['core']);
+     this.router.navigate(['/perfil']);
     } else {
       this.httpClient.post(environment.serverUrl + '/autenticar/sign-in', '{' +
         ' "correoUsuario": "' + this.username + '",' +
         ' "contrasenna": "' + this.password + '"' +
         '}',
         {headers: new HttpHeaders({'Content-Type':  'application/json'})})
-        .subscribe( (response: CustomResponse) => {
+        .subscribe( (response: Response) => {
           this.tokenService.setJwtToken(response.response.toString());
-          this.router.navigate(['core']);
+          this.router.navigate(['/perfil']);
         }, error1 => {
           console.log(error1);
           alert('Datos inválidos');
