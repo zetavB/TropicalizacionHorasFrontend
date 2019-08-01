@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
         '}',
         {headers: new HttpHeaders({'Content-Type':  'application/json'})})
         .subscribe( (response: Response) => {
+          console.log(response);
           this.tokenService.setJwtToken(response.response.toString());
           this.router.navigate(['/perfil']);
         }, error1 => {
