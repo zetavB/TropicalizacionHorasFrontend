@@ -32,17 +32,15 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private store: Store<{email: string}>) {
+    private store: Store<AppState>) {
     }
 
-  getProfile(): void {
-    this.userService.getResponse('estudiante1@estudiante.com')
+  getProfile(email: string): void {
+    this.userService.getResponse(email)
     .subscribe(estudiante => this.profile = estudiante);
   }
 
   ngOnInit() {
-    this.user = this.store.select('user');
-    this.user.subscribe(console.log);
-    this.getProfile();
+    this.user.subscribe(user => this.getProfile(user.email));
   }
 }
