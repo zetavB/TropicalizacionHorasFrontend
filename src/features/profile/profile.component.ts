@@ -4,7 +4,7 @@ import { Estudiante } from '../../models/estudiante.model';
 import { Usuario } from 'src/models/usuario.model';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState } from 'src/app/store/interfaces';
+import { State } from 'src/app/state/state';
 
 @Component({
   selector: 'app-profile',
@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private store: Store<AppState>) {
+    private store: Store<State>) {
     }
 
   getProfile(email: string): void {

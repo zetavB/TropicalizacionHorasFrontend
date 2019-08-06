@@ -17,4 +17,4 @@ import {ProfileRoutingModule} from './profile-routing.module';
   ],
   providers: [ ]
 })
-export class LoginModule {}
+export class ProfileModule {}
