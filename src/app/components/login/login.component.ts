@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
-import {MatDialog} from '@angular/material';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../../../environments/environment';
-import {TokenService} from '../../services/token.service';
-import {Response} from '../../models/response.model';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { TokenService } from '../../services/token.service';
+import { Response } from '../../models/response.model';
 import { Store } from '@ngrx/store';
 import { JwtInfoModel } from '../../models/jwt-info.model';
 import { UpdateUser } from 'src/app/store/user.actions';

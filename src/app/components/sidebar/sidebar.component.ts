@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {TokenService} from '../../services/token.service';
-import {Router} from '@angular/router';
+import { TokenService } from '../../services/token.service';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/interfaces';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
