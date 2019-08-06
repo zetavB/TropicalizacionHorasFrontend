@@ -8,33 +8,23 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './components/login/login.component';
-import { CustomMaterialModule } from './core/material.module';
-import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './core/app.routing.module';
-import { LoginLayoutComponent } from './layout/login-layout.component';
-import { HomeLayoutComponent } from './layout/home-layout.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { HeaderComponent } from './components/header/header.component'; 
+import { CustomMaterialModule } from './material.module';
+import { AppRoutingModule } from './app.routing.module';
+import {SharedModule} from '../shared/shared.module';
+import {CoreModule} from '../core/core.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
-    LoginLayoutComponent,
-    HomeLayoutComponent,
-    SidebarComponent,
-    ProfileComponent,
-    HeaderComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     CustomMaterialModule,
-    FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    CoreModule,
+    SharedModule.forRoot(),
     StoreModule.forRoot({user: userReducer}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

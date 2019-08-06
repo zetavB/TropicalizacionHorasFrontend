@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/core/user.service';
 import { Estudiante } from '../../models/estudiante.model';
-import { Usuario } from 'src/app/models/usuario.model';
+import { Usuario } from 'src/models/usuario.model';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store/interfaces';
