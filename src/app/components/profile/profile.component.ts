@@ -13,7 +13,7 @@ import { AppState } from 'src/app/store/interfaces';
 })
 export class ProfileComponent implements OnInit {
 
-  email: Observable<string>;
+  user: Observable<{email: string}>;
   profile: Estudiante = {
     tipo: '',
     estado: '',
@@ -33,7 +33,6 @@ export class ProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private store: Store<{email: string}>) {
-      // this.email = this.store.select('email');
     }
 
   getProfile(): void {
@@ -42,8 +41,8 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.email = this.store.select('email');
-    console.log(this.email);
+    this.user = this.store.select('user');
+    this.user.subscribe(console.log);
     this.getProfile();
   }
 }

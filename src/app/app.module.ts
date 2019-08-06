@@ -38,7 +38,7 @@ import { HeaderComponent } from './components/header/header.component';
     StoreModule.forRoot({user: userReducer}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
-    }),
+    })
   ],
   bootstrap: [AppComponent]
 })
