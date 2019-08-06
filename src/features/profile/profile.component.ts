@@ -41,6 +41,6 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user.subscribe(user => this.getProfile(user.email));
+    // this.user.subscribe(user => this.getProfile(user.email));
   }
 }

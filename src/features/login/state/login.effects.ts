@@ -13,7 +13,7 @@ import {Router} from '@angular/router';
 export class LoginEffects {
   constructor(private loginService: LoginService, private tokenService: TokenService, private router: Router, private actions$: Actions) {}
 
-  @Effect()
+  @Effect({dispatch: false})
   tokenPresent$: Observable<boolean> = this.actions$.pipe(
     ofType(LoginActionTypes.TokenPresent),
     mergeMap(() => this.router.navigate(['/perfil']))
