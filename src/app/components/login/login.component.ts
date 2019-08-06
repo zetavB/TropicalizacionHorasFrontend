@@ -43,8 +43,11 @@ export class LoginComponent implements OnInit {
           console.log(response);
           this.tokenService.setJwtToken(response.response.toString());
           const token = this.tokenService.getToken();
-          this.store.dispatch(new UpdateUser(token.sub));
-          this.router.navigate(['/perfil']);
+          console.log(token);
+          this.store.dispatch(new UpdateUser({email: token.sub, rol: token.rol}));
+          if (token.rol === 'Estudiante'){
+            this.router.navigate(['/perfil']);
+          }
         }, error1 => {
           console.log(error1);
           alert('Datos inválidos');

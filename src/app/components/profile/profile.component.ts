@@ -36,11 +36,10 @@ export class ProfileComponent implements OnInit {
     }
 
   getProfile(email: string): void {
-    this.userService.getResponse(email)
-    .subscribe(estudiante => this.profile = estudiante);
+    this.userService.getResponse(email).subscribe(estudiante => this.profile = estudiante);
   }
 
   ngOnInit() {
-    this.user.subscribe(user => this.getProfile(user.email));
+    this.store.select('user').subscribe(user => this.getProfile(user.email));
   }
 }

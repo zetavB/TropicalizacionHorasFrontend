@@ -1,7 +1,8 @@
 import { Actions, UserActionTypes } from './user.actions';
 
 const initialState = {
-  email: 'prueba@unmail.com'
+  email: 'estudiante1@estudiante.com',
+  rol: 'Estudiante'
 };
 
 export function userReducer(state = initialState, action: Actions) {
@@ -9,7 +10,8 @@ export function userReducer(state = initialState, action: Actions) {
     case UserActionTypes.UPDATE_USER : {
       return {
         ...state,
-        email: action.payload
+        email: action.payload.email,
+        rol: action.payload.rol
       };
     }
     case UserActionTypes.REMOVE_USER : {

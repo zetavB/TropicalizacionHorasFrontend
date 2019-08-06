@@ -16,7 +16,8 @@ import { LoginLayoutComponent } from './layout/login-layout.component';
 import { HomeLayoutComponent } from './layout/home-layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { HeaderComponent } from './components/header/header.component'; 
+import { HeaderComponent } from './components/header/header.component';
+import { ActivitiesComponent } from './components/activities/activities.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { HeaderComponent } from './components/header/header.component';
     HomeLayoutComponent,
     SidebarComponent,
     ProfileComponent,
-    HeaderComponent
+    HeaderComponent,
+    ActivitiesComponent
   ],
   imports: [
     BrowserModule,

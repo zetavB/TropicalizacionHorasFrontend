@@ -1,8 +1,8 @@
 <ul class="sidebar-list">
   <li class="sidebar-items" *ngFor="let value of content">
-    <a routerLink={{value.url}} >{{value.name}}</a>
+    <a class="sidebar-link" routerLink={{value.url}} >{{value.name}}</a>
   </li>
   <li class="sidebar-items">
-    <a routerLink="" (click)="logout()">Cerrar sesión</a>
+    <a class="sidebar-link" routerLink="" (click)="logout()">Cerrar sesión</a>
   </li>
 </ul>

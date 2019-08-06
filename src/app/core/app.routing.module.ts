@@ -4,6 +4,7 @@ import { LoginComponent } from '../components/login/login.component';
 import { LoginLayoutComponent } from '../layout/login-layout.component';
 import { HomeLayoutComponent } from '../layout/home-layout.component';
 import { ProfileComponent } from '../components/profile/profile.component';
+import { ActivitiesComponent } from '../components/activities/activities.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,10 @@ const routes: Routes = [
       {
         path: 'perfil',
         component: ProfileComponent
+      },
+      {
+        path: 'actividades',
+        component: ActivitiesComponent
       }
     ]
   },

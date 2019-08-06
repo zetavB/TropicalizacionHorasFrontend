@@ -8,7 +8,7 @@ export enum UserActionTypes {
 
 export class UpdateUser implements Action {
   readonly type = UserActionTypes.UPDATE_USER;
-  constructor(public payload: string) {}
+  constructor(public payload: {email: string, rol: string}) {}
 }
 
 export class RemoveUser implements Action {
