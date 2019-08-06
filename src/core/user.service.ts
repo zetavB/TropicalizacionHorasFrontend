@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Estudiante } from '../models/estudiante.model';
-import { Response } from '../models/response.model';
+import { CustomResponse } from '../models/custom-response.model';
 import {catchError, map} from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
@@ -26,7 +26,7 @@ export class UserService {
   }
 
   getResponse(id: string): Observable<Estudiante> {
-    return this.http.get<Response>(this.url + id).pipe(
+    return this.http.get<CustomResponse>(this.url + id).pipe(
       map(
         response => {
           const projectsArray = this.projectToStringArray(response.response.proyectos);

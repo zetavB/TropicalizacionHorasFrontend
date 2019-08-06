@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {TokenService} from './services/token.service';
+import {TokenService} from './token.service';
 import {from, Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {environment} from '../environments/environment';
