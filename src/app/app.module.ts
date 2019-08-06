@@ -3,41 +3,35 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { StoreModule } from '@ngrx/store';
-import { userReducer } from './store/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginComponent } from './components/login/login.component';
-import { CustomMaterialModule } from './core/material.module';
-import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './core/app.routing.module';
-import { LoginLayoutComponent } from './layout/login-layout.component';
-import { HomeLayoutComponent } from './layout/home-layout.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { HeaderComponent } from './components/header/header.component';
-import { ActivitiesComponent } from './components/activities/activities.component';
+import { AppRoutingModule } from './app.routing.module';
+import {SharedModule} from '../shared/shared.module';
+import {CoreModule} from '../core/core.module';
+import {LoginModule} from '../features/login/login.module';
+import {ProfileModule} from '../features/profile/profile.module';
+import {EffectsModule} from '@ngrx/effects';
+import { userReducer } from './state/user.reducer';
+import { ActivitiesModule } from 'src/features/activities/activities.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
-    LoginLayoutComponent,
-    HomeLayoutComponent,
-    SidebarComponent,
-    ProfileComponent,
-    HeaderComponent,
-    ActivitiesComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    CustomMaterialModule,
-    FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    CoreModule,
+    LoginModule,
+    ProfileModule,
+    ActivitiesModule,
+    SharedModule.forRoot(),
     StoreModule.forRoot({user: userReducer}),
+    EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
     })

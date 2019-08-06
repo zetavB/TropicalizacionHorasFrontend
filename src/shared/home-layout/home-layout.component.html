@@ -1,0 +1,16 @@
+<app-header></app-header>
+<mat-drawer-container *ngIf="drawerVisible; else loggedOut" class="home-layout-container">
+  <mat-drawer opened mode="side" class="drawer">
+      <div class="drawer-content"> 
+        <app-sidebar></app-sidebar>
+      </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="main-content-container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content> 
+</mat-drawer-container>
+<ng-template #loggedOut>
+  <router-outlet></router-outlet>
+</ng-template>
