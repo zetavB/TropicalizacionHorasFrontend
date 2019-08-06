@@ -1,4 +1,4 @@
-import { Actions, UserActionTypes } from './user.actions'; 
+import { Actions, UserActionTypes } from './user.actions';
 
 const initialState = {
   email: 'prueba@unmail.com'
@@ -12,7 +12,12 @@ export function userReducer(state = initialState, action: Actions) {
         email: action.payload
       };
     }
-
+    case UserActionTypes.REMOVE_USER : {
+      return {
+        ...state,
+        email: ''
+      };
+    }
     default: {
       return state;
     }

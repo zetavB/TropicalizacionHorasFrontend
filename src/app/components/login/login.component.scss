@@ -21,8 +21,11 @@ mat-card {
   min-height: 14rem;
 }
 
-.login-container{
-  
+.login-container{ 
   display: flex;
   align-items: center;
+}
+
+.login-width-input{
+  min-width: 15rem;
 }

@@ -3,3 +3,7 @@
 .header{
   background-color: $primary-color;
 } 
+
+.header-title{ 
+  text-overflow: clip;
+}

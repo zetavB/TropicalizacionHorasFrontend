@@ -44,8 +44,6 @@ export class LoginComponent implements OnInit {
           this.tokenService.setJwtToken(response.response.toString());
           const token = this.tokenService.getToken();
           this.store.dispatch(new UpdateUser(token.sub));
-          console.log('token');
-          console.log(token.sub);
           this.router.navigate(['/perfil']);
         }, error1 => {
           console.log(error1);
