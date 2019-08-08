@@ -38,12 +38,12 @@ export class ProfileComponent implements OnInit {
   getProfile(email: string): void {
     this.userService.getResponse(email).subscribe(estudiante => {
       this.profile = estudiante;
-      this.profile.diasRestantes = this.getDateDifference(this.profile.fechaInicio, this.profile.fechaFinal);
+      this.profile.diasRestantes = this.getDateDifference(this.profile.fechaFinal);
     });
   }
 
-  getDateDifference(firstDate: string, latterDate: string) {
-    const date1 = new Date(firstDate);
+  getDateDifference(latterDate: string) {
+    const date1 = new Date();
     const date2 = new Date(latterDate);
     const diffTime = Math.abs(date2.getTime() - date1.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
