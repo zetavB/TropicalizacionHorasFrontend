@@ -17,7 +17,7 @@ export class ActivitiesComponent implements OnInit {
     private store: Store <{email: string, rol: string}>
   ) { }
 
-  displayedColumns: string[] = ['fecha', 'horas', 'proyecto', 'categoria', 'estado'];
+  displayedColumns: string[] = ['fecha', 'horas', 'proyecto', 'categoria', 'estado', 'detalles'];
   data = [];
   dataSource = new MatTableDataSource<Activity>(this.data);
 
@@ -31,6 +31,6 @@ export class ActivitiesComponent implements OnInit {
   }
 
   getActivities(email: string) {
-    this.activitiesService.getActivities(email).subscribe(activities => this.data = activities);
+    this.activitiesService.getActivities(email).subscribe(activities => this.dataSource.data = activities);
   }
 }
