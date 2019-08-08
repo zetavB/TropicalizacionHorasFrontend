@@ -20,8 +20,8 @@
         </tr></table>
       </form>
       <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+      <a class="sidebar-link" routerLink="" (click)="logout()">¿Olvidaste tu contraseña?</a>
     </mat-card-content>
-  
     <mat-card-actions> 
       <button mat-raised-button (click)="login()" color="primary">Login</button>
     </mat-card-actions>

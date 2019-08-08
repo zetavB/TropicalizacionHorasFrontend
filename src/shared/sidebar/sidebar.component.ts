@@ -21,7 +21,7 @@ export class SidebarComponent implements OnInit {
     this.content = this.content;
     this.store.select('user').subscribe(user => {
       if (user.rol === 'Estudiante') {
-        this.content = [{id: 1, name: 'Perfil', url: '/profile'}, {id: 2, name: 'Actividades', url: '/actividades'}];
+        this.content = [{id: 1, name: 'Perfil', url: '/perfil'}, {id: 2, name: 'Actividades', url: '/actividades'}];
       }
     });
   }

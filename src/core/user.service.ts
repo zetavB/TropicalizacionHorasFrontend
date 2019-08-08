@@ -40,7 +40,6 @@ export class UserService {
             carne: response.response.carne,
             usuario: response.response.usuario,
           };
-          console.log(response);
           return estudiante;
         }
     ));
