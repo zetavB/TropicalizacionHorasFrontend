@@ -6,7 +6,8 @@ import {ProfileComponent} from '../profile/profile.component';
 
 const loginRoutes: Routes = [
   { path: 'login',  component: LoginComponent},
-  { path: 'perfil', component: ProfileComponent}
+  { path: 'perfil', loadChildren: () => import('../profile/profile.module')
+      .then(mod => mod.ProfileModule)}
 ];
 
 @NgModule({
