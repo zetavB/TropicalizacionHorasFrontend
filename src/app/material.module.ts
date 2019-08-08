@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
   MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule,
-  MatExpansionModule, MatSortModule, MatPaginatorModule
+  MatExpansionModule, MatSortModule, MatPaginatorModule, MatSelectModule, MatDatepickerModule,
+  MatNativeDateModule
 } from '@angular/material';
 
 @NgModule({
@@ -23,7 +24,10 @@ import {
     MatSidenavModule,
     MatExpansionModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
 
   exports: [
@@ -40,7 +44,10 @@ import {
     MatSidenavModule,
     MatExpansionModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
    ],
 })
 

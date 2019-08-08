@@ -1,1 +1,27 @@
-<p>activity-register works!</p>
+<h1>Registrar actividad</h1>
+<div class="form-container">
+
+  <mat-form-field>
+    <mat-select placeholder="Proyecto">
+      <mat-option value="option">Option</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Categoría">
+      <mat-option value="option">Option</mat-option>
+    </mat-select>
+  </mat-form-field>
+          
+  <mat-form-field>
+      <input matInput placeholder="Horas trabajadas">
+    </mat-form-field>
+
+  <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+
+  <mat-form-field>
+    <textarea matInput placeholder="Detalles"></textarea>
+  </mat-form-field>
+</div>
