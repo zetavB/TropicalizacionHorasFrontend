@@ -6,6 +6,7 @@ import { ActivitiesComponent } from './activities.component';
 import { ActivitiesRoutingModule } from './activities-routing.module';
 import {CustomMaterialModule} from '../../app/material.module';
 import { ActivitiesService } from './activities.service';
+import { ActivityRegisterComponent } from './activity-register/activity-register.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ActivitiesService } from './activities.service';
     CustomMaterialModule
   ],
   declarations: [
-    ActivitiesComponent
+    ActivitiesComponent,
+    ActivityRegisterComponent
   ],
   providers: [ ActivitiesService ]
 })

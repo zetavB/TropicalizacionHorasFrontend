@@ -1,5 +1,6 @@
 <div>
   <h1>Actividades</h1>
+  <a mat-button routerLink="/registrar-actividad" class="">Registrar actividad</a>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
   
@@ -19,7 +20,7 @@
       </ng-container>
   
       <ng-container matColumnDef="categoria">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
         <td mat-cell *matCellDef="let element"> {{element.categoria.nombre}} </td>
       </ng-container>
   
