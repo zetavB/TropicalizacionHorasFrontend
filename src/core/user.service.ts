@@ -34,6 +34,7 @@ export class UserService {
             tipo: response.response.tipo,
             estado: response.response.estado,
             horasTotales: response.response.horasTotales,
+            diasRestantes: null,
             proyectos: projectsArray,
             fechaFinal: response.response.fechaFinal,
             fechaInicio: response.response.fechaInicio,

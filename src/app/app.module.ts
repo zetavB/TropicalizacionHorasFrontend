@@ -27,8 +27,6 @@ import { ActivitiesModule } from 'src/features/activities/activities.module';
     AppRoutingModule,
     CoreModule,
     LoginModule,
-    ProfileModule,
-    ActivitiesModule,
     SharedModule.forRoot(),
     StoreModule.forRoot({user: userReducer}),
     EffectsModule.forRoot([]),

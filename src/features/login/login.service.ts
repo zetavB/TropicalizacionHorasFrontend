@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {CustomResponse} from '../../models/custom-response.model';
 
@@ -15,5 +15,10 @@ export class LoginService {
       ' "contrasenna": "' + password + '"' +
       '}';
     return this.http.post<CustomResponse>(environment.serverUrl + '/autenticar/sign-in', body, {headers});
+  }
+
+  public validateToken(token: string) {
+    const params = new HttpParams().set('token', token);
+    return this.http.get<CustomResponse>(environment.serverUrl + '/autenticar/validar', {params});
   }
 }

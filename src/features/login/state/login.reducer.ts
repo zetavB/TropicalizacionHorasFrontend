@@ -1,4 +1,4 @@
-import {LoginActions, LoginActionTypes} from './login.actions';
+import {LoginActions, LoginActionTypes, TokenInvalid} from './login.actions';
 import {JwtInfoModel} from '../../../models/jwt-info.model';
 import {TokenService} from '../../../core/token.service';
 
@@ -18,7 +18,7 @@ const initialState: LoginState = {
 
 export function reducer(state = initialState, action: LoginActions): LoginState {
   switch (action.type) {
-    case LoginActionTypes.TokenPresent:
+    case LoginActionTypes.TokenValid:
       return {
         ...state,
         isLoggedIn: true,
@@ -26,12 +26,22 @@ export function reducer(state = initialState, action: LoginActions): LoginState 
         tokenInfo: TokenService.decodeToken(action.payload)
       };
 
+    case LoginActionTypes.TokenInvalid:
+      return {
+        ...state,
+        isLoggedIn: false,
+        userToken: '',
+        tokenInfo: null,
+        error: action.payload
+      }
+
     case LoginActionTypes.LoginSuccesfull:
       return {
         ...state,
         isLoggedIn: true,
         userToken: action.payload.response.toString(),
-        tokenInfo: TokenService.decodeToken(action.payload.response.toString())
+        tokenInfo: TokenService.decodeToken(action.payload.response.toString()),
+        error: ''
       };
 
     case LoginActionTypes.LoginFailed:
@@ -39,6 +49,15 @@ export function reducer(state = initialState, action: LoginActions): LoginState 
         ...state,
         error: action.payload.errorMessages
       };
+
+    case LoginActionTypes.Logout:
+      return {
+        ...state,
+        isLoggedIn: false,
+        userToken: '',
+        tokenInfo: null
+      };
+
     default: return state;
   }
 }
