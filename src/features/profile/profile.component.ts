@@ -12,10 +12,12 @@ import { UserService } from 'src/core/user.service';
 export class ProfileComponent implements OnInit {
 
   user: Observable<{email: string}>;
+  diasRestantes: '';
   profile: Estudiante = {
     tipo: '',
     estado: '',
     horasTotales: 0,
+    diasRestantes: 0,
     proyectos: ['', ''],
     fechaFinal: '',
     fechaInicio: '',
@@ -34,10 +36,24 @@ export class ProfileComponent implements OnInit {
     }
 
   getProfile(email: string): void {
-    this.userService.getResponse(email).subscribe(estudiante => this.profile = estudiante);
+    this.userService.getResponse(email).subscribe(estudiante => {
+      this.profile = estudiante;
+      this.profile.diasRestantes = this.getDateDifference(this.profile.fechaInicio, this.profile.fechaFinal);
+    });
+  }
+
+  getDateDifference(firstDate: string, latterDate: string) {
+    const date1 = new Date(firstDate);
+    const date2 = new Date(latterDate);
+    const diffTime = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    console.log(diffDays);
+    return diffDays;
   }
 
   ngOnInit() {
-    this.store.select('user').subscribe(user => this.getProfile(user.email));
+    this.store.select('user').subscribe(user => {
+      this.getProfile(user.email);
+    });
   }
 }

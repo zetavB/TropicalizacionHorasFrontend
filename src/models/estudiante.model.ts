@@ -4,6 +4,7 @@ export interface Estudiante {
     tipo: string;
     estado: string;
     horasTotales: number;
+    diasRestantes: number;
     proyectos: string[];
     fechaFinal: string;
     fechaInicio: string;
