@@ -4,7 +4,7 @@ import { ActivitiesComponent } from './activities.component';
 import { ActivityRegisterComponent } from './activity-register/activity-register.component';
 
 const loginRoutes: Routes = [
-  { path: 'actividades',  component: ActivitiesComponent},
+  { path: '',  component: ActivitiesComponent},
   { path: 'registrar-actividad',  component: ActivityRegisterComponent}
 ];
 
