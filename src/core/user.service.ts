@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Estudiante } from '../models/estudiante.model';
 import { CustomResponse } from '../models/custom-response.model';
@@ -27,22 +27,23 @@ export class UserService {
 
   getStudent(id: string): Observable<Estudiante> {
     return this.http.get<CustomResponse>(this.url + id).pipe(
-      map(
-        response => {
-          const projectsArray = this.projectToStringArray(response.response.proyectos);
-          const estudiante: Estudiante = {
-            tipo: response.response.tipo,
-            estado: response.response.estado,
-            horasTotales: response.response.horasTotales,
-            diasRestantes: null,
-            proyectos: projectsArray,
-            fechaFinal: response.response.fechaFinal,
-            fechaInicio: response.response.fechaInicio,
-            carne: response.response.carne,
-            usuario: response.response.usuario,
-          };
-          return estudiante;
-        }
-    ));
+      map(response => {
+        const projectsArray = this.projectToStringArray(response.response.proyectos);
+        const estudiante: Estudiante = {
+          tipo: response.response.tipo,
+          estado: response.response.estado,
+          horasTotales: response.response.horasTotales,
+          diasRestantes: null,
+          proyectos: projectsArray,
+          fechaFinal: response.response.fechaFinal,
+          fechaInicio: response.response.fechaInicio,
+          carne: response.response.carne,
+          usuario: response.response.usuario,
+        };
+        return estudiante;
+      }),
+      catchError((err: CustomResponse) => throwError(err))
+    );
   }
+
 }

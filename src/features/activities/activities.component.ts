@@ -3,6 +3,8 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Activity } from 'src/models/activity.model';
 import { ActivitiesService } from './activities.service';
 import { Store } from '@ngrx/store';
+import {State} from '../../app/state/state';
+import {getTokenInfo} from '../login/state';
 
 @Component({
   selector: 'app-activities',
@@ -14,7 +16,7 @@ export class ActivitiesComponent implements OnInit {
 
   constructor(
     private activitiesService: ActivitiesService,
-    private store: Store <{email: string, rol: string}>
+    private store: Store <State>
   ) { }
 
   displayedColumns: string[] = ['fecha', 'horas', 'proyecto', 'categoria', 'estado', 'detalles'];
@@ -27,7 +29,7 @@ export class ActivitiesComponent implements OnInit {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.store.select('user').subscribe(user => this.getActivities(user.email));
+    this.store.select(getTokenInfo).subscribe(user => this.getActivities(user.sub));
   }
 
   getActivities(email: string) {

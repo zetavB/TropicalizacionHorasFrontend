@@ -13,7 +13,6 @@ import {CoreModule} from '../core/core.module';
 import {LoginModule} from '../features/login/login.module';
 import {ProfileModule} from '../features/profile/profile.module';
 import {EffectsModule} from '@ngrx/effects';
-import { userReducer } from './state/user.reducer';
 import { ActivitiesModule } from 'src/features/activities/activities.module';
 
 @NgModule({
@@ -30,7 +29,7 @@ import { ActivitiesModule } from 'src/features/activities/activities.module';
     ActivitiesModule,
     ProfileModule,
     SharedModule.forRoot(),
-    StoreModule.forRoot({user: userReducer}),
+    StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
