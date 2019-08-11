@@ -25,7 +25,7 @@ export class UserService {
     return array;
   }
 
-  getResponse(id: string): Observable<Estudiante> {
+  getStudent(id: string): Observable<Estudiante> {
     return this.http.get<CustomResponse>(this.url + id).pipe(
       map(
         response => {

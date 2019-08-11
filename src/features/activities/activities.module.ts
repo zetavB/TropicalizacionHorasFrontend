@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivitiesComponent } from './activities.component';
 import { ActivitiesRoutingModule } from './activities-routing.module';
 import {CustomMaterialModule} from '../../app/material.module';
@@ -13,6 +13,7 @@ import { ActivityRegisterComponent } from './activity-register/activity-register
     CommonModule,
     ActivitiesRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     CustomMaterialModule
   ],
   declarations: [

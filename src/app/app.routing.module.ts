@@ -1,11 +1,13 @@
 import {NgModule} from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ActivitiesComponent } from 'src/features/activities/activities.component';
 
 const routes: Routes = [
   {
     path: 'actividades',
-    loadChildren: () => import('../features/activities/activities.module')
-      .then(mod => mod.ActivitiesModule)
+    // loadChildren: () => import('../features/activities/activities.module')
+    //   .then(mod => mod.ActivitiesModule)
+    component: ActivitiesComponent
   },
   {
     path: 'perfil',
