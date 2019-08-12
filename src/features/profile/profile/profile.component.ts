@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Estudiante } from '../../models/estudiante.model';
-import { Store } from '@ngrx/store';
+import { Estudiante } from '../../../models/estudiante.model';
+import {select, Store} from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/core/user.service';
+import {getProfileStudent, State} from '../state';
+import {LoadProfile} from '../state/profile.actions';
+import {getTokenInfo} from '../../login/state';
+import {take} from 'rxjs/operators';
+import {JwtInfoModel} from '../../../models/jwt-info.model';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +18,8 @@ export class ProfileComponent implements OnInit {
 
   user: Observable<{email: string}>;
   diasRestantes: '';
-  profile: Estudiante = {
+  profile: Estudiante;
+  perfilVacio = {
     tipo: '',
     estado: '',
     horasTotales: 0,
@@ -32,7 +38,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private store: Store<{email: string, rol: string}>) {
+    private store: Store<State>) {
     }
 
   getProfile(email: string): void {
@@ -52,8 +58,13 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select('user').subscribe(user => {
-      this.getProfile(user.email);
-    });
+    this.store.pipe(
+      select(getProfileStudent)
+    ).subscribe(stu => this.profile = stu == null ? this.perfilVacio : stu);
+
+    this.store.pipe(
+      select(getTokenInfo),
+      take(1)
+    ).subscribe((info: JwtInfoModel) => this.store.dispatch(new LoadProfile(info.sub)));
   }
 }

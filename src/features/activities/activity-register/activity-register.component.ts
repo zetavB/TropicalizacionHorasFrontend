@@ -32,9 +32,9 @@ export class ActivityRegisterComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.store.select('login').subscribe(state =>{
+    this.store.select('login').subscribe(state => {
         this.studentEmail = state.tokenInfo.sub;
-        this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos)
+        this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos);
       });
     this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
   }
@@ -49,7 +49,7 @@ export class ActivityRegisterComponent implements OnInit {
       proyecto: {nombre: this.activityForm.value.proyecto},
       estudiante: {usuario: {correo: this.studentEmail}},
       detalles: this.activityForm.value.detalles
-    }
+    };
     this.activitiesService.postActivity(activity).subscribe(response => console.log(response));
   }
 }

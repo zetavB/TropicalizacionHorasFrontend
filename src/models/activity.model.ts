@@ -5,4 +5,6 @@ export interface Activity {
   estado: string;
   categoria: {nombre: string};
   proyecto: {nombre: string};
+  estudiante: {usuario: {correo: string}};
+  detalles: string;
 }

@@ -30,7 +30,6 @@ export class ActivitiesService {
   }
 
   postActivity(activity: Activity): Observable<Activity> {
-    console.log(activity);
     return this.http.post<Activity>(this.ACTIVITY_URL, activity).pipe(
       catchError(this.handleError)
     );

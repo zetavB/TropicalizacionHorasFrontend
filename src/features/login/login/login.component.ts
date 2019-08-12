@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {TokenService} from '../../core/token.service';
+import {TokenService} from '../../../core/token.service';
 import { Store } from '@ngrx/store';
-import {LoginState} from './state/login.reducer';
-import {Login, TokenPresent} from './state/login.actions';
+import {LoginState} from '../state/login.reducer';
+import {Login, TokenPresent} from '../state/login.actions';
 
 @Component({
   selector: 'app-login',
