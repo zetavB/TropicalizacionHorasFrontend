@@ -29,10 +29,17 @@ export class ActivitiesService {
     ));
   }
 
-  postActivities(activity: Activity): Observable<Activity> {
+  postActivity(activity: Activity): Observable<Activity> {
+    console.log(activity);
     return this.http.post<Activity>(this.ACTIVITY_URL, activity).pipe(
       catchError(this.handleError)
-      );
+    );
+  }
+
+  deleteActivity(email: string, id: number) {
+    return this.http.delete<Activity>(this.ACTIVITY_URL + '/' + email + '/' + id).pipe(
+      catchError(this.handleError)
+    );
   }
 
   getCategories(): Observable<[]> {

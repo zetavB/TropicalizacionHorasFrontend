@@ -1,33 +1,33 @@
 <h1>Registrar actividad</h1>
 <form class="form-container" [formGroup]="activityForm" (ngSubmit)="addActivity()">
   <mat-form-field>
-    <mat-select placeholder="Proyecto" required>
-      <mat-option *ngFor="let project of projects" [value]="project" formControlName="project" required>{{project}}</mat-option>
+    <mat-select placeholder="Proyecto"  formControlName="proyecto">
+      <mat-option *ngFor="let project of projects" [value]="project">{{project}}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Categoría" required>
-      <mat-option *ngFor="let category of categories" [value]="category" formControlName="category" required>{{category}}</mat-option>
+    <mat-select placeholder="Categoría" formControlName="categoria">
+      <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Horas trabajadas" formControlName="hours" required>
+    <input matInput placeholder="Horas trabajadas" formControlName="horas">
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Fecha del trabajo realizado" formControlName="date" required>
+    <input matInput [matDatepicker]="picker" placeholder="Fecha del trabajo realizado" formControlName="fecha">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field>
-    <textarea matInput placeholder="Detalles" formControlName="details"></textarea>
+    <textarea matInput placeholder="Detalles" formControlName="detalles"></textarea>
   </mat-form-field>
   
   <div>
     <a mat-button routerLink="/actividades">Cancelar</a>
-    <button mat-button color="primary" type="submit">Aceptar</button>
+    <button mat-button color="primary" type="submit" [disabled]="!activityForm.valid">Aceptar</button>
   </div>
 </form>

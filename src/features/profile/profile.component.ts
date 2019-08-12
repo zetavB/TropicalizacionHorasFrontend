@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
     }
 
   getProfile(email: string): void {
-    this.userService.getResponse(email).subscribe(estudiante => {
+    this.userService.getStudent(email).subscribe(estudiante => {
       this.profile = estudiante;
       this.profile.diasRestantes = this.getDateDifference(this.profile.fechaFinal);
     });

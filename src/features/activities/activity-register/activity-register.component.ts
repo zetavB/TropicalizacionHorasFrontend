@@ -3,6 +3,7 @@ import { ActivitiesService } from '../activities.service';
 import { Store } from '@ngrx/store';
 import { UserService } from 'src/core/user.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Activity } from 'src/models/activity.model';
 
 
 @Component({
@@ -21,21 +22,34 @@ export class ActivityRegisterComponent implements OnInit {
 
   categories = [];
   projects = [];
+  studentEmail = '';
   activityForm = this.fb.group({
-    project: ['', Validators.required],
-    category: ['', Validators.required],
-    hours: ['', [Validators.required, Validators.pattern('[0-9]{1,3}')]],
-    date: ['', Validators.required],
-    details: ['']
+    proyecto: ['', Validators.required],
+    categoria: ['', Validators.required],
+    horas: ['', [Validators.required, Validators.pattern('[0-9]{1,3}')]],
+    fecha: ['', Validators.required],
+    detalles: ['']
   });
 
   ngOnInit() {
-    this.store.select('login').subscribe(state =>
-      this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos));
+    this.store.select('login').subscribe(state =>{
+        this.studentEmail = state.tokenInfo.sub;
+        this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos)
+      });
     this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
   }
 
   addActivity() {
     console.log(this.activityForm.value);
+    const activity: Activity = {
+      fecha: this.activityForm.value.fecha,
+      horas: this.activityForm.value.horas,
+      estado: 'Pendiente',
+      categoria: {nombre: this.activityForm.value.categoria},
+      proyecto: {nombre: this.activityForm.value.proyecto},
+      estudiante: {usuario: {correo: this.studentEmail}},
+      detalles: this.activityForm.value.detalles
+    }
+    this.activitiesService.postActivity(activity).subscribe(response => console.log(response));
   }
 }
