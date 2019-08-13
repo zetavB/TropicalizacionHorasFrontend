@@ -5,6 +5,7 @@ import {HomeLayoutComponent} from './home-layout/home-layout.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {CustomMaterialModule} from '../app/material.module';
 import {RouterModule} from '@angular/router';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   imports: [
@@ -15,12 +16,16 @@ import {RouterModule} from '@angular/router';
   declarations: [
     HeaderComponent,
     HomeLayoutComponent,
-    SidebarComponent
+    SidebarComponent,
+    DialogComponent
   ],
   exports: [
     HeaderComponent,
     HomeLayoutComponent,
     SidebarComponent
+  ],
+  entryComponents: [
+    DialogComponent
   ],
   providers: [ ]
 })
