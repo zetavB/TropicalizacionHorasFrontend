@@ -18,7 +18,10 @@ export class ProfileEffects {
     map((action: LoadProfile) => action.payload),
     mergeMap((email: string) =>
       this.userService.getStudent(email).pipe(
-        map( (est: Estudiante) => new LoadSuccessful(est)),
+        map( (est: Estudiante) => {
+          est.diasRestantes = this.userService.getDateDifference(est.fechaFinal);
+          return new LoadSuccessful(est);
+        }),
         catchError((err: CustomResponse) => of(new LoadFailed(err.errorMessages)))
       )
     )

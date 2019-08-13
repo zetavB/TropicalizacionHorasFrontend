@@ -45,5 +45,13 @@ export class UserService {
       catchError((err: CustomResponse) => throwError(err))
     );
   }
-
+  
+  getDateDifference(latterDate: string) {
+    const date1 = new Date();
+    const date2 = new Date(latterDate);
+    const diffTime = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    console.log(diffDays);
+    return diffDays;
+  }
 }

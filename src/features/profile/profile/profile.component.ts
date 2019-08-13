@@ -41,22 +41,6 @@ export class ProfileComponent implements OnInit {
     private store: Store<State>) {
     }
 
-  getProfile(email: string): void {
-    this.userService.getStudent(email).subscribe(estudiante => {
-      this.profile = estudiante;
-      this.profile.diasRestantes = this.getDateDifference(this.profile.fechaFinal);
-    });
-  }
-
-  getDateDifference(latterDate: string) {
-    const date1 = new Date();
-    const date2 = new Date(latterDate);
-    const diffTime = Math.abs(date2.getTime() - date1.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffDays);
-    return diffDays;
-  }
-
   ngOnInit() {
     this.store.pipe(
       select(getProfileStudent)
