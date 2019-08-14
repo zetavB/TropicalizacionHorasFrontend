@@ -10,6 +10,7 @@ import { DialogComponent } from 'src/shared/dialog/dialog.component';
 import { JwtInfoModel } from 'src/models/jwt-info.model'; 
 import { take } from 'rxjs/operators';
 import { LoadActivity } from './state/activities.actions';
+import { getActivity } from './state';
 
 
 @Component({
@@ -36,16 +37,14 @@ export class ActivitiesComponent implements OnInit {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.store.select(getTokenInfo).subscribe(user => this.getActivities(user.sub));
+    // this.store.select(getTokenInfo).subscribe(user => this.getActivities(user.sub));
 
     this.store.pipe(
       select(getTokenInfo),
       take(1)
     ).subscribe((info: JwtInfoModel) => this.store.dispatch(new LoadActivity(info.sub)));
-  }
 
-  getActivities(email: string) {
-    this.activitiesService.getActivities(email).subscribe(activities => this.dataSource.data = activities);
+    this.store.select('activity').subscribe(state => this.dataSource.data = state.activities);
   }
 
   openDialog(): void {

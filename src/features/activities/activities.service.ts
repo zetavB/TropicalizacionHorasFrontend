@@ -23,7 +23,6 @@ export class ActivitiesService {
           response.response.forEach(activity => {
             actividad.push(activity);
           });
-          console.log(actividad);
           return actividad;
         }
     ));
