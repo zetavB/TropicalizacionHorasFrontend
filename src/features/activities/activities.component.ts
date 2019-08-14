@@ -3,10 +3,13 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Activity } from 'src/models/activity.model';
 import { ActivitiesService } from './activities.service';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from '../../app/state/state';
 import { getTokenInfo } from '../login/state';
 import { DialogComponent } from 'src/shared/dialog/dialog.component';
+import { JwtInfoModel } from 'src/models/jwt-info.model'; 
+import { take } from 'rxjs/operators';
+import { LoadActivity } from './state/activities.actions';
 
 
 @Component({
@@ -34,6 +37,11 @@ export class ActivitiesComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.store.select(getTokenInfo).subscribe(user => this.getActivities(user.sub));
+
+    this.store.pipe(
+      select(getTokenInfo),
+      take(1)
+    ).subscribe((info: JwtInfoModel) => this.store.dispatch(new LoadActivity(info.sub)));
   }
 
   getActivities(email: string) {

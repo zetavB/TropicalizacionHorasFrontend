@@ -7,6 +7,10 @@ import { ActivitiesRoutingModule } from './activities-routing.module';
 import {CustomMaterialModule} from '../../app/material.module';
 import { ActivitiesService } from './activities.service';
 import { ActivityRegisterComponent } from './activity-register/activity-register.component';
+import { reducer } from './state/activities.reducer';
+import { StoreModule } from '@ngrx/store';
+import { ActivityEffects } from './state/activities.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   imports: [
@@ -14,7 +18,9 @@ import { ActivityRegisterComponent } from './activity-register/activity-register
     ActivitiesRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    CustomMaterialModule
+    CustomMaterialModule,
+    StoreModule.forFeature('activity', reducer),
+    EffectsModule.forFeature([ActivityEffects])
   ],
   declarations: [
     ActivitiesComponent,
