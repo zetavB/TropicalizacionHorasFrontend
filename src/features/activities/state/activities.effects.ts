@@ -1,9 +1,9 @@
 import { ActivitiesService } from '../activities.service';
-import {Actions, Effect, ofType} from '@ngrx/effects';
+import {Actions, Effect, ofType, createEffect} from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { ActivityActionTypes, LoadActivity, LoadSuccessful, LoadFailed } from './activities.actions';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import { ActivityActionTypes, LoadActivity, LoadSuccessful, LoadFailed, DeleteActivity, DeleteSuccessful, DeleteFailed } from './activities.actions';
+import { map, mergeMap, catchError, switchMap } from 'rxjs/operators';
 import { Activity } from 'src/models/activity.model';
 import { Injectable } from '@angular/core';
 import { CustomResponse } from 'src/models/custom-response.model';
@@ -24,5 +24,20 @@ export class ActivityEffects {
         catchError((err: CustomResponse) => of(new LoadFailed(err.errorMessages)))
       )
     )
+  );
+
+  // @Effect()
+  // deleteActivity$: Observable<number> = this.actions$.pipe(
+  //   ofType(ActivityActionTypes.DeleteActivity),
+  //   map((action: DeleteActivity) => action.payload),
+  //   map((id: number) => {
+  //     return new LoadSuccessful([]);
+  //   })
+  // );
+
+  @Effect()
+  deleteActivity$ = this.actions$.pipe(
+    ofType(ActivityActionTypes.DeleteActivity),
+    switchMap((data: DeleteActivity) => this.activitiesService.deleteActivity(data.payload))
   );
 }

@@ -42,6 +42,7 @@ export class ActivityRegisterComponent implements OnInit {
   addActivity() {
     console.log(this.activityForm.value);
     const activity: Activity = {
+      idGenerado: 0,
       fecha: this.activityForm.value.fecha,
       horas: this.activityForm.value.horas,
       estado: 'Pendiente',

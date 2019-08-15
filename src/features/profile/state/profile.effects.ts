@@ -25,5 +25,5 @@ export class ProfileEffects {
         catchError((err: CustomResponse) => of(new LoadFailed(err.errorMessages)))
       )
     )
-  ); 
+  );
 }

@@ -34,8 +34,8 @@ export class ActivitiesService {
     );
   }
 
-  deleteActivity(email: string, id: number) {
-    return this.http.delete<Activity>(this.ACTIVITY_URL + '/' + email + '/' + id).pipe(
+  deleteActivity(id: number) {
+    return this.http.delete<Activity>(this.ACTIVITY_URL + '/' + id).pipe(
       catchError(this.handleError)
     );
   }

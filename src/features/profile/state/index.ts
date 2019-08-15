@@ -5,7 +5,7 @@ import {createFeatureSelector, createSelector} from '@ngrx/store';
 // Extends the app state to include the profile feature.
 // This is required because profile is lazy loaded.
 // So the reference to ProfileState cannot be added to app/state/state.ts directly.
-export interface State extends  fromRoot.State {
+export interface State extends fromRoot.State {
   profile: ProfileState;
 }
 

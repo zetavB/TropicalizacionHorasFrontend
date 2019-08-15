@@ -9,7 +9,7 @@ import { getTokenInfo } from '../login/state';
 import { DialogComponent } from 'src/shared/dialog/dialog.component';
 import { JwtInfoModel } from 'src/models/jwt-info.model'; 
 import { take } from 'rxjs/operators';
-import { LoadActivity } from './state/activities.actions';
+import { LoadActivity, DeleteActivity } from './state/activities.actions';
 import { getActivity } from './state';
 
 
@@ -37,26 +37,29 @@ export class ActivitiesComponent implements OnInit {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    // this.store.select(getTokenInfo).subscribe(user => this.getActivities(user.sub));
 
     this.store.pipe(
       select(getTokenInfo),
       take(1)
     ).subscribe((info: JwtInfoModel) => this.store.dispatch(new LoadActivity(info.sub)));
 
-    this.store.select('activity').subscribe(state => this.dataSource.data = state.activities);
+    this.store.select('activity').subscribe(state => {
+      this.dataSource.data = state.activities;
+      console.log(state.activities);
+    });
   }
 
-  openDialog(): void {
+  onDelete(id: number): void {
+    console.log(id);
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '300px',
-      data: {title: 'Eliminar actividad', content: 'Desea eliminar esta actividad?'}
+      data: {title: 'Eliminar actividad', content: '¿Desea eliminar esta actividad?'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
-      // this.animal = result;
+      if (result) {
+        this.store.dispatch(new DeleteActivity(id));
+      }
     });
   }
 
