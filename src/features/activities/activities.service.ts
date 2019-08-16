@@ -35,8 +35,11 @@ export class ActivitiesService {
   }
 
   deleteActivity(id: number) {
-    return this.http.delete<Activity>(this.ACTIVITY_URL + '/' + id).pipe(
-      catchError(this.handleError)
+    return this.http.delete<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
+    map(response => {
+      return response.response.idGenerado;
+    }),
+    catchError(this.handleError)
     );
   }
 

@@ -27,6 +27,15 @@ export function reducer(state = initialState, action: ActivityActions): Activity
         error: action.payload
       };
 
+    case ActivityActionTypes.DeleteSuccessful:
+      const activitiesArray = state.activities;
+      const temp = activitiesArray.find(x => x.idGenerado === action.payload);
+      const index = activitiesArray.indexOf(temp);
+      return {
+        ...state,
+        activities: activitiesArray.splice(index)
+      };
+
     default:
       return state;
   }
