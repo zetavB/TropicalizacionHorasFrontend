@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { UserService } from 'src/core/user.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Activity } from 'src/models/activity.model';
+import { AddActivity } from '../state/activities.actions';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ActivityRegisterComponent implements OnInit {
     private fb: FormBuilder
   ) { }
 
+  enableButton: false;
   categories = [];
   projects = [];
   studentEmail = '';
@@ -40,7 +42,6 @@ export class ActivityRegisterComponent implements OnInit {
   }
 
   addActivity() {
-    console.log(this.activityForm.value);
     const activity: Activity = {
       idGenerado: 0,
       fecha: this.activityForm.value.fecha,
@@ -51,6 +52,6 @@ export class ActivityRegisterComponent implements OnInit {
       estudiante: {usuario: {correo: this.studentEmail}},
       detalles: this.activityForm.value.detalles
     };
-    this.activitiesService.postActivity(activity).subscribe(response => console.log(response));
+    this.store.dispatch(new AddActivity(activity));
   }
 }

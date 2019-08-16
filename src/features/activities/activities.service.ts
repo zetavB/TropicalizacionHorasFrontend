@@ -30,14 +30,16 @@ export class ActivitiesService {
 
   postActivity(activity: Activity): Observable<Activity> {
     return this.http.post<Activity>(this.ACTIVITY_URL, activity).pipe(
-      catchError(this.handleError)
+    map(response => {
+      return response;
+    }),
+    catchError(this.handleError)
     );
   }
 
   deleteActivity(id: number) {
     return this.http.delete<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
     map(response => {
-      console.log('success');
       return response.response;
     }),
     catchError(this.handleError)

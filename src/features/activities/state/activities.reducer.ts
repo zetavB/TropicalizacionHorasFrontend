@@ -12,6 +12,7 @@ const initialState: ActivityState = {
 };
 
 export function reducer(state = initialState, action: ActivityActions): ActivityState {
+  const activitiesArray = [...state.activities];
   switch (action.type) {
     case ActivityActionTypes.LoadSuccessful:
       return {
@@ -28,7 +29,6 @@ export function reducer(state = initialState, action: ActivityActions): Activity
       };
 
     case ActivityActionTypes.DeleteSuccessful:
-      const activitiesArray = [...state.activities];
       const temp = activitiesArray.find(x => x.idGenerado === action.payload);
       const index = activitiesArray.indexOf(temp);
       activitiesArray.splice(index);
@@ -37,12 +37,20 @@ export function reducer(state = initialState, action: ActivityActions): Activity
         activities: activitiesArray
       };
 
-      case ActivityActionTypes.DeleteFailed:
+    case ActivityActionTypes.AddSuccessful:
+        activitiesArray.push(action.payload);
         return {
           ...state,
-          activities: null,
-          error: action.payload
+          activities: activitiesArray,
+          error: ''
         };
+
+    case ActivityActionTypes.DeleteFailed:
+      return {
+        ...state,
+        activities: null,
+        error: action.payload
+      };
 
     default:
       return state;
