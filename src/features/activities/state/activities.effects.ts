@@ -32,19 +32,11 @@ export class ActivityEffects {
     map((action: DeleteActivity) => action.payload),
     mergeMap((id: number) =>
       this.activitiesService.deleteActivity(id).pipe(
-        map(activity => {
-          console.log(activity);
-          console.log("deleting " + id);
+        map(res => {
           return new DeleteSuccessful(id);
         }),
         catchError((err: CustomResponse) => of(new LoadFailed(err.errorMessages)))
       )
     )
   );
-
-  // @Effect()
-  // deleteActivity$ = this.actions$.pipe(
-  //   ofType(ActivityActionTypes.DeleteActivity),
-  //   switchMap((data: DeleteActivity) => this.activitiesService.deleteActivity(data.payload))
-  // );
 }

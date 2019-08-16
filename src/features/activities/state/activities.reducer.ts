@@ -28,13 +28,21 @@ export function reducer(state = initialState, action: ActivityActions): Activity
       };
 
     case ActivityActionTypes.DeleteSuccessful:
-      const activitiesArray = state.activities;
+      const activitiesArray = [...state.activities];
       const temp = activitiesArray.find(x => x.idGenerado === action.payload);
       const index = activitiesArray.indexOf(temp);
+      activitiesArray.splice(index);
       return {
         ...state,
-        activities: activitiesArray.splice(index)
+        activities: activitiesArray
       };
+
+      case ActivityActionTypes.DeleteFailed:
+        return {
+          ...state,
+          activities: null,
+          error: action.payload
+        };
 
     default:
       return state;

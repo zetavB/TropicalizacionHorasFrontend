@@ -37,7 +37,8 @@ export class ActivitiesService {
   deleteActivity(id: number) {
     return this.http.delete<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
     map(response => {
-      return response.response.idGenerado;
+      console.log('success');
+      return response.response;
     }),
     catchError(this.handleError)
     );
@@ -62,6 +63,7 @@ export class ActivitiesService {
       console.error(
         `Backend returned code ${error.status}, ` +
         `body was: ${error.error}`);
+      console.log(error);
     }
     // return an observable with a user-facing error message
     return throwError(
