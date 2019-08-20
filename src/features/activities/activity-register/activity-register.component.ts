@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivitiesService } from '../activities.service';
 import { Store } from '@ngrx/store';
 import { UserService } from 'src/core/user.service';
@@ -14,6 +14,8 @@ import { AddActivity } from '../state/activities.actions';
 })
 export class ActivityRegisterComponent implements OnInit {
 
+  @ViewChild('file', { static: false }) file;
+
   constructor(
     private activitiesService: ActivitiesService,
     private userService: UserService,
@@ -21,6 +23,7 @@ export class ActivityRegisterComponent implements OnInit {
     private fb: FormBuilder
   ) { }
 
+  files: Set<File> = new Set();
   enableButton: false;
   categories = [];
   projects = [];
@@ -32,13 +35,34 @@ export class ActivityRegisterComponent implements OnInit {
     fecha: ['', Validators.required],
     detalles: ['']
   });
+  progress;
+  canBeClosed = true;
+  primaryButtonText = 'Upload';
+  showCancelButton = true;
+  uploading = false;
+  uploadSuccessful = false;
 
   ngOnInit() {
     this.store.select('login').subscribe(state => {
         this.studentEmail = state.tokenInfo.sub;
+        console.log('state tokeninfo');
+        console.log(state.tokenInfo);
         this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos);
       });
     this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
+  }
+
+  onFilesAdded() {
+    const files: { [key: string]: File } = this.file.nativeElement.files;
+    for (const key in files) {
+      if (!isNaN(parseInt(key))) {
+        this.files.add(files[key]);
+      }
+    }
+  }
+
+  addFiles() {
+    this.file.nativeElement.click();
   }
 
   addActivity() {
@@ -52,6 +76,7 @@ export class ActivityRegisterComponent implements OnInit {
       estudiante: {usuario: {correo: this.studentEmail}},
       detalles: this.activityForm.value.detalles
     };
-    this.store.dispatch(new AddActivity(activity));
+    const files = this.files;
+    this.store.dispatch(new AddActivity({activity, files}));
   }
 }

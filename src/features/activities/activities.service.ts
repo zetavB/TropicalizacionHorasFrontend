@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError, Subject} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpEventType, HttpRequest, HttpEvent} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {CustomResponse} from '../../models/custom-response.model';
 import {catchError, map} from 'rxjs/operators';
@@ -14,6 +14,7 @@ export class ActivitiesService {
 
   private ACTIVITY_URL =  environment.serverUrl + '/actividad';
   private CATEGORY_URL =  environment.serverUrl + '/categoria';
+  private FILE_URL =  environment.serverUrl + '/actividad/archivo/';
 
   getActivities(id: string): Observable<Activity[]> {
     return this.http.get<CustomResponse>(this.ACTIVITY_URL + '?correo=' + id).pipe(
@@ -28,10 +29,10 @@ export class ActivitiesService {
     ));
   }
 
-  postActivity(activity: Activity): Observable<Activity> {
-    return this.http.post<Activity>(this.ACTIVITY_URL, activity).pipe(
+  postActivity(activity: Activity): Observable<number> {
+    return this.http.post<CustomResponse>(this.ACTIVITY_URL, activity).pipe(
     map(response => {
-      return response;
+      return response.response;
     }),
     catchError(this.handleError)
     );
@@ -53,6 +54,34 @@ export class ActivitiesService {
           return response.response;
         }
     ));
+  }
+
+  public uploadActivityFiles(id: number, files: Set<File>): Observable<Object> {
+    console.log('uploading files');
+    const formData = new FormData();
+    files.forEach(file => {
+    formData.append('files', file, file.name);
+    });
+
+    console.log(formData);
+    const options = {
+      reportProgress: true
+    };
+
+    // const req = new HttpRequest(
+    //   'POST',
+    //   this.FILE_URL + id,
+    //   formData,
+    //   {
+    //     headers: new HttpHeaders({
+    //       'Access-Control-Allow-Origin': '*'
+    //     }),
+    //     reportProgress: true
+    //   }
+    // );
+    console.log(this.FILE_URL + id);
+    return this.http.post(this.FILE_URL + id, formData);
+    // return this.http.request(req);
   }
 
   private handleError(error: HttpErrorResponse) {

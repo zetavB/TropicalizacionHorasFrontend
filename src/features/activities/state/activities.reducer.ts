@@ -4,11 +4,13 @@ import { ActivityActions, ActivityActionTypes } from './activities.actions';
 export interface ActivityState {
   activities: Activity[];
   error: string;
+  progress: [];
 }
 
 const initialState: ActivityState = {
   activities: [],
-  error: ''
+  error: '',
+  progress: []
 };
 
 export function reducer(state = initialState, action: ActivityActions): ActivityState {
@@ -42,7 +44,8 @@ export function reducer(state = initialState, action: ActivityActions): Activity
         return {
           ...state,
           activities: activitiesArray,
-          error: ''
+          error: '',
+          progress: []
         };
 
     case ActivityActionTypes.DeleteFailed:

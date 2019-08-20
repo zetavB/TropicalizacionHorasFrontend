@@ -10,7 +10,11 @@ export enum ActivityActionTypes {
   DeleteFailed = '[Activity] Delete Failed',
   AddActivity = '[Activity] Add Activity',
   AddSuccessful = '[Activity] Add Successful',
-  AddFailed = '[Activity] Add Failed'
+  AddFailed = '[Activity] Add Failed',
+  AddActivityFiles = '[Activity] Add Activity Files',
+  AddFilesSuccessful = '[Activity] Add Files Successful',
+  AddFilesFailed = '[Activity] Add Files Failed',
+  UpdateFilesProgress = '[Activity] Update Files Progress'
 }
 
 export class LoadActivity implements  Action {
@@ -38,7 +42,7 @@ export class AddActivity implements  Action {
   readonly type = ActivityActionTypes.AddActivity;
 
   // Payload is the activity to be added
-  constructor(public payload: Activity) {}
+  constructor(public payload: {activity: Activity, files: Set<File>}) {}
 }
 
 export class AddSuccessful implements Action {
@@ -53,6 +57,34 @@ export class AddFailed implements Action {
 
   // Payload is the error message
   constructor(public payload: string) {}
+}
+
+export class AddActivityFiles implements  Action {
+  readonly type = ActivityActionTypes.AddActivityFiles;
+
+  // Payload is the activity to be added
+  constructor(public payload: {id: number, files: Set<File>}) {}
+}
+
+export class AddFilesSuccessful implements Action {
+  readonly type = ActivityActionTypes.AddFilesSuccessful;
+
+  // Payload is the array of activities
+  constructor(public payload: string) {}
+}
+
+export class AddFilesFailed implements Action {
+  readonly type = ActivityActionTypes.AddFilesFailed;
+
+  // Payload is the error message
+  constructor(public payload: string) {}
+}
+
+export class UpdateFilesProgress implements Action {
+  readonly type = ActivityActionTypes.UpdateFilesProgress;
+
+  // Payload is the progress map
+  constructor(public payload: []) {}
 }
 
 export class DeleteActivity implements Action {
@@ -84,4 +116,5 @@ export type ActivityActions = LoadActivity
   | DeleteFailed
   | AddActivity
   | AddSuccessful
-  | AddFailed;
+  | AddFailed
+  | UpdateFilesProgress;

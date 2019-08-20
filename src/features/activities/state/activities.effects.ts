@@ -2,7 +2,7 @@ import { ActivitiesService } from '../activities.service';
 import {Actions, Effect, ofType, createEffect} from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { ActivityActionTypes, LoadActivity, LoadSuccessful, LoadFailed, DeleteActivity, DeleteSuccessful, DeleteFailed, AddActivity, AddSuccessful, AddFailed } from './activities.actions';
+import { ActivityActionTypes, LoadActivity, LoadSuccessful, LoadFailed, DeleteActivity, DeleteSuccessful, DeleteFailed, AddActivity, AddSuccessful, AddFailed, AddActivityFiles, UpdateFilesProgress } from './activities.actions';
 import { map, mergeMap, catchError, switchMap, tap } from 'rxjs/operators';
 import { Activity } from 'src/models/activity.model';
 import { Injectable } from '@angular/core';
@@ -34,11 +34,35 @@ export class ActivityEffects {
   addActivity$: Observable<Action> = this.actions$.pipe(
     ofType(ActivityActionTypes.AddActivity),
     map((action: AddActivity) => action.payload),
-    mergeMap((activity: Activity) =>
-      this.activitiesService.postActivity(activity).pipe(
+    switchMap((content: {activity: Activity, files: Set<File>}) =>
+      this.activitiesService.postActivity(content.activity).pipe(
+        map(res => {
+          console.log('response');
+          console.log(res);
+          if (content.files.size !== 0) {
+            console.log('yes files');
+            console.log(content.files);
+            const filePackage = {id: res, files: content.files};
+            return new AddActivityFiles(filePackage);
+          } else {
+            this.router.navigate(['/actividades']);
+            return new AddSuccessful(content.activity);
+          }
+        }),
+        catchError((err: CustomResponse) => of(new AddFailed(err.errorMessages)))
+      )
+    )
+  );
+
+  @Effect()
+  uploadFiles$ = this.actions$.pipe(
+    ofType(ActivityActionTypes.AddActivityFiles),
+    map((action: AddActivityFiles) => action.payload),
+    switchMap((content: {id: number, files: Set<File>}) =>
+    this.activitiesService.uploadActivityFiles(content.id, content.files).pipe(
         map(res => {
           this.router.navigate(['/actividades']);
-          return new AddSuccessful(activity);
+          return new UpdateFilesProgress([]);
         }),
         catchError((err: CustomResponse) => of(new AddFailed(err.errorMessages)))
       )

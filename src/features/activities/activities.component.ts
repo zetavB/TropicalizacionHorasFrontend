@@ -2,16 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Activity } from 'src/models/activity.model';
-import { ActivitiesService } from './activities.service';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../app/state/state';
 import { getTokenInfo } from '../login/state';
 import { DialogComponent } from 'src/shared/dialog/dialog.component';
-import { JwtInfoModel } from 'src/models/jwt-info.model'; 
+import { JwtInfoModel } from 'src/models/jwt-info.model';
 import { take } from 'rxjs/operators';
 import { LoadActivity, DeleteActivity } from './state/activities.actions';
-import { getActivity } from './state';
-
 
 @Component({
   selector: 'app-activities',
@@ -22,7 +19,6 @@ import { getActivity } from './state';
 export class ActivitiesComponent implements OnInit {
 
   constructor(
-    private activitiesService: ActivitiesService,
     private store: Store <State>,
     public dialog: MatDialog
   ) { }
@@ -45,12 +41,10 @@ export class ActivitiesComponent implements OnInit {
 
     this.store.select('activity').subscribe(state => {
       this.dataSource.data = state.activities;
-      console.log(state.activities);
     });
   }
 
   onDelete(id: number): void {
-    console.log(id);
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '300px',
       data: {title: 'Eliminar actividad', content: '¿Desea eliminar esta actividad?'}
@@ -62,5 +56,4 @@ export class ActivitiesComponent implements OnInit {
       }
     });
   }
-
 }
