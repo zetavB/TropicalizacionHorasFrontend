@@ -55,7 +55,7 @@ export class ActivityEffects {
   );
 
   @Effect()
-  uploadFiles$ = this.actions$.pipe(
+  uploadFiles$: Observable<Action> = this.actions$.pipe(
     ofType(ActivityActionTypes.AddActivityFiles),
     map((action: AddActivityFiles) => action.payload),
     switchMap((content: {id: number, files: Set<File>}) =>

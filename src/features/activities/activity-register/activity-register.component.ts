@@ -65,6 +65,14 @@ export class ActivityRegisterComponent implements OnInit {
     this.file.nativeElement.click();
   }
 
+  removeFile(fileToRemove: File) {
+    this.files.forEach(file => {
+      if (file === fileToRemove) {
+        this.files.delete(file);
+      }
+    });
+  }
+
   addActivity() {
     const activity: Activity = {
       idGenerado: 0,
