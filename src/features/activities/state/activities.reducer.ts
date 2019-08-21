@@ -33,7 +33,7 @@ export function reducer(state = initialState, action: ActivityActions): Activity
     case ActivityActionTypes.DeleteSuccessful:
       const temp = activitiesArray.find(x => x.idGenerado === action.payload);
       const index = activitiesArray.indexOf(temp);
-      activitiesArray.splice(index);
+      activitiesArray.splice(index, 1);
       return {
         ...state,
         activities: activitiesArray
