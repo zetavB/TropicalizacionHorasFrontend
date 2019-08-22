@@ -5,9 +5,8 @@ import { ActivitiesComponent } from 'src/features/activities/activities.componen
 const routes: Routes = [
   {
     path: 'actividades',
-    // loadChildren: () => import('../features/activities/activities.module')
-    //   .then(mod => mod.ActivitiesModule)
-    component: ActivitiesComponent
+    loadChildren: () => import('../features/activities/activities.module')
+      .then(mod => mod.ActivitiesModule)
   },
   {
     path: 'perfil',

@@ -36,10 +36,10 @@
             aria-label="descripción de la actividad">
               <i class="material-icons">description</i>
             </a> 
-            <button mat-icon-button [disableRipple]="true" matTooltip="Editar actividad"
+            <a mat-icon-button routerLink="/actividades/{{element.idGenerado}}" [disableRipple]="true" matTooltip="Editar actividad"
             aria-label="editar actividad">
               <i class="material-icons">edit</i>
-            </button> 
+          </a> 
             <button mat-icon-button [disableRipple]="true" (click)="onDelete(element.idGenerado)" matTooltip="Borrar actividad"
             aria-label="borrar actividad">
               <i class="material-icons">delete_outline</i>

@@ -12,18 +12,30 @@ export class ActivitiesService {
 
   constructor(private http: HttpClient) {}
 
-  private ACTIVITY_URL =  environment.serverUrl + '/actividad';
-  private CATEGORY_URL =  environment.serverUrl + '/categoria';
-  private FILE_URL =  environment.serverUrl + '/actividad/archivo/';
+  private ACTIVITY_URL = environment.serverUrl + '/actividad';
+  private CATEGORY_URL = environment.serverUrl + '/categoria';
+  private FILE_URL = environment.serverUrl + '/actividad/archivo/';
 
-  getActivities(id: string): Observable<Activity[]> {
-    return this.http.get<CustomResponse>(this.ACTIVITY_URL + '?correo=' + id).pipe(
+  getActivities(email: string): Observable<Activity[]> {
+    return this.http.get<CustomResponse>(this.ACTIVITY_URL + '?correo=' + email).pipe(
       map(
         response => {
           const actividad: Activity[] = [];
           response.response.forEach(activity => {
             actividad.push(activity);
           });
+          return actividad;
+        }
+    ));
+  }
+
+  getActivity(id: string): Observable<Activity> {
+    console.log('id parameter');
+    console.log(id);
+    return this.http.get<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
+      map(
+        response => {
+          const actividad: Activity = response.response;
           return actividad;
         }
     ));

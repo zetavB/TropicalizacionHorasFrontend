@@ -5,6 +5,7 @@ import { UserService } from 'src/core/user.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Activity } from 'src/models/activity.model';
 import { AddActivity } from '../state/activities.actions';
+import { ActivityState } from '../state/activities.reducer';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class ActivityRegisterComponent implements OnInit {
   constructor(
     private activitiesService: ActivitiesService,
     private userService: UserService,
-    private store: Store <{email: string, rol: string}>,
+    private store: Store <ActivityState>,
+    // private store: Store <{email: string, rol: string}>,
     private fb: FormBuilder
   ) { }
 
@@ -33,7 +35,8 @@ export class ActivityRegisterComponent implements OnInit {
     categoria: ['', Validators.required],
     horas: ['', [Validators.required, Validators.pattern('[0-9]{1,3}')]],
     fecha: ['', Validators.required],
-    detalles: ['']
+    detalles: [''],
+    archivos: []
   });
   progress;
   canBeClosed = true;
@@ -45,8 +48,6 @@ export class ActivityRegisterComponent implements OnInit {
   ngOnInit() {
     this.store.select('login').subscribe(state => {
         this.studentEmail = state.tokenInfo.sub;
-        console.log('state tokeninfo');
-        console.log(state.tokenInfo);
         this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos);
       });
     this.activitiesService.getCategories().subscribe(categories => this.categories = categories);

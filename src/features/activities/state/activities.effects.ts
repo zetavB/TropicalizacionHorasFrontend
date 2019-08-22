@@ -34,10 +34,10 @@ export class ActivityEffects {
   addActivity$: Observable<Action> = this.actions$.pipe(
     ofType(ActivityActionTypes.AddActivity),
     map((action: AddActivity) => action.payload),
-    switchMap((content: {activity: Activity, files: Set<File>}) =>
+    mergeMap((content: {activity: Activity, files: Set<File>}) =>
       this.activitiesService.postActivity(content.activity).pipe(
         map(res => {
-          console.log('response');
+          console.log('lol');
           console.log(res);
           if (content.files.size !== 0) {
             console.log('yes files');
@@ -45,6 +45,8 @@ export class ActivityEffects {
             const filePackage = {id: res, files: content.files};
             return new AddActivityFiles(filePackage);
           } else {
+            console.log('no files');
+            console.log(content.files);
             this.router.navigate(['/actividades']);
             return new AddSuccessful(content.activity);
           }
