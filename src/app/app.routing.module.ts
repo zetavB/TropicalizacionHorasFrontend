@@ -15,6 +15,11 @@ const routes: Routes = [
       .then(mod => mod.ProfileModule)
   },
   {
+    path: 'olvido-contrasenna',
+    loadChildren: () => import('../features/forgot-password/forgot-password.module')
+      .then(mod => mod.ForgotPasswordModule)
+  },
+  {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
