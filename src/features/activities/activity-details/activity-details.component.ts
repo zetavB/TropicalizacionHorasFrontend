@@ -5,6 +5,8 @@ import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Activity } from 'src/models/activity.model';
 import { Store } from '@ngrx/store';
+import { getActivity } from '../state';
+import { LoadActivityDetails } from '../state/activities.actions';
 
 @Component({
   selector: 'app-activity-details',
@@ -31,9 +33,11 @@ export class ActivityDetailsComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.activity$ = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) =>
-        this.activitiesService.getActivity(params.get('id')))
-    );
+    // this.route.paramMap.pipe(
+    //   switchMap((params: ParamMap) =>
+    //     this.store.dispatch(new LoadActivityDetails(params.get('id')));
+    //   );
+    // )
+    // this.store.dispatch(new LoadActivityDetails(params['id']))
   }
 }

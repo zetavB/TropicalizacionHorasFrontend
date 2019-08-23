@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, throwError, Subject} from 'rxjs';
+import {Observable, throwError, Subject, forkJoin, of} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpEventType, HttpRequest, HttpEvent} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {CustomResponse} from '../../models/custom-response.model';
@@ -14,7 +14,7 @@ export class ActivitiesService {
 
   private ACTIVITY_URL = environment.serverUrl + '/actividad';
   private CATEGORY_URL = environment.serverUrl + '/categoria';
-  private FILE_URL = environment.serverUrl + '/actividad/archivo/';
+  private FILE_URL = environment.serverUrl + '/actividad/archivo';
 
   getActivities(email: string): Observable<Activity[]> {
     return this.http.get<CustomResponse>(this.ACTIVITY_URL + '?correo=' + email).pipe(
@@ -29,16 +29,19 @@ export class ActivitiesService {
     ));
   }
 
-  getActivity(id: string): Observable<Activity> {
+  getActivityDetails(id: number): Observable<{activity: Activity, files: []}> {
     console.log('id parameter');
     console.log(id);
-    return this.http.get<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
-      map(
-        response => {
-          const actividad: Activity = response.response;
-          return actividad;
-        }
-    ));
+    const activity = this.http.get<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
+      map(response => response.response)
+    );
+    const files = this.http.get<CustomResponse>(this.FILE_URL + '/' + id).pipe(
+      map(response => response.response)
+    );
+    const joined = forkJoin([activity, files]);
+    const activityDetails = {activity: joined[0], files: joined[1]};
+    console.log(activityDetails);
+    return of({activity: joined[0], files: joined[1]});
   }
 
   postActivity(activity: Activity): Observable<number> {
@@ -92,7 +95,7 @@ export class ActivitiesService {
     //   }
     // );
     console.log(this.FILE_URL + id);
-    return this.http.post(this.FILE_URL + id, formData);
+    return this.http.post(this.FILE_URL + '/' + id, formData);
     // return this.http.request(req);
   }
 
