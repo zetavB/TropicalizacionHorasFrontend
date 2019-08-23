@@ -14,6 +14,8 @@ import {LoginModule} from '../features/login/login.module';
 import {ProfileModule} from '../features/profile/profile.module';
 import {EffectsModule} from '@ngrx/effects';
 import { ActivitiesModule } from 'src/features/activities/activities.module';
+import {StoreRouterConnectingModule, RouterStateSerializer} from '@ngrx/router-store';
+import { CustomSerializer, reducers } from './state/router.reducer';
 
 @NgModule({
   declarations: [
@@ -29,12 +31,14 @@ import { ActivitiesModule } from 'src/features/activities/activities.module';
     ActivitiesModule,
     ProfileModule,
     SharedModule.forRoot(),
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
     })
   ],
+  providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
