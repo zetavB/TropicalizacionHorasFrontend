@@ -32,16 +32,21 @@ export class ActivitiesService {
   getActivityDetails(id: number): Observable<{activity: Activity, files: []}> {
     console.log('id parameter');
     console.log(id);
+    console.log(this.ACTIVITY_URL + '/' + id);
     const activity = this.http.get<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
       map(response => response.response)
     );
     const files = this.http.get<CustomResponse>(this.FILE_URL + '/' + id).pipe(
       map(response => response.response)
     );
-    const joined = forkJoin([activity, files]);
-    const activityDetails = {activity: joined[0], files: joined[1]};
-    console.log(activityDetails);
-    return of({activity: joined[0], files: joined[1]});
+    return forkJoin([activity, files]).pipe(
+      map(
+        response => {
+          console.log('fork join response');
+          console.log(response);
+          return {activity: response[0], files: response[1]};
+        })
+    );
   }
 
   postActivity(activity: Activity): Observable<number> {
@@ -83,20 +88,8 @@ export class ActivitiesService {
       reportProgress: true
     };
 
-    // const req = new HttpRequest(
-    //   'POST',
-    //   this.FILE_URL + id,
-    //   formData,
-    //   {
-    //     headers: new HttpHeaders({
-    //       'Access-Control-Allow-Origin': '*'
-    //     }),
-    //     reportProgress: true
-    //   }
-    // );
     console.log(this.FILE_URL + id);
     return this.http.post(this.FILE_URL + '/' + id, formData);
-    // return this.http.request(req);
   }
 
   private handleError(error: HttpErrorResponse) {

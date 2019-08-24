@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivitiesService } from '../activities.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Activity } from 'src/models/activity.model';
-import { Store } from '@ngrx/store';
-import { getActivity } from '../state';
+import { Store, select } from '@ngrx/store';
+import { getActivityId, getActivityDetails, getActivityFiles } from '../state';
 import { LoadActivityDetails } from '../state/activities.actions';
+import { ActivityState } from '../state/activities.reducer';
 
 @Component({
   selector: 'app-activity-details',
@@ -15,13 +16,10 @@ import { LoadActivityDetails } from '../state/activities.actions';
 })
 export class ActivityDetailsComponent implements OnInit {
   constructor(
-    private route: ActivatedRoute,
-    private activitiesService: ActivitiesService,
-    private store: Store <{email: string, rol: string}>,
+    private store: Store <ActivityState>,
   ) {}
 
-  activity$: Observable<Activity>;
-  emptyActivity: Activity = {
+  activity: Activity = {
     idGenerado: 0,
     fecha: '',
     horas: 0,
@@ -31,13 +29,21 @@ export class ActivityDetailsComponent implements OnInit {
     estudiante: {usuario: {correo: ''}},
     detalles: ''
   };
+  files = [];
 
   ngOnInit() {
-    // this.route.paramMap.pipe(
-    //   switchMap((params: ParamMap) =>
-    //     this.store.dispatch(new LoadActivityDetails(params.get('id')));
-    //   );
-    // )
-    // this.store.dispatch(new LoadActivityDetails(params['id']))
+    this.store.pipe(
+      select(getActivityId),
+      take(1),
+    ).subscribe((id: number) => this.store.dispatch(new LoadActivityDetails(id)));
+
+    this.store.select(getActivityDetails).subscribe(res => {
+      this.activity = res;
+    });
+
+    this.store.select(getActivityFiles).subscribe(res => {
+      console.log(res);
+      this.files = res;
+    });
   }
 }
