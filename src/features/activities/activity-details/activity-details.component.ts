@@ -42,7 +42,6 @@ export class ActivityDetailsComponent implements OnInit {
     });
 
     this.store.select(getActivityFiles).subscribe(res => {
-      console.log(res);
       this.files = res;
     });
   }

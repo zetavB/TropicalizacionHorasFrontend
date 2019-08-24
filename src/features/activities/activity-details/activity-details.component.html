@@ -5,4 +5,4 @@
 <p>Categoría {{activity.categoria.nombre}}</p>
 <p>Estado: {{activity.estado}}</p>
 <p>Detalles: {{activity.detalles}}</p>
-<p>Archivos:</p> <a  href=""></a>
+<p>Archivos:</p> <a *ngFor="let file of files" href="{{file}}" download>{{file}}</a>

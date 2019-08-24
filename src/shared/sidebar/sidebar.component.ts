@@ -21,7 +21,6 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.content = this.content;
     this.store.select('login').subscribe(login => {
-      console.log(login);
       if (login.tokenInfo.rol === 'Estudiante') {
         this.content = [{id: 1, name: 'Perfil', url: '/perfil'}, {id: 2, name: 'Actividades', url: '/actividades'}];
       } else {

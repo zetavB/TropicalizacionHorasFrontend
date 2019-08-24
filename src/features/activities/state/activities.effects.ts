@@ -2,7 +2,20 @@ import { ActivitiesService } from '../activities.service';
 import {Actions, Effect, ofType, createEffect} from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { ActivityActionTypes, LoadActivity, LoadSuccessful, LoadFailed, DeleteActivity, DeleteSuccessful, AddActivity, AddSuccessful, AddFailed, AddActivityFiles, UpdateFilesProgress, LoadActivityDetails, LoadActivityDetailsSuccessful, LoadActivityDetailsFail } from './activities.actions';
+import { ActivityActionTypes,
+  LoadActivity,
+  LoadSuccessful,
+  LoadFailed,
+  DeleteActivity,
+  DeleteSuccessful,
+  AddActivity,
+  AddSuccessful,
+  AddFailed,
+  AddActivityFiles,
+  UpdateFilesProgress,
+  LoadActivityDetails,
+  LoadActivityDetailsSuccessful,
+  LoadActivityDetailsFail } from './activities.actions';
 import { map, mergeMap, catchError, switchMap, tap } from 'rxjs/operators';
 import { Activity } from 'src/models/activity.model';
 import { Injectable } from '@angular/core';
@@ -23,8 +36,6 @@ export class ActivityEffects {
     mergeMap((id: number) =>
       this.activitiesService.getActivityDetails(id).pipe(
         map((content: {activity: Activity, files: []}) => {
-          console.log('effect content');
-          console.log(content);
           return new LoadActivityDetailsSuccessful(content);
         }),
         catchError((err: CustomResponse) => of(new LoadActivityDetailsFail(err.errorMessages)))
@@ -53,16 +64,10 @@ export class ActivityEffects {
     mergeMap((content: {activity: Activity, files: Set<File>}) =>
       this.activitiesService.postActivity(content.activity).pipe(
         map(res => {
-          console.log('lol');
-          console.log(res);
           if (content.files.size !== 0) {
-            console.log('yes files');
-            console.log(content.files);
             const filePackage = {id: res, files: content.files};
             return new AddActivityFiles(filePackage);
           } else {
-            console.log('no files');
-            console.log(content.files);
             this.router.navigate(['/actividades']);
             return new AddSuccessful(content.activity);
           }

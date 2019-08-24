@@ -30,9 +30,6 @@ export class ActivitiesService {
   }
 
   getActivityDetails(id: number): Observable<{activity: Activity, files: []}> {
-    console.log('id parameter');
-    console.log(id);
-    console.log(this.ACTIVITY_URL + '/' + id);
     const activity = this.http.get<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
       map(response => response.response)
     );
@@ -42,8 +39,6 @@ export class ActivitiesService {
     return forkJoin([activity, files]).pipe(
       map(
         response => {
-          console.log('fork join response');
-          console.log(response);
           return {activity: response[0], files: response[1]};
         })
     );
@@ -77,18 +72,10 @@ export class ActivitiesService {
   }
 
   public uploadActivityFiles(id: number, files: Set<File>): Observable<Object> {
-    console.log('uploading files');
     const formData = new FormData();
     files.forEach(file => {
     formData.append('files', file, file.name);
     });
-
-    console.log(formData);
-    const options = {
-      reportProgress: true
-    };
-
-    console.log(this.FILE_URL + id);
     return this.http.post(this.FILE_URL + '/' + id, formData);
   }
 
