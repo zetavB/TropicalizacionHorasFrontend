@@ -5,6 +5,9 @@ export enum ActivityActionTypes {
   LoadActivity = '[Activity] Load Activity',
   LoadSuccessful = '[Activity] Load Successful',
   LoadFailed = '[Activity] Load Failed',
+  LoadActivityDetails = '[Activity] Load Activity Details',
+  LoadActivityDetailsSuccessful = '[Activity] Load Activity Details Successful',
+  LoadActivityDetailsFail = '[Activity] Load Activity Details Fail',
   DeleteActivity = '[Activity] Delete Activity',
   DeleteSuccessful = '[Activity] Delete Successful',
   DeleteFailed = '[Activity] Delete Failed',
@@ -33,6 +36,27 @@ export class LoadSuccessful implements Action {
 
 export class LoadFailed implements Action {
   readonly type = ActivityActionTypes.LoadFailed;
+
+  // Payload is the error message
+  constructor(public payload: string) {}
+}
+
+export class LoadActivityDetails implements  Action {
+  readonly type = ActivityActionTypes.LoadActivityDetails;
+
+  // Payload is the id
+  constructor(public payload: number) {}
+}
+
+export class LoadActivityDetailsSuccessful implements Action {
+  readonly type = ActivityActionTypes.LoadActivityDetailsSuccessful;
+
+  // Payload is the activity and string array of URIs
+  constructor(public payload: {activity: Activity, files: []}) {}
+}
+
+export class LoadActivityDetailsFail implements Action {
+  readonly type = ActivityActionTypes.LoadActivityDetailsFail;
 
   // Payload is the error message
   constructor(public payload: string) {}
@@ -111,6 +135,9 @@ export class DeleteFailed implements Action {
 export type ActivityActions = LoadActivity
   | LoadSuccessful
   | LoadFailed
+  | LoadActivityDetails
+  | LoadActivityDetailsSuccessful
+  | LoadActivityDetailsFail
   | DeleteActivity
   | DeleteSuccessful
   | DeleteFailed

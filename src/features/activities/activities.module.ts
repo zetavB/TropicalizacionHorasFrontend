@@ -11,6 +11,7 @@ import { reducer } from './state/activities.reducer';
 import { StoreModule } from '@ngrx/store';
 import { ActivityEffects } from './state/activities.effects';
 import { EffectsModule } from '@ngrx/effects';
+import { ActivityDetailsComponent } from './activity-details/activity-details.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { EffectsModule } from '@ngrx/effects';
   ],
   declarations: [
     ActivitiesComponent,
-    ActivityRegisterComponent
+    ActivityRegisterComponent,
+    ActivityDetailsComponent
   ],
   providers: [ ActivitiesService ]
 })

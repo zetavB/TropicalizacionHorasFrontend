@@ -2,7 +2,20 @@ import { ActivitiesService } from '../activities.service';
 import {Actions, Effect, ofType, createEffect} from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { ActivityActionTypes, LoadActivity, LoadSuccessful, LoadFailed, DeleteActivity, DeleteSuccessful, DeleteFailed, AddActivity, AddSuccessful, AddFailed, AddActivityFiles, UpdateFilesProgress } from './activities.actions';
+import { ActivityActionTypes,
+  LoadActivity,
+  LoadSuccessful,
+  LoadFailed,
+  DeleteActivity,
+  DeleteSuccessful,
+  AddActivity,
+  AddSuccessful,
+  AddFailed,
+  AddActivityFiles,
+  UpdateFilesProgress,
+  LoadActivityDetails,
+  LoadActivityDetailsSuccessful,
+  LoadActivityDetailsFail } from './activities.actions';
 import { map, mergeMap, catchError, switchMap, tap } from 'rxjs/operators';
 import { Activity } from 'src/models/activity.model';
 import { Injectable } from '@angular/core';
@@ -15,6 +28,20 @@ export class ActivityEffects {
     private activitiesService: ActivitiesService,
     private actions$: Actions,
     private router: Router) {}
+
+  @Effect()
+  loadActivityDetails$: Observable<Action> = this.actions$.pipe(
+    ofType(ActivityActionTypes.LoadActivityDetails),
+    map((action: LoadActivityDetails) => action.payload),
+    mergeMap((id: number) =>
+      this.activitiesService.getActivityDetails(id).pipe(
+        map((content: {activity: Activity, files: []}) => {
+          return new LoadActivityDetailsSuccessful(content);
+        }),
+        catchError((err: CustomResponse) => of(new LoadActivityDetailsFail(err.errorMessages)))
+      )
+    )
+  );
 
   @Effect()
   loadActivities$: Observable<Action> = this.actions$.pipe(
@@ -34,14 +61,10 @@ export class ActivityEffects {
   addActivity$: Observable<Action> = this.actions$.pipe(
     ofType(ActivityActionTypes.AddActivity),
     map((action: AddActivity) => action.payload),
-    switchMap((content: {activity: Activity, files: Set<File>}) =>
+    mergeMap((content: {activity: Activity, files: Set<File>}) =>
       this.activitiesService.postActivity(content.activity).pipe(
         map(res => {
-          console.log('response');
-          console.log(res);
           if (content.files.size !== 0) {
-            console.log('yes files');
-            console.log(content.files);
             const filePackage = {id: res, files: content.files};
             return new AddActivityFiles(filePackage);
           } else {

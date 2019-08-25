@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, throwError, Subject} from 'rxjs';
+import {Observable, throwError, Subject, forkJoin, of} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpEventType, HttpRequest, HttpEvent} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {CustomResponse} from '../../models/custom-response.model';
@@ -12,12 +12,12 @@ export class ActivitiesService {
 
   constructor(private http: HttpClient) {}
 
-  private ACTIVITY_URL =  environment.serverUrl + '/actividad';
-  private CATEGORY_URL =  environment.serverUrl + '/categoria';
-  private FILE_URL =  environment.serverUrl + '/actividad/archivo/';
+  private ACTIVITY_URL = environment.serverUrl + '/actividad';
+  private CATEGORY_URL = environment.serverUrl + '/categoria';
+  private FILE_URL = environment.serverUrl + '/actividad/archivo';
 
-  getActivities(id: string): Observable<Activity[]> {
-    return this.http.get<CustomResponse>(this.ACTIVITY_URL + '?correo=' + id).pipe(
+  getActivities(email: string): Observable<Activity[]> {
+    return this.http.get<CustomResponse>(this.ACTIVITY_URL + '?correo=' + email).pipe(
       map(
         response => {
           const actividad: Activity[] = [];
@@ -27,6 +27,21 @@ export class ActivitiesService {
           return actividad;
         }
     ));
+  }
+
+  getActivityDetails(id: number): Observable<{activity: Activity, files: []}> {
+    const activity = this.http.get<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
+      map(response => response.response)
+    );
+    const files = this.http.get<CustomResponse>(this.FILE_URL + '/' + id).pipe(
+      map(response => response.response)
+    );
+    return forkJoin([activity, files]).pipe(
+      map(
+        response => {
+          return {activity: response[0], files: response[1]};
+        })
+    );
   }
 
   postActivity(activity: Activity): Observable<number> {
@@ -57,31 +72,11 @@ export class ActivitiesService {
   }
 
   public uploadActivityFiles(id: number, files: Set<File>): Observable<Object> {
-    console.log('uploading files');
     const formData = new FormData();
     files.forEach(file => {
     formData.append('files', file, file.name);
     });
-
-    console.log(formData);
-    const options = {
-      reportProgress: true
-    };
-
-    // const req = new HttpRequest(
-    //   'POST',
-    //   this.FILE_URL + id,
-    //   formData,
-    //   {
-    //     headers: new HttpHeaders({
-    //       'Access-Control-Allow-Origin': '*'
-    //     }),
-    //     reportProgress: true
-    //   }
-    // );
-    console.log(this.FILE_URL + id);
-    return this.http.post(this.FILE_URL + id, formData);
-    // return this.http.request(req);
+    return this.http.post(this.FILE_URL + '/' + id, formData);
   }
 
   private handleError(error: HttpErrorResponse) {

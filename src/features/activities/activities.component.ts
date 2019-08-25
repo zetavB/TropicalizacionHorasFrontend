@@ -9,6 +9,7 @@ import { DialogComponent } from 'src/shared/dialog/dialog.component';
 import { JwtInfoModel } from 'src/models/jwt-info.model';
 import { take } from 'rxjs/operators';
 import { LoadActivity, DeleteActivity } from './state/activities.actions';
+import { getActivity } from './state';
 
 @Component({
   selector: 'app-activities',
@@ -39,8 +40,8 @@ export class ActivitiesComponent implements OnInit {
       take(1)
     ).subscribe((info: JwtInfoModel) => this.store.dispatch(new LoadActivity(info.sub)));
 
-    this.store.select('activity').subscribe(state => {
-      this.dataSource.data = state.activities;
+    this.store.select(getActivity).subscribe(activities => {
+      this.dataSource.data = activities;
     });
   }
 

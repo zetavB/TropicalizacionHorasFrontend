@@ -3,6 +3,8 @@ import { ActivityActions, ActivityActionTypes } from './activities.actions';
 
 export interface ActivityState {
   activities: Activity[];
+  activityDetails: Activity;
+  activityFiles: string[];
   error: string;
   progress: [];
 }
@@ -10,7 +12,18 @@ export interface ActivityState {
 const initialState: ActivityState = {
   activities: [],
   error: '',
-  progress: []
+  progress: [],
+  activityDetails: {
+    idGenerado: 0,
+    fecha: '',
+    horas: 0,
+    estado: '',
+    categoria: {nombre: ''},
+    proyecto: {nombre: ''},
+    estudiante: {usuario: {correo: ''}},
+    detalles: ''
+  },
+  activityFiles: []
 };
 
 export function reducer(state = initialState, action: ActivityActions): ActivityState {
@@ -30,6 +43,20 @@ export function reducer(state = initialState, action: ActivityActions): Activity
         error: action.payload
       };
 
+    case ActivityActionTypes.LoadActivityDetailsSuccessful:
+      return {
+        ...state,
+        activityDetails: action.payload.activity,
+        activityFiles: action.payload.files
+      };
+
+
+  case ActivityActionTypes.LoadActivityDetailsFail:
+      return {
+        ...state,
+        error: action.payload
+      };
+
     case ActivityActionTypes.DeleteSuccessful:
       const temp = activitiesArray.find(x => x.idGenerado === action.payload);
       const index = activitiesArray.indexOf(temp);
@@ -37,6 +64,13 @@ export function reducer(state = initialState, action: ActivityActions): Activity
       return {
         ...state,
         activities: activitiesArray
+      };
+
+    case ActivityActionTypes.DeleteFailed:
+      return {
+        ...state,
+        activities: null,
+        error: action.payload
       };
 
     case ActivityActionTypes.AddSuccessful:
@@ -48,11 +82,11 @@ export function reducer(state = initialState, action: ActivityActions): Activity
           progress: []
         };
 
-    case ActivityActionTypes.DeleteFailed:
+    case ActivityActionTypes.AddFailed:
       return {
         ...state,
-        activities: null,
-        error: action.payload
+        error: action.payload,
+        progress: []
       };
 
     default:
