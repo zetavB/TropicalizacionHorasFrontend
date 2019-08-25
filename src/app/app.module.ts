@@ -14,6 +14,7 @@ import {LoginModule} from '../features/login/login.module';
 import {ProfileModule} from '../features/profile/profile.module';
 import {EffectsModule} from '@ngrx/effects';
 import { ActivitiesModule } from 'src/features/activities/activities.module';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ActivitiesModule } from 'src/features/activities/activities.module';
     LoginModule,
     ActivitiesModule,
     ProfileModule,
+    FlexLayoutModule,
     SharedModule.forRoot(),
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),

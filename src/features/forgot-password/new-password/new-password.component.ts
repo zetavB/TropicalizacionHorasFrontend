@@ -14,6 +14,7 @@ import {ChangePassword} from '../state/forgot-password.actions';
 export class NewPasswordComponent implements OnInit {
 
   requestError$: Observable<boolean>;
+  confirmPassError: boolean;
   code: string;
   password: string;
   confirmPass: string;
@@ -33,10 +34,13 @@ export class NewPasswordComponent implements OnInit {
   }
 
   newPassword() {
-    this.store$.dispatch(new ChangePassword({
-      correo: this.email,
-      tokenRecuperacion: this.code,
-      contrasennaNueva: this.password
-    } as RetrievePasswordModel));
+    this.confirmPassError = this.password !== this.confirmPass;
+    if (!this.confirmPassError) {
+      this.store$.dispatch(new ChangePassword({
+        correo: this.email,
+        tokenRecuperacion: this.code,
+        contrasennaNueva: this.password
+      } as RetrievePasswordModel));
+    }
   }
 }
