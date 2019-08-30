@@ -54,6 +54,15 @@ export class ActivitiesService {
     );
   }
 
+  modifyActivity(id: number, activity: Activity) {
+    return this.http.put<CustomResponse>(this.ACTIVITY_URL + '/' + id, activity).pipe(
+    map(response => {
+      return response.response;
+    }),
+    catchError(this.handleError)
+    );
+  }
+
   deleteActivity(id: number) {
     return this.http.delete<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
     map(response => {

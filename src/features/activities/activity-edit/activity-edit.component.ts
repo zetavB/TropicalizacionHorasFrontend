@@ -4,7 +4,9 @@ import { Store, select } from '@ngrx/store';
 import { ActivityState } from '../state/activities.reducer';
 import { getActivityId, getActivity, getActivityDetails } from '../state';
 import { take } from 'rxjs/operators';
-import { LoadActivityDetails } from '../state/activities.actions';
+import { LoadActivityDetails, UpdateActivity } from '../state/activities.actions';
+import { UserService } from 'src/core/user.service';
+import { ActivitiesService } from '../activities.service';
 
 @Component({
   selector: 'app-activity-edit',
@@ -14,11 +16,16 @@ import { LoadActivityDetails } from '../state/activities.actions';
 export class ActivityEditComponent implements OnInit {
 
   constructor(
-    private store: Store <ActivityState>) { }
+    private store: Store <ActivityState>,
+    private userService: UserService,
+    private activitiesService: ActivitiesService) { }
 
   id: number;
   studentEmail: string;
   activity: Activity;
+  categories = [];
+  projects = [];
+  files = [];
 
   ngOnInit() {
     this.store.pipe(
@@ -32,10 +39,16 @@ export class ActivityEditComponent implements OnInit {
     this.store.pipe(
       select(getActivityDetails)
     ).subscribe(activity => this.activity = activity);
+
+    this.store.select('login').subscribe(state => {
+      this.studentEmail = state.tokenInfo.sub;
+      this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos);
+    });
+
+    this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
   }
 
   onSubmit(activity: Activity) {
-    console.log(this.id);
-    console.log(activity);
+    this.store.dispatch(new UpdateActivity(activity));
   }
 }

@@ -15,7 +15,10 @@ import { ActivityActionTypes,
   UpdateFilesProgress,
   LoadActivityDetails,
   LoadActivityDetailsSuccessful,
-  LoadActivityDetailsFail } from './activities.actions';
+  LoadActivityDetailsFail, 
+  UpdateActivity,
+  UpdateFailed,
+  UpdateSuccessful} from './activities.actions';
 import { map, mergeMap, catchError, switchMap, tap } from 'rxjs/operators';
 import { Activity } from 'src/models/activity.model';
 import { Injectable } from '@angular/core';
@@ -88,6 +91,21 @@ export class ActivityEffects {
           return new UpdateFilesProgress([]);
         }),
         catchError((err: CustomResponse) => of(new AddFailed(err.errorMessages)))
+      )
+    )
+  );
+
+  @Effect()
+  updateActivity$: Observable<Action> = this.actions$.pipe(
+    ofType(ActivityActionTypes.UpdateActivity),
+    map((action: UpdateActivity) => action.payload),
+    mergeMap((activity: Activity) =>
+      this.activitiesService.modifyActivity(activity.idGenerado, activity).pipe(
+        map(res => {
+          this.router.navigate(['/actividades']);
+          return new UpdateSuccessful('');
+        }),
+        catchError((err: CustomResponse) => of(new UpdateFailed(err.errorMessages)))
       )
     )
   );

@@ -11,6 +11,9 @@ export enum ActivityActionTypes {
   DeleteActivity = '[Activity] Delete Activity',
   DeleteSuccessful = '[Activity] Delete Successful',
   DeleteFailed = '[Activity] Delete Failed',
+  UpdateActivity = '[Activity] Update Activity',
+  UpdateSuccessful = '[Activity] Update Successful',
+  UpdateFailed = '[Activity] Update Failed',
   AddActivity = '[Activity] Add Activity',
   AddSuccessful = '[Activity] Add Successful',
   AddFailed = '[Activity] Add Failed',
@@ -36,6 +39,27 @@ export class LoadSuccessful implements Action {
 
 export class LoadFailed implements Action {
   readonly type = ActivityActionTypes.LoadFailed;
+
+  // Payload is the error message
+  constructor(public payload: string) {}
+}
+
+export class UpdateActivity implements  Action {
+  readonly type = ActivityActionTypes.UpdateActivity;
+
+  // Payload is the activity
+  constructor(public payload: Activity) {}
+}
+
+export class UpdateSuccessful implements Action {
+  readonly type = ActivityActionTypes.UpdateSuccessful;
+
+  // Payload is the success message
+  constructor(public payload: string) {}
+}
+
+export class UpdateFailed implements Action {
+  readonly type = ActivityActionTypes.UpdateFailed;
 
   // Payload is the error message
   constructor(public payload: string) {}
@@ -135,6 +159,9 @@ export class DeleteFailed implements Action {
 export type ActivityActions = LoadActivity
   | LoadSuccessful
   | LoadFailed
+  | UpdateActivity
+  | UpdateSuccessful
+  | UpdateFailed
   | LoadActivityDetails
   | LoadActivityDetailsSuccessful
   | LoadActivityDetailsFail

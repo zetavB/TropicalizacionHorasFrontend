@@ -34,6 +34,9 @@ export class ActivityFormComponent implements OnInit {
     }
   );
 
+  @Input() categories: [];
+  @Input() projects: [];
+  @Input() files: [];
   @Output() submitted = new EventEmitter<Activity>();
   @Input()
   set activityValue(value: Activity) {
