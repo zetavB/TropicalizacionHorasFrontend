@@ -6,23 +6,29 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 import {CustomMaterialModule} from '../app/material.module';
 import {RouterModule} from '@angular/router';
 import { DialogComponent } from './dialog/dialog.component';
+import { ActivityFormComponent } from './activity-form/activity-form.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     CustomMaterialModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     HeaderComponent,
     HomeLayoutComponent,
     SidebarComponent,
-    DialogComponent
+    DialogComponent,
+    ActivityFormComponent
   ],
   exports: [
     HeaderComponent,
     HomeLayoutComponent,
-    SidebarComponent
+    SidebarComponent,
+    ActivityFormComponent
   ],
   entryComponents: [
     DialogComponent

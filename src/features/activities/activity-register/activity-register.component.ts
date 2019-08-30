@@ -21,7 +21,6 @@ export class ActivityRegisterComponent implements OnInit {
     private activitiesService: ActivitiesService,
     private userService: UserService,
     private store: Store <ActivityState>,
-    // private store: Store <{email: string, rol: string}>,
     private fb: FormBuilder
   ) { }
 

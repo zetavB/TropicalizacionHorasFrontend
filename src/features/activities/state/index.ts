@@ -19,6 +19,11 @@ export const getActivityId = createSelector(
   state => state.state.params.id
 );
 
+export const getActivityStudentEmail = createSelector(
+  getActivityFeatureState,
+  state => state.activityDetails.estudiante.usuario.correo
+);
+
 export const getActivityDetails = createSelector(
   getActivityFeatureState,
   state => state.activityDetails

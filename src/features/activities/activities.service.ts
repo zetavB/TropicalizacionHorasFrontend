@@ -5,6 +5,7 @@ import {environment} from '../../environments/environment';
 import {CustomResponse} from '../../models/custom-response.model';
 import {catchError, map} from 'rxjs/operators';
 import { Activity } from 'src/models/activity.model';
+import { Archivo } from 'src/models/archivo.model';
 
 
 @Injectable()
@@ -78,6 +79,20 @@ export class ActivitiesService {
     });
     return this.http.post(this.FILE_URL + '/' + id, formData);
   }
+
+  public separateActivityImages(files) {
+    const imageURIs = [];
+    const fileURIs = [];
+    files.forEach(file => {
+      if (file.image) {
+        imageURIs.push(file.uri);
+      } else {
+        fileURIs.push(file.uri);
+      }
+    });
+    return [imageURIs, fileURIs];
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

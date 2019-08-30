@@ -12,6 +12,8 @@ import { StoreModule } from '@ngrx/store';
 import { ActivityEffects } from './state/activities.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { ActivityDetailsComponent } from './activity-details/activity-details.component';
+import { ActivityEditComponent } from './activity-edit/activity-edit.component';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -19,6 +21,7 @@ import { ActivityDetailsComponent } from './activity-details/activity-details.co
     ActivitiesRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     CustomMaterialModule,
     StoreModule.forFeature('activity', reducer),
     EffectsModule.forFeature([ActivityEffects])
@@ -26,7 +29,8 @@ import { ActivityDetailsComponent } from './activity-details/activity-details.co
   declarations: [
     ActivitiesComponent,
     ActivityRegisterComponent,
-    ActivityDetailsComponent
+    ActivityDetailsComponent,
+    ActivityEditComponent
   ],
   providers: [ ActivitiesService ]
 })

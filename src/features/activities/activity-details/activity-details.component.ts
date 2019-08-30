@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivitiesService } from '../activities.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap, take } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators'; 
 import { Activity } from 'src/models/activity.model';
 import { Store, select } from '@ngrx/store';
 import { getActivityId, getActivityDetails, getActivityFiles } from '../state';
@@ -17,6 +15,7 @@ import { ActivityState } from '../state/activities.reducer';
 export class ActivityDetailsComponent implements OnInit {
   constructor(
     private store: Store <ActivityState>,
+    private activitiesService: ActivitiesService
   ) {}
 
   activity: Activity = {
@@ -30,6 +29,8 @@ export class ActivityDetailsComponent implements OnInit {
     detalles: ''
   };
   files = [];
+  imageURIs = [];
+  fileURIs = [];
 
   ngOnInit() {
     this.store.pipe(
@@ -43,6 +44,12 @@ export class ActivityDetailsComponent implements OnInit {
 
     this.store.select(getActivityFiles).subscribe(res => {
       this.files = res;
+      if (res.length !== 0) {
+        const URIs = this.activitiesService.separateActivityImages(this.files);
+        console.log(URIs);
+        this.imageURIs = URIs[0];
+        this.fileURIs = URIs[1];
+      }
     });
   }
 }

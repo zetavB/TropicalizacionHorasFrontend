@@ -1,4 +1,3 @@
-
 export interface Activity {
   idGenerado: number;
   fecha: string;

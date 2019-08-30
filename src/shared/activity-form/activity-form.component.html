@@ -1,0 +1,41 @@
+<form class="form-container" [formGroup]="activityForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-select placeholder="Proyecto"  formControlName="proyecto">
+      <mat-option *ngFor="let project of projects" [value]="project">{{project}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Categoría" formControlName="categoria">
+      <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Horas trabajadas" formControlName="horas">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" placeholder="Fecha del trabajo realizado" formControlName="fecha">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea matInput placeholder="Detalles" formControlName="detalles"></textarea>
+  </mat-form-field>
+
+  <input formControlName="archivos" type="file" #file style="display: none" (change)="onFilesAdded()" multiple />
+  <button type="button" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">Add Files</button>
+  <mat-list>
+    <mat-list-item *ngFor="let file of files">
+      <h4 mat-line>{{file.name}}</h4>
+      <button mat-button (click)="removeFile(file)"><i class="material-icons">cancel</i></button>
+    </mat-list-item>
+  </mat-list>
+  
+  <div>
+    <a mat-button routerLink="/actividades">Cancelar</a>
+    <button mat-button color="primary" type="submit" [disabled]="!activityForm.valid">Aceptar</button>
+  </div>
+</form>

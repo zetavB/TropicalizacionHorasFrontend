@@ -36,7 +36,7 @@
           aria-label="descripción de la actividad">
             <i class="material-icons">description</i>
           </a> 
-          <a mat-icon-button [disableRipple]="true" matTooltip="Editar actividad"
+          <a mat-icon-button routerLink="/actividades/editar/{{element.idGenerado}}"  [disableRipple]="true" matTooltip="Editar actividad"
           aria-label="editar actividad">
             <i class="material-icons">edit</i>
           </a> 
