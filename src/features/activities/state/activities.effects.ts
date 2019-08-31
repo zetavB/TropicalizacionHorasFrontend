@@ -24,6 +24,7 @@ import { Activity } from 'src/models/activity.model';
 import { Injectable } from '@angular/core';
 import { CustomResponse } from 'src/models/custom-response.model';
 import { Router } from '@angular/router';
+import { Archivo } from 'src/models/archivo.model';
 
 @Injectable()
 export class ActivityEffects {
@@ -99,8 +100,8 @@ export class ActivityEffects {
   updateActivity$: Observable<Action> = this.actions$.pipe(
     ofType(ActivityActionTypes.UpdateActivity),
     map((action: UpdateActivity) => action.payload),
-    mergeMap((activity: Activity) =>
-      this.activitiesService.modifyActivity(activity.idGenerado, activity).pipe(
+    mergeMap((content: {activity: Activity, files: Archivo[]}) =>
+      this.activitiesService.modifyActivity(content.activity.idGenerado, content.activity).pipe(
         map(res => {
           this.router.navigate(['/actividades']);
           return new UpdateSuccessful('');

@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@
 import { FormBuilder, Validators } from '@angular/forms';
 import { Activity } from 'src/models/activity.model';
 import { BehaviorSubject } from 'rxjs';
+import { Archivo } from 'src/models/archivo.model';
 
 @Component({
   selector: 'app-activity-form',
@@ -36,8 +37,8 @@ export class ActivityFormComponent implements OnInit {
 
   @Input() categories: [];
   @Input() projects: [];
-  @Input() files: [];
-  @Output() submitted = new EventEmitter<Activity>();
+  @Input() files: Archivo[];
+  @Output() submitted = new EventEmitter<{activity: Activity, files: Archivo[]}>();
   @Input()
   set activityValue(value: Activity) {
     this.activity.next(value);
@@ -63,6 +64,11 @@ export class ActivityFormComponent implements OnInit {
     });
   }
 
+  removeFile(fileURI: string) {
+    const index = this.files.findIndex(x => x.uri === fileURI);
+    this.files.splice(index, 1);
+  }
+
   onSubmit() {
     const activity: Activity = {
       idGenerado: this.activity.value.idGenerado,
@@ -74,6 +80,7 @@ export class ActivityFormComponent implements OnInit {
       estudiante: {usuario: {correo: this.activity.value.estudiante.usuario.correo}},
       detalles: this.activityForm.value.detalles
     };
-    this.submitted.emit(activity);
+    const files = this.files;
+    this.submitted.emit({activity, files});
   }
 }

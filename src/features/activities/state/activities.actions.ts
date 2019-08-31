@@ -1,5 +1,6 @@
 import {Action} from '@ngrx/store';
 import { Activity } from 'src/models/activity.model';
+import { Archivo } from 'src/models/archivo.model';
 
 export enum ActivityActionTypes {
   LoadActivity = '[Activity] Load Activity',
@@ -48,7 +49,7 @@ export class UpdateActivity implements  Action {
   readonly type = ActivityActionTypes.UpdateActivity;
 
   // Payload is the activity
-  constructor(public payload: Activity) {}
+  constructor(public payload: {activity: Activity, files: Archivo[]}) {}
 }
 
 export class UpdateSuccessful implements Action {

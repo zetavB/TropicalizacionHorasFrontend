@@ -29,8 +29,8 @@
   <button type="button" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">Add Files</button>
   <mat-list>
     <mat-list-item *ngFor="let file of files">
-      <h4 mat-line>{{file.name}}</h4>
-      <button mat-button (click)="removeFile(file)"><i class="material-icons">cancel</i></button>
+      <h4 mat-line>{{file.uri}}</h4>
+      <button mat-button type="button" (click)="removeFile(file.uri)"><i class="material-icons">cancel</i></button>
     </mat-list-item>
   </mat-list>
   

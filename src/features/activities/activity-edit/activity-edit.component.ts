@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Activity } from 'src/models/activity.model';
 import { Store, select } from '@ngrx/store';
 import { ActivityState } from '../state/activities.reducer';
-import { getActivityId, getActivity, getActivityDetails } from '../state';
+import { getActivityId, getActivity, getActivityDetails, getActivityFiles } from '../state';
 import { take } from 'rxjs/operators';
 import { LoadActivityDetails, UpdateActivity } from '../state/activities.actions';
 import { UserService } from 'src/core/user.service';
 import { ActivitiesService } from '../activities.service';
+import { Archivo } from 'src/models/archivo.model';
 
 @Component({
   selector: 'app-activity-edit',
@@ -40,6 +41,10 @@ export class ActivityEditComponent implements OnInit {
       select(getActivityDetails)
     ).subscribe(activity => this.activity = activity);
 
+    this.store.pipe(
+      select(getActivityFiles)
+    ).subscribe(files => this.files = files);
+
     this.store.select('login').subscribe(state => {
       this.studentEmail = state.tokenInfo.sub;
       this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos);
@@ -48,7 +53,7 @@ export class ActivityEditComponent implements OnInit {
     this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
   }
 
-  onSubmit(activity: Activity) {
-    this.store.dispatch(new UpdateActivity(activity));
+  onSubmit(data: {activity: Activity, files: Archivo[]}) {
+    this.store.dispatch(new UpdateActivity({activity: data.activity, files: data.files}));
   }
 }
