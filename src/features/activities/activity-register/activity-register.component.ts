@@ -48,11 +48,15 @@ export class ActivityRegisterComponent implements OnInit {
   uploadSuccessful = false;
 
   ngOnInit() {
+    this.spinner.show();
     this.store.select('login').subscribe(state => {
         this.studentEmail = state.tokenInfo.sub;
         this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos);
       });
-    this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
+    this.activitiesService.getCategories().subscribe(categories => {
+      this.categories = categories;
+      this.spinner.hide();
+    });
   }
 
   onFilesAdded() {

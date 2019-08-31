@@ -94,9 +94,9 @@ export class ActivitiesService {
     const fileURIs = [];
     files.forEach(file => {
       if (file.image) {
-        imageURIs.push(file.uri);
+        imageURIs.push(file);
       } else {
-        fileURIs.push(file.uri);
+        fileURIs.push(file);
       }
     });
     return [imageURIs, fileURIs];

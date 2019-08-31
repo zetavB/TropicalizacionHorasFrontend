@@ -6,7 +6,10 @@
 <p>Estado: {{activity.estado}}</p>
 <p>Detalles: {{activity.detalles}}</p>
 <p>Archivos: <span *ngIf="files === null || files.length === 0">No tiene archivos.</span></p> 
-<a *ngFor="let fileURI of fileURIs" href="{{fileURI}}" download>{{fileURI}}</a>
-<div class="activity-details-img-container" *ngFor="let uri of imageURIs">
-  <img src="{{uri}}" alt="">
+
+<div *ngFor="let file of fileURIs" >
+  <a href="{{file.uri}}" download>{{file.nombre}}</a>
+</div>
+<div class="activity-details-img-container" *ngFor="let image of imageURIs">
+  <img src="{{image.uri}}" alt="">
 </div>
