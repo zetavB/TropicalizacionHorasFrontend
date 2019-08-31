@@ -27,21 +27,7 @@ export class UserService {
 
   getStudent(id: string): Observable<Estudiante> {
     return this.http.get<CustomResponse>(this.url + id).pipe(
-      map(response => {
-        const projectsArray = this.projectToStringArray(response.response.proyectos);
-        const estudiante: Estudiante = {
-          tipo: response.response.tipo,
-          estado: response.response.estado,
-          horasTotales: response.response.horasTotales,
-          diasRestantes: null,
-          proyectos: projectsArray,
-          fechaFinal: response.response.fechaFinal,
-          fechaInicio: response.response.fechaInicio,
-          carne: response.response.carne,
-          usuario: response.response.usuario,
-        };
-        return estudiante;
-      }),
+      map(response => response.response as Estudiante),
       catchError((err: CustomResponse) => throwError(err))
     );
   }

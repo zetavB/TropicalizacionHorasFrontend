@@ -1,0 +1,25 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {CustomMaterialModule} from '../../app/material.module';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {ChangePasswordComponent} from './change-password/change-password.component';
+import {reducer} from './state/change-password.reducer';
+import {ChangePasswordEffects} from './state/change-password.effects';
+import {ChangePasswordService} from './change-password.service';
+import {ChangePasswordRoutingModule} from './change-password-routing.module';
+
+@NgModule({
+  declarations: [ChangePasswordComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CustomMaterialModule,
+    ChangePasswordRoutingModule,
+    StoreModule.forFeature('changePassword', reducer),
+    EffectsModule.forFeature([ChangePasswordEffects])
+  ],
+  providers: [ChangePasswordService]
+})
+export class ForgotPasswordModule { }

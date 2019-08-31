@@ -8,6 +8,7 @@ import {LoadProfile} from '../state/profile.actions';
 import {getTokenInfo} from '../../login/state';
 import {take} from 'rxjs/operators';
 import {JwtInfoModel} from '../../../models/jwt-info.model';
+import {Usuario} from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-profile',
@@ -19,22 +20,23 @@ export class ProfileComponent implements OnInit {
   user: Observable<{email: string}>;
   diasRestantes: '';
   profile: Estudiante;
-  perfilVacio = {
-    tipo: '',
-    estado: '',
-    horasTotales: 0,
+  perfilVacio: Estudiante = {
     diasRestantes: 0,
-    proyectos: ['', ''],
+    carne: '',
+    estado: '',
     fechaFinal: '',
     fechaInicio: '',
-    carne: '',
+    horasTotales: 0,
+    proyectos: [{nombre: ''}],
+    tipo: '',
     usuario: {
+      activado: false,
+      apellidos: '',
       correo: '',
       nombre: '',
-      apellidos: '',
-      telefono: '',
-    }
-  };
+      telefono: ''
+    } as Usuario
+  } as Estudiante;
 
   constructor(
     private store: Store<State>) {
@@ -48,6 +50,10 @@ export class ProfileComponent implements OnInit {
     this.store.pipe(
       select(getTokenInfo),
       take(1)
-    ).subscribe((info: JwtInfoModel) => this.store.dispatch(new LoadProfile(info.sub)));
+    ).subscribe((info: JwtInfoModel) => {
+      if (info != null) {
+        this.store.dispatch(new LoadProfile(info.sub));
+      }
+    });
   }
 }

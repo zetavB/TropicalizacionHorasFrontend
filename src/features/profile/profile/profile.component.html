@@ -6,7 +6,7 @@
   <p>Fecha de finalización: {{profile.fechaFinal}}</p>
   <p>Fecha de inicio: {{profile.fechaInicio}}</p>
   <h2>Datos de TCU</h2>
-  <p>Proyectos: {{profile.proyectos}}</p>
+  <p>Proyectos: <ng-container *ngFor="let proyecto of profile.proyectos; last as isLast">{{proyecto.nombre}}<span *ngIf="!isLast">, </span></ng-container></p>
   <p>Tipo: {{profile.tipo}}</p>
   <p>Estado: {{profile.estado}}</p>
   <h2>Datos Personales</h2>

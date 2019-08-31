@@ -19,6 +19,11 @@ const routes: Routes = [
       .then(mod => mod.ForgotPasswordModule)
   },
   {
+    path: 'cambiar-contrasenna',
+    loadChildren: () => import('../features/change-password/change-password.module')
+      .then(mod => mod.ForgotPasswordModule)
+  },
+  {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'

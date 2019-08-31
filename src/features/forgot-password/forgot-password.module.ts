@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {ForgotPasswordRoutingModule} from './forgot-password-routing.module';
-import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 import {CustomMaterialModule} from '../../app/material.module';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import {ForgotPasswordService} from './forgot-password.service';
@@ -17,7 +17,7 @@ import {ForgotPasswordEffects} from './state/forgot-password.effects';
   declarations: [ForgotPasswordComponent, NewPasswordComponent],
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     CustomMaterialModule,
     ForgotPasswordRoutingModule,
     StoreModule.forFeature('forgotPassword', reducer),
