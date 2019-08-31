@@ -7,6 +7,7 @@ import { Activity } from 'src/models/activity.model';
 import { AddActivity } from '../state/activities.actions';
 import { ActivityState } from '../state/activities.reducer';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { numberRangeValidator, dateMaxRangeValidator } from 'src/utils/validators';
 
 
 @Component({
@@ -34,8 +35,8 @@ export class ActivityRegisterComponent implements OnInit {
   activityForm = this.fb.group({
     proyecto: ['', Validators.required],
     categoria: ['', Validators.required],
-    horas: ['', [Validators.required, Validators.pattern('[0-9]{1,3}')]],
-    fecha: ['', Validators.required],
+    horas: ['', [Validators.required, numberRangeValidator(1, 300)]],
+    fecha: ['', [Validators.required, dateMaxRangeValidator(new Date())]],
     detalles: [''],
     archivos: []
   });

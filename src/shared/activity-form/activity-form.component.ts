@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Activity } from 'src/models/activity.model';
 import { BehaviorSubject } from 'rxjs';
 import { Archivo } from 'src/models/archivo.model';
+import { numberRangeValidator, dateMaxRangeValidator } from '../../utils/validators';
 
 @Component({
   selector: 'app-activity-form',
@@ -16,8 +17,8 @@ export class ActivityFormComponent implements OnInit {
   activityForm = this.fb.group({
     proyecto: ['', Validators.required],
     categoria: ['', Validators.required],
-    horas: ['', [Validators.required, Validators.pattern('[0-9]{1,3}')]],
-    fecha: ['', Validators.required],
+    horas: ['', [Validators.required, numberRangeValidator(0, 301)]],
+    fecha: ['', [Validators.required, dateMaxRangeValidator(new Date())]],
     detalles: [''],
     archivos: []
   });
@@ -53,7 +54,6 @@ export class ActivityFormComponent implements OnInit {
   }
 
   loadActivity(activity: Activity) {
-    console.log(activity);
     this.activityForm.setValue({
       proyecto: activity.proyecto.nombre,
       categoria: activity.categoria.nombre,
