@@ -10,6 +10,7 @@ import { JwtInfoModel } from 'src/models/jwt-info.model';
 import { take } from 'rxjs/operators';
 import { LoadActivity, DeleteActivity } from './state/activities.actions';
 import { getActivity } from './state';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-activities',
@@ -21,7 +22,8 @@ export class ActivitiesComponent implements OnInit {
 
   constructor(
     private store: Store <State>,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private spinner: NgxSpinnerService
   ) { }
 
   displayedColumns: string[] = ['fecha', 'horas', 'proyecto', 'categoria', 'estado', 'detalles'];
@@ -32,6 +34,7 @@ export class ActivitiesComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   ngOnInit() {
+    this.spinner.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 

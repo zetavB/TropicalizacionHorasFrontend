@@ -8,6 +8,7 @@ import { LoadActivityDetails, UpdateActivity } from '../state/activities.actions
 import { UserService } from 'src/core/user.service';
 import { ActivitiesService } from '../activities.service';
 import { Archivo } from 'src/models/archivo.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-activity-edit',
@@ -19,7 +20,8 @@ export class ActivityEditComponent implements OnInit {
   constructor(
     private store: Store <ActivityState>,
     private userService: UserService,
-    private activitiesService: ActivitiesService) { }
+    private activitiesService: ActivitiesService,
+    private spinner: NgxSpinnerService) { }
 
   id: number;
   studentEmail: string;
@@ -29,6 +31,7 @@ export class ActivityEditComponent implements OnInit {
   files = [];
 
   ngOnInit() {
+    this.spinner.show();
     this.store.pipe(
       select(getActivityId),
       take(1),
@@ -54,6 +57,7 @@ export class ActivityEditComponent implements OnInit {
   }
 
   onSubmit(data: {activity: Activity, files: Archivo[]}) {
+    this.spinner.show();
     this.store.dispatch(new UpdateActivity({activity: data.activity, files: data.files}));
   }
 }

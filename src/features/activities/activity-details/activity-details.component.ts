@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { getActivityId, getActivityDetails, getActivityFiles } from '../state';
 import { LoadActivityDetails } from '../state/activities.actions';
 import { ActivityState } from '../state/activities.reducer';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-activity-details',
@@ -15,7 +16,8 @@ import { ActivityState } from '../state/activities.reducer';
 export class ActivityDetailsComponent implements OnInit {
   constructor(
     private store: Store <ActivityState>,
-    private activitiesService: ActivitiesService
+    private activitiesService: ActivitiesService,
+    private spinner: NgxSpinnerService
   ) {}
 
   activity: Activity = {
@@ -33,6 +35,7 @@ export class ActivityDetailsComponent implements OnInit {
   fileURIs = [];
 
   ngOnInit() {
+    this.spinner.show();
     this.store.pipe(
       select(getActivityId),
       take(1),

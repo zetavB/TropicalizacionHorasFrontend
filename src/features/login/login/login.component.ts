@@ -3,6 +3,7 @@ import {TokenService} from '../../../core/token.service';
 import { Store } from '@ngrx/store';
 import {LoginState} from '../state/login.reducer';
 import {Login, TokenPresent} from '../state/login.actions';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private tokenService: TokenService,
-    private store: Store<LoginState>) { }
+    private store: Store<LoginState>,
+    private spinner: NgxSpinnerService) { }
 
   username: string;
   password: string;
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.spinner.show();
     this.store.dispatch(new Login([this.username, this.password]));
   }
 }

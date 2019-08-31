@@ -6,6 +6,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Activity } from 'src/models/activity.model';
 import { AddActivity } from '../state/activities.actions';
 import { ActivityState } from '../state/activities.reducer';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class ActivityRegisterComponent implements OnInit {
     private activitiesService: ActivitiesService,
     private userService: UserService,
     private store: Store <ActivityState>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private spinner: NgxSpinnerService
   ) { }
 
   files: Set<File> = new Set();
@@ -74,6 +76,7 @@ export class ActivityRegisterComponent implements OnInit {
   }
 
   addActivity() {
+    this.spinner.show();
     const activity: Activity = {
       idGenerado: 0,
       fecha: this.activityForm.value.fecha,

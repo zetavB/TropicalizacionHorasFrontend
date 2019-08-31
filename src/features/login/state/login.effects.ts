@@ -9,6 +9,7 @@ import {TokenService} from '../../../core/token.service';
 import {CustomResponse} from '../../../models/custom-response.model';
 import {Router} from '@angular/router';
 import {LoginState} from './login.reducer';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class LoginEffects {
@@ -17,7 +18,8 @@ export class LoginEffects {
     private tokenService: TokenService,
     private router: Router,
     private actions$: Actions,
-    private store$: Store<LoginState>) {}
+    private store$: Store<LoginState>,
+    private spinner: NgxSpinnerService) {}
 
   @Effect()
   tokenPresent$: Observable<Action> = this.actions$.pipe(
@@ -41,6 +43,7 @@ export class LoginEffects {
     tap( () => {
         if (this.router.url === '/login') {
           this.router.navigate(['/perfil']);
+          this.spinner.hide();
         }
       }
     )
@@ -52,6 +55,7 @@ export class LoginEffects {
     tap( () => {
         this.tokenService.eraseToken();
         this.router.navigate(['/login']);
+        this.spinner.hide();
       }
     )
   );
@@ -75,6 +79,7 @@ export class LoginEffects {
     tap((resp: CustomResponse) => {
         this.tokenService.saveJwtToken(resp.response.toString());
         this.router.navigate(['/perfil']);
+        this.spinner.hide();
       }
     )
   );
@@ -85,6 +90,7 @@ export class LoginEffects {
     tap( () => {
         this.tokenService.eraseToken();
         this.router.navigate(['login']);
+        this.spinner.hide();
       }
     )
   );

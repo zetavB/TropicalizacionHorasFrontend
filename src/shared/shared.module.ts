@@ -8,6 +8,7 @@ import {RouterModule} from '@angular/router';
 import { DialogComponent } from './dialog/dialog.component';
 import { ActivityFormComponent } from './activity-form/activity-form.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgxSpinnerModule, NgxSpinnerComponent } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     CustomMaterialModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ],
   declarations: [
     HeaderComponent,
@@ -28,7 +30,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     HeaderComponent,
     HomeLayoutComponent,
     SidebarComponent,
-    ActivityFormComponent
+    ActivityFormComponent,
+    NgxSpinnerComponent
   ],
   entryComponents: [
     DialogComponent

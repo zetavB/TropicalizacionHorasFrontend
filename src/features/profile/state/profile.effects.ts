@@ -7,10 +7,14 @@ import {LoadFailed, LoadProfile, LoadSuccessful, ProfileActionTypes} from './pro
 import {catchError , map, mergeMap} from 'rxjs/operators';
 import {Estudiante} from '../../../models/estudiante.model';
 import {CustomResponse} from '../../../models/custom-response.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class ProfileEffects {
-  constructor(private userService: UserService, private actions$: Actions) {}
+  constructor(
+    private userService: UserService,
+    private actions$: Actions,
+    private spinner: NgxSpinnerService) {}
 
   @Effect()
   loadProfile$: Observable<Action> = this.actions$.pipe(
@@ -20,9 +24,12 @@ export class ProfileEffects {
       this.userService.getStudent(email).pipe(
         map( (est: Estudiante) => {
           est.diasRestantes = this.userService.getDateDifference(est.fechaFinal);
+          this.spinner.hide();
           return new LoadSuccessful(est);
         }),
-        catchError((err: CustomResponse) => of(new LoadFailed(err.errorMessages)))
+        catchError((err: CustomResponse) => {
+          this.spinner.hide();
+          return of(new LoadFailed(err.errorMessages))})
       )
     )
   );

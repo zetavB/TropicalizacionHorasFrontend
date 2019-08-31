@@ -15,7 +15,7 @@ import { ActivityActionTypes,
   UpdateFilesProgress,
   LoadActivityDetails,
   LoadActivityDetailsSuccessful,
-  LoadActivityDetailsFail, 
+  LoadActivityDetailsFail,
   UpdateActivity,
   UpdateFailed,
   UpdateSuccessful} from './activities.actions';
@@ -25,13 +25,15 @@ import { Injectable } from '@angular/core';
 import { CustomResponse } from 'src/models/custom-response.model';
 import { Router } from '@angular/router';
 import { Archivo } from 'src/models/archivo.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class ActivityEffects {
   constructor(
     private activitiesService: ActivitiesService,
     private actions$: Actions,
-    private router: Router) {}
+    private router: Router,
+    private spinner: NgxSpinnerService) {}
 
   @Effect()
   loadActivityDetails$: Observable<Action> = this.actions$.pipe(
@@ -40,9 +42,13 @@ export class ActivityEffects {
     mergeMap((id: number) =>
       this.activitiesService.getActivityDetails(id).pipe(
         map((content: {activity: Activity, files: []}) => {
+          this.spinner.hide();
           return new LoadActivityDetailsSuccessful(content);
         }),
-        catchError((err: CustomResponse) => of(new LoadActivityDetailsFail(err.errorMessages)))
+        catchError((err: CustomResponse) => {
+          this.spinner.hide();
+          return of(new LoadActivityDetailsFail(err.errorMessages));
+        })
       )
     )
   );
@@ -54,9 +60,13 @@ export class ActivityEffects {
     mergeMap((email: string) =>
       this.activitiesService.getActivities(email).pipe(
         map( (activities: Activity[]) => {
+          this.spinner.hide();
           return new LoadSuccessful(activities);
         }),
-        catchError((err: CustomResponse) => of(new LoadFailed(err.errorMessages)))
+        catchError((err: CustomResponse) => {
+          this.spinner.hide();
+          return of(new LoadFailed(err.errorMessages));
+        })
       )
     )
   );
@@ -73,10 +83,14 @@ export class ActivityEffects {
             return new AddActivityFiles(filePackage);
           } else {
             this.router.navigate(['/actividades']);
+            this.spinner.hide();
             return new AddSuccessful(content.activity);
           }
         }),
-        catchError((err: CustomResponse) => of(new AddFailed(err.errorMessages)))
+        catchError((err: CustomResponse) => {
+          this.spinner.hide();
+          return of(new AddFailed(err.errorMessages));
+        })
       )
     )
   );
@@ -89,9 +103,13 @@ export class ActivityEffects {
     this.activitiesService.uploadActivityFiles(content.id, content.files).pipe(
         map(res => {
           this.router.navigate(['/actividades']);
+          this.spinner.hide();
           return new UpdateFilesProgress([]);
         }),
-        catchError((err: CustomResponse) => of(new AddFailed(err.errorMessages)))
+        catchError((err: CustomResponse) => {
+          this.spinner.hide();
+          return of(new AddFailed(err.errorMessages));
+        })
       )
     )
   );
@@ -104,9 +122,13 @@ export class ActivityEffects {
       this.activitiesService.modifyActivity(content.activity.idGenerado, content.activity).pipe(
         map(res => {
           this.router.navigate(['/actividades']);
+          this.spinner.hide();
           return new UpdateSuccessful('');
         }),
-        catchError((err: CustomResponse) => of(new UpdateFailed(err.errorMessages)))
+        catchError((err: CustomResponse) => {
+          this.spinner.hide();
+          return of(new UpdateFailed(err.errorMessages));
+        })
       )
     )
   );
@@ -118,9 +140,13 @@ export class ActivityEffects {
     mergeMap((id: number) =>
       this.activitiesService.deleteActivity(id).pipe(
         map(res => {
+          this.spinner.hide();
           return new DeleteSuccessful(id);
         }),
-        catchError((err: CustomResponse) => of(new LoadFailed(err.errorMessages)))
+        catchError((err: CustomResponse) => {
+          this.spinner.hide();
+          return of(new LoadFailed(err.errorMessages));
+        })
       )
     )
   );

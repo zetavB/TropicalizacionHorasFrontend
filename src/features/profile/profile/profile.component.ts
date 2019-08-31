@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Estudiante } from '../../../models/estudiante.model';
 import {select, Store} from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { UserService } from 'src/core/user.service';
 import {getProfileStudent, State} from '../state';
 import {LoadProfile} from '../state/profile.actions';
 import {getTokenInfo} from '../../login/state';
 import {take} from 'rxjs/operators';
 import {JwtInfoModel} from '../../../models/jwt-info.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +16,10 @@ import {JwtInfoModel} from '../../../models/jwt-info.model';
 })
 export class ProfileComponent implements OnInit {
 
+  constructor(
+    private store: Store<State>,
+    private spinner: NgxSpinnerService) {
+    }
   user: Observable<{email: string}>;
   diasRestantes: '';
   profile: Estudiante;
@@ -36,11 +40,8 @@ export class ProfileComponent implements OnInit {
     }
   };
 
-  constructor(
-    private store: Store<State>) {
-    }
-
   ngOnInit() {
+    this.spinner.show();
     this.store.pipe(
       select(getProfileStudent)
     ).subscribe(stu => this.profile = stu == null ? this.perfilVacio : stu);
