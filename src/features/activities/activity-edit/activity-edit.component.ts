@@ -56,7 +56,7 @@ export class ActivityEditComponent implements OnInit {
     this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
   }
 
-  onSubmit(data: {activity: Activity, files: Archivo[]}) {
+  onSubmit(data: {activity: Activity, files: Archivo[], fileURIsToRemove: Archivo[]}) {
     this.spinner.show();
     this.store.dispatch(new UpdateActivity({activity: data.activity, files: data.files}));
   }

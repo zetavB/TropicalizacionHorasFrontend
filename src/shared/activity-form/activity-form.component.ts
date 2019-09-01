@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Activity } from 'src/models/activity.model';
 import { BehaviorSubject } from 'rxjs';
@@ -12,6 +12,8 @@ import { numberRangeValidator, dateMaxRangeValidator } from '../../utils/validat
 })
 export class ActivityFormComponent implements OnInit {
 
+  @ViewChild('file', { static: false }) file;
+
   constructor(private fb: FormBuilder) { }
 
   activityForm = this.fb.group({
@@ -22,6 +24,8 @@ export class ActivityFormComponent implements OnInit {
     detalles: [''],
     archivos: []
   });
+  filesToUpload: Set<File> = new Set();
+  fileURIsToRemove: Archivo[];
 
   activity = new BehaviorSubject<Activity>(
     {
@@ -39,7 +43,7 @@ export class ActivityFormComponent implements OnInit {
   @Input() categories: [];
   @Input() projects: [];
   @Input() files: Archivo[];
-  @Output() submitted = new EventEmitter<{activity: Activity, files: Archivo[]}>();
+  @Output() submitted = new EventEmitter<{activity: Activity, files: Archivo[], fileURIsToRemove: Archivo[]}>();
   @Input()
   set activityValue(value: Activity) {
     this.activity.next(value);
@@ -64,8 +68,31 @@ export class ActivityFormComponent implements OnInit {
     });
   }
 
-  removeFile(fileURI: string) {
+
+  onFilesAdded() {
+    const files: { [key: string]: File } = this.file.nativeElement.files;
+    for (const key in files) {
+      if (!isNaN(parseInt(key))) {
+        this.filesToUpload.add(files[key]);
+      }
+    }
+  }
+
+  addFiles() {
+    this.file.nativeElement.click();
+  }
+
+  removeFile(fileToRemove: File) {
+    this.filesToUpload.forEach(file => {
+      if (file === fileToRemove) {
+        this.filesToUpload.delete(file);
+      }
+    });
+  }
+
+  removeFileURI(fileURI: string) {
     const index = this.files.findIndex(x => x.uri === fileURI);
+    this.fileURIsToRemove.push(this.files[index]);
     this.files.splice(index, 1);
   }
 
@@ -81,6 +108,8 @@ export class ActivityFormComponent implements OnInit {
       detalles: this.activityForm.value.detalles
     };
     const files = this.files;
-    this.submitted.emit({activity, files});
+    const fileURIsToRemove = this.fileURIsToRemove;
+    console.log(fileURIsToRemove);
+    this.submitted.emit({activity, files, fileURIsToRemove});
   }
 }
