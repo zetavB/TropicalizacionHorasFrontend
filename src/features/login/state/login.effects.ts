@@ -28,7 +28,7 @@ export class LoginEffects {
         if (!state.login.isLoggedIn) {
           return this.loginService.validateToken(token).pipe(
             map((resp: CustomResponse) => new TokenValid(token)),
-            catchError((err: CustomResponse) => of(new TokenInvalid(err.errorMessages)))
+            catchError((err: CustomResponse) => of(new TokenInvalid()))
           );
         }
       }
@@ -63,7 +63,7 @@ export class LoginEffects {
     exhaustMap((info: string[]) =>
       this.loginService.login(info[0], info[1]).pipe(
         map((resp: CustomResponse) => new LoginSuccesfull(resp)),
-        catchError((err: CustomResponse) => of(new LoginFailed(err)))
+        catchError((err: CustomResponse) => of(new LoginFailed()))
       )
     )
   );

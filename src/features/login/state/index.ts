@@ -18,7 +18,12 @@ export const getTokenInfo = createSelector(
   state => state.tokenInfo
 );
 
-export const getError = createSelector(
+export const getLoginError = createSelector(
   getLoginFeatureState,
   state => state.error
+);
+
+export const getLoginSpinner = createSelector(
+  getLoginFeatureState,
+  state => state.showSpinner
 );

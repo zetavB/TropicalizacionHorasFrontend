@@ -2,20 +2,32 @@ import {ChangePasswordActions, ChangePasswordActionTypes} from './change-passwor
 
 export interface ChangePasswordState {
   error: boolean;
+  showSpinner: boolean;
 }
 
 const initialState: ChangePasswordState = {
-  error: false
+  error: false,
+  showSpinner: false
 };
 
 export function reducer(state = initialState, action: ChangePasswordActions): ChangePasswordState {
   switch (action.type) {
     case (ChangePasswordActionTypes.RequestChangePassword):
-      return null;
+      return {
+        ...state,
+        showSpinner: true
+      };
     case (ChangePasswordActionTypes.RequestChangeSuccessful):
-      return null;
+      return {
+        ...state,
+        showSpinner: false
+      };
     case (ChangePasswordActionTypes.RequestChangeFailed):
-      return null;
+      return {
+        ...state,
+        error: true,
+        showSpinner: true
+      };
     default:
       return state;
   }

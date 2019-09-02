@@ -25,8 +25,6 @@ export class TokenValid implements  Action {
 
 export class TokenInvalid implements  Action {
   readonly  type = LoginActionTypes.TokenInvalid;
-
-  constructor(public payload: string) { }
 }
 
 export class Login implements  Action {
@@ -43,8 +41,6 @@ export class LoginSuccesfull implements  Action {
 
 export class LoginFailed implements  Action {
   readonly type = LoginActionTypes.LoginFailed;
-
-  constructor(public payload: CustomResponse) { }
 }
 
 export class Logout implements  Action {

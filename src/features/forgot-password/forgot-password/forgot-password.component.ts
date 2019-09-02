@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {getForgotPasswordTokenError, State} from '../state';
+import {getForgotPasswordShowSpinner, getForgotPasswordTokenError, State} from '../state';
 import {RequestToken} from '../state/forgot-password.actions';
 import {FormBuilder, NgForm, Validators} from '@angular/forms';
 import {takeWhile} from 'rxjs/operators';
+import {SpinnerOverlayService} from '../../../shared/components/spinner-overlay/spinner-overlay.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,20 +14,35 @@ import {takeWhile} from 'rxjs/operators';
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
   forgotPassForm = this.fb.group({
-    email: ['', Validators.required, Validators.email]
+    email: ['', [Validators.required, Validators.email]]
   });
-  requestError$: Observable<boolean>;
+  @ViewChild('card', {static: false, read: ElementRef}) formCard: ElementRef;
+
+  get email() { return this.forgotPassForm.get('email'); }
+
   alive = true;
 
-  constructor(private store$: Store<State>, private fb: FormBuilder) { }
+  constructor(private store$: Store<State>, private fb: FormBuilder, private spinnerService: SpinnerOverlayService) { }
 
   ngOnInit() {
-    this.requestError$ = this.store$.pipe(select(getForgotPasswordTokenError));
-    this.requestError$
-      .pipe(takeWhile(() => this.alive))
+    this.store$.pipe(
+        select(getForgotPasswordTokenError),
+        takeWhile(() => this.alive)
+      )
       .subscribe((err: boolean) => {
-        this.forgotPassForm.get('email').setErrors({requestError: true});
+        this.forgotPassForm.get('email').setErrors({requestError: err});
       });
+
+    this.store$.pipe(
+      select(getForgotPasswordShowSpinner),
+      takeWhile(() => this.alive)
+    ).subscribe((show: boolean) => {
+      if (show) {
+        this.spinnerService.open(this.formCard);
+      } else {
+        this.spinnerService.close();
+      }
+    });
   }
 
   ngOnDestroy(): void {

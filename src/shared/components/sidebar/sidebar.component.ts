@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import {TokenService} from '../../core/token.service';
+import {TokenService} from '../../../core/token.service';
 import {Router} from '@angular/router';
 import { Store } from '@ngrx/store';
-import {Logout} from '../../features/login/state/login.actions';
+import {Logout} from '../../../features/login/state/login.actions';
 
 @Component({
   selector: 'app-sidebar',

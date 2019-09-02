@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {TokenService} from './token.service';
-import {from, Observable} from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {environment} from '../environments/environment';
+import {TokenService} from './token.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -15,10 +15,8 @@ export class TokenInterceptor implements HttpInterceptor {
    * @param request the http request that will be modified if the session is valid
    * @param next the http handler for the outgoing request
    */
-  /*intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return from(this.tokenService.currentSession()
-      .then(session => session.getAccessToken().getJwtToken())
-      .catch(() => null))
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return from(of(this.tokenService.getToken())
       .pipe(
         switchMap(token => {
           if (!token) { // if the session is not valid, do not add any headers
@@ -35,7 +33,8 @@ export class TokenInterceptor implements HttpInterceptor {
             return next.handle(request);
           }
         })
-      );
-  }*/
+      )
+    );
+  }
 
 }

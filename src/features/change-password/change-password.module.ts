@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import {CustomMaterialModule} from '../../app/material.module';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -14,7 +14,7 @@ import {ChangePasswordRoutingModule} from './change-password-routing.module';
   declarations: [ChangePasswordComponent],
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     CustomMaterialModule,
     ChangePasswordRoutingModule,
     StoreModule.forFeature('changePassword', reducer),

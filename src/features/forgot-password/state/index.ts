@@ -22,3 +22,8 @@ export const getForgotPasswordNewPasswordError = createSelector(
   getForgotPasswordFeatureState,
   state => state.newPasswordError
 );
+
+export const getForgotPasswordShowSpinner = createSelector(
+  getForgotPasswordFeatureState,
+  state => state.showSpinner
+);
