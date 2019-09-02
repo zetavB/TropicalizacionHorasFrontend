@@ -43,6 +43,7 @@ export class ActivityFormComponent implements OnInit {
   @Input() categories: [];
   @Input() projects: [];
   @Input() files: Archivo[];
+  @Input() studentEmail: string;
   @Output() submitted = new EventEmitter<{activity: Activity, files: Set<File>, fileURIsToRemove: string[]}>();
   @Input()
   set activityValue(value: Activity) {
@@ -104,7 +105,7 @@ export class ActivityFormComponent implements OnInit {
       estado: 'Pendiente',
       categoria: {nombre: this.activityForm.value.categoria},
       proyecto: {nombre: this.activityForm.value.proyecto},
-      estudiante: {usuario: {correo: this.activity.value.estudiante.usuario.correo}},
+      estudiante: {usuario: {correo: this.studentEmail}},
       detalles: this.activityForm.value.detalles
     };
     const files = this.filesToUpload;
