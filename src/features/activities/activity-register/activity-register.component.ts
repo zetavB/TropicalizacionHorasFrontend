@@ -47,6 +47,17 @@ export class ActivityRegisterComponent implements OnInit {
   uploading = false;
   uploadSuccessful = false;
 
+  activity: Activity = {
+    idGenerado: 0,
+    fecha: '',
+    horas: null,
+    estado: '',
+    categoria: {nombre: ''},
+    proyecto: {nombre: ''},
+    estudiante: {usuario: {correo: ''}},
+    detalles: ''
+  };
+
   ngOnInit() {
     this.spinner.show();
     this.store.select('login').subscribe(state => {

@@ -23,7 +23,7 @@ export class ActivityDetailsComponent implements OnInit {
   activity: Activity = {
     idGenerado: 0,
     fecha: '',
-    horas: 0,
+    horas: null,
     estado: '',
     categoria: {nombre: ''},
     proyecto: {nombre: ''},

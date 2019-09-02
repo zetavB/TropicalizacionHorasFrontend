@@ -49,7 +49,7 @@ export class UpdateActivity implements  Action {
   readonly type = ActivityActionTypes.UpdateActivity;
 
   // Payload is the activity
-  constructor(public payload: {activity: Activity, files: Archivo[]}) {}
+  constructor(public payload: {activity: Activity, files: Set<File>, filesToRemove: string[]}) {}
 }
 
 export class UpdateSuccessful implements Action {
