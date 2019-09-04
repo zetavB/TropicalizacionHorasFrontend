@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Activity } from 'src/models/activity.model';
 import { Store, select } from '@ngrx/store';
 import { ActivityState } from '../state/activities.reducer';
-import { getActivityId, getActivity, getActivityDetails, getActivityFiles } from '../state';
+import { getActivityId, getActivityDetails, getActivityFiles } from '../state';
 import { take } from 'rxjs/operators';
 import { LoadActivityDetails, UpdateActivity } from '../state/activities.actions';
 import { UserService } from 'src/core/user.service';
 import { ActivitiesService } from '../activities.service';
-import { Archivo } from 'src/models/archivo.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -56,8 +55,8 @@ export class ActivityEditComponent implements OnInit {
     this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
   }
 
-  onSubmit(data: {activity: Activity, files: Archivo[], fileURIsToRemove: Archivo[]}) {
+  onSubmit(data: {activity: Activity, files: Set<File>, fileURIsToRemove: string[]}) {
     this.spinner.show();
-    this.store.dispatch(new UpdateActivity({activity: data.activity, files: data.files}));
+    this.store.dispatch(new UpdateActivity({activity: data.activity, files: data.files, filesToRemove: data.fileURIsToRemove}));
   }
 }

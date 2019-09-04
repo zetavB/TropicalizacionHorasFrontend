@@ -25,7 +25,7 @@ export class ActivityFormComponent implements OnInit {
     archivos: []
   });
   filesToUpload: Set<File> = new Set();
-  fileURIsToRemove: Archivo[];
+  fileURIsToRemove: string[] = [];
 
   activity = new BehaviorSubject<Activity>(
     {
@@ -43,7 +43,8 @@ export class ActivityFormComponent implements OnInit {
   @Input() categories: [];
   @Input() projects: [];
   @Input() files: Archivo[];
-  @Output() submitted = new EventEmitter<{activity: Activity, files: Archivo[], fileURIsToRemove: Archivo[]}>();
+  @Input() studentEmail: string;
+  @Output() submitted = new EventEmitter<{activity: Activity, files: Set<File>, fileURIsToRemove: string[]}>();
   @Input()
   set activityValue(value: Activity) {
     this.activity.next(value);
@@ -90,9 +91,9 @@ export class ActivityFormComponent implements OnInit {
     });
   }
 
-  removeFileURI(fileURI: string) {
-    const index = this.files.findIndex(x => x.uri === fileURI);
-    this.fileURIsToRemove.push(this.files[index]);
+  removeFileURI(fileName: string) {
+    const index = this.files.findIndex(x => x.nombre === fileName);
+    this.fileURIsToRemove.push(fileName);
     this.files.splice(index, 1);
   }
 
@@ -104,12 +105,11 @@ export class ActivityFormComponent implements OnInit {
       estado: 'Pendiente',
       categoria: {nombre: this.activityForm.value.categoria},
       proyecto: {nombre: this.activityForm.value.proyecto},
-      estudiante: {usuario: {correo: this.activity.value.estudiante.usuario.correo}},
+      estudiante: {usuario: {correo: this.studentEmail}},
       detalles: this.activityForm.value.detalles
     };
-    const files = this.files;
+    const files = this.filesToUpload;
     const fileURIsToRemove = this.fileURIsToRemove;
-    console.log(fileURIsToRemove);
     this.submitted.emit({activity, files, fileURIsToRemove});
   }
 }

@@ -47,6 +47,17 @@ export class ActivityRegisterComponent implements OnInit {
   uploading = false;
   uploadSuccessful = false;
 
+  activity: Activity = {
+    idGenerado: 0,
+    fecha: '',
+    horas: null,
+    estado: '',
+    categoria: {nombre: ''},
+    proyecto: {nombre: ''},
+    estudiante: {usuario: {correo: ''}},
+    detalles: ''
+  };
+
   ngOnInit() {
     this.spinner.show();
     this.store.select('login').subscribe(state => {
@@ -63,25 +74,14 @@ export class ActivityRegisterComponent implements OnInit {
     });
   }
 
-  onFilesAdded() {
-    const files: { [key: string]: File } = this.file.nativeElement.files;
-    for (const key in files) {
-      if (!isNaN(parseInt(key))) {
-        this.files.add(files[key]);
-      }
-    }
-  }
 
-  addFiles() {
-    this.file.nativeElement.click();
-  }
+  onSubmit(data: {activity: Activity, files: Set<File>, fileURIsToRemove: string[]}) {
 
-  removeFile(fileToRemove: File) {
-    this.files.forEach(file => {
-      if (file === fileToRemove) {
-        this.files.delete(file);
-      }
-    });
+    const {activity, files} = data;
+    console.log(activity);
+    console.log(files);
+    this.spinner.show();
+    this.store.dispatch(new AddActivity({activity, files}));
   }
 
   addActivity() {

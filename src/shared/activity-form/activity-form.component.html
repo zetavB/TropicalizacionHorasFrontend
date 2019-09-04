@@ -28,12 +28,19 @@
   <input formControlName="archivos" type="file" #file style="display: none" (change)="onFilesAdded()" multiple />
   <button type="button" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">Add Files</button>
   <mat-list>
-    <mat-list-item *ngFor="let file of files">
-      <h4 mat-line>{{file.uri}}</h4>
-      <button mat-button type="button" (click)="removeFile(file.uri)"><i class="material-icons">cancel</i></button>
+    <mat-list-item *ngFor="let file of filesToUpload">
+      <h4 mat-line>{{file.name}}</h4>
+      <button mat-button type="button" (click)="removeFile(file)"><i class="material-icons">cancel</i></button>
     </mat-list-item>
   </mat-list>
   
+  <mat-list>
+    <mat-list-item *ngFor="let file of files">
+      <h4 mat-line>{{file.nombre}}</h4>
+      <button mat-button type="button" (click)="removeFileURI(file.nombre)"><i class="material-icons">cancel</i></button>
+    </mat-list-item>
+  </mat-list>
+
   <div>
     <a mat-button routerLink="/actividades">Cancelar</a>
     <button mat-button color="primary" type="submit" [disabled]="!activityForm.valid">Aceptar</button>

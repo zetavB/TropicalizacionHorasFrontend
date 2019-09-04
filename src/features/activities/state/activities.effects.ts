@@ -118,12 +118,12 @@ export class ActivityEffects {
   updateActivity$: Observable<Action> = this.actions$.pipe(
     ofType(ActivityActionTypes.UpdateActivity),
     map((action: UpdateActivity) => action.payload),
-    mergeMap((content: {activity: Activity, files: Archivo[]}) =>
-      this.activitiesService.modifyActivity(content.activity.idGenerado, content.activity).pipe(
+    mergeMap((content: {activity: Activity, files: Set<File>, filesToRemove: string[]}) =>
+      this.activitiesService.modifyActivity(content.activity.idGenerado, content.activity, content.files, content.filesToRemove).pipe(
         map(res => {
           this.router.navigate(['/actividades']);
           this.spinner.hide();
-          return new UpdateSuccessful('');
+          return new UpdateSuccessful('Successful');
         }),
         catchError((err: CustomResponse) => {
           this.spinner.hide();

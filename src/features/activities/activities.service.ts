@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Observable, throwError, Subject, forkJoin, of} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse, HttpEventType, HttpRequest, HttpEvent} from '@angular/common/http';
+import {Observable, throwError, forkJoin } from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {CustomResponse} from '../../models/custom-response.model';
 import {catchError, map} from 'rxjs/operators';
 import { Activity } from 'src/models/activity.model';
-import { Archivo } from 'src/models/archivo.model';
 
 
 @Injectable()
@@ -32,10 +31,12 @@ export class ActivitiesService {
 
   getActivityDetails(id: number): Observable<{activity: Activity, files: []}> {
     const activity = this.http.get<CustomResponse>(this.ACTIVITY_URL + '/' + id).pipe(
-      map(response => response.response)
+      map(response => response.response),
+      catchError(this.handleError)
     );
     const files = this.http.get<CustomResponse>(this.FILE_URL + '/' + id).pipe(
-      map(response => response.response)
+      map(response => response.response),
+      catchError(this.handleError)
     );
     return forkJoin([activity, files]).pipe(
       map(
@@ -54,12 +55,36 @@ export class ActivitiesService {
     );
   }
 
-  modifyActivity(id: number, activity: Activity) {
-    return this.http.put<CustomResponse>(this.ACTIVITY_URL + '/' + id, activity).pipe(
-    map(response => {
-      return response.response;
-    }),
-    catchError(this.handleError)
+  modifyActivity(id: number, activity: Activity, filesToUpload: Set<File>, filesToRemove: string[]) {
+    // return this.http.put<CustomResponse>(this.ACTIVITY_URL + '/' + id, activity).pipe(
+    // map(response => {
+    //   return response.response;
+    // }),
+    // catchError(this.handleError)
+    // );
+
+    const activityResponse = this.http.put<CustomResponse>(this.ACTIVITY_URL + '/' + id, activity).pipe(
+      map(response => response.response),
+      catchError(this.handleError)
+    );
+    const filesToUploadResponse = this.uploadActivityFiles(id, filesToUpload).pipe(
+      catchError(this.handleError)
+    );
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: filesToRemove
+    };
+    const filesToRemoveResponse = this.http.delete<CustomResponse>(this.FILE_URL + '/' + id, options).pipe(
+      map(response => response.response),
+      catchError(this.handleError)
+    );
+    return forkJoin([activityResponse, filesToUploadResponse, filesToRemoveResponse]).pipe(
+      map(
+        response => {
+          return {activity: response[0], files: response[1], filesRemoved: response[2]};
+        })
     );
   }
 
