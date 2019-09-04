@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {LoginState} from '../../features/login/state/login.reducer';
+import {LoginState} from '../../../features/login/state/login.reducer';
 import {select, Store} from '@ngrx/store';
-import {getIsLoggedIn} from '../../features/login/state';
+import {getIsLoggedIn} from '../../../features/login/state';
 import {takeWhile} from 'rxjs/operators';
-import {TokenPresent} from '../../features/login/state/login.actions';
-import {TokenService} from '../../core/token.service';
+import {TokenPresent} from '../../../features/login/state/login.actions';
+import {TokenService} from '../../../core/token.service';
 
 @Component({
   selector: 'app-home-layout',

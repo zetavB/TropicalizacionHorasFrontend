@@ -3,4 +3,5 @@ export interface Usuario {
     nombre: string;
     apellidos: string;
     telefono: string;
+    activado: boolean;
 }

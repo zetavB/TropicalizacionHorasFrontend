@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -16,6 +16,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActivitiesModule } from 'src/features/activities/activities.module';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
 import { CustomSerializer, reducers } from './state/router.reducer';
+import {TokenInterceptor} from '../core/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,15 @@ import { CustomSerializer, reducers } from './state/router.reducer';
       maxAge: 25, // Retains last 25 states
     })
   ],
-  providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
+  providers: [
+    { provide: RouterStateSerializer, useClass: CustomSerializer },
+    HttpClientModule,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

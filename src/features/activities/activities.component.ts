@@ -5,7 +5,7 @@ import { Activity } from 'src/models/activity.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../app/state/state';
 import { getTokenInfo } from '../login/state';
-import { DialogComponent } from 'src/shared/dialog/dialog.component';
+import { DialogComponent } from 'src/shared/components/dialog/dialog.component';
 import { JwtInfoModel } from 'src/models/jwt-info.model';
 import { take } from 'rxjs/operators';
 import { LoadActivity, DeleteActivity } from './state/activities.actions';

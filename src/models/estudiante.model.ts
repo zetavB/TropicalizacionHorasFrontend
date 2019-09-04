@@ -5,7 +5,7 @@ export interface Estudiante {
     estado: string;
     horasTotales: number;
     diasRestantes: number;
-    proyectos: string[];
+    proyectos: {nombre: string}[];
     fechaFinal: string;
     fechaInicio: string;
     carne: string;

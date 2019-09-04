@@ -8,8 +8,7 @@ import {catchError, exhaustMap, map, mergeMap, tap, withLatestFrom} from 'rxjs/o
 import {TokenService} from '../../../core/token.service';
 import {CustomResponse} from '../../../models/custom-response.model';
 import {Router} from '@angular/router';
-import {LoginState} from './login.reducer';
-import { NgxSpinnerService } from 'ngx-spinner';
+import {State} from '../../../app/state/state';
 
 @Injectable()
 export class LoginEffects {
@@ -18,19 +17,18 @@ export class LoginEffects {
     private tokenService: TokenService,
     private router: Router,
     private actions$: Actions,
-    private store$: Store<LoginState>,
-    private spinner: NgxSpinnerService) {}
+    private store$: Store<State>) {}
 
   @Effect()
   tokenPresent$: Observable<Action> = this.actions$.pipe(
     ofType(LoginActionTypes.TokenPresent),
     map((action: TokenPresent) => action.payload),
     withLatestFrom(this.store$),
-    exhaustMap(([token, state]: [string, LoginState]) => {
-        if (!state.isLoggedIn) {
+    exhaustMap(([token, state]: [string, State]) => {
+        if (!state.login.isLoggedIn) {
           return this.loginService.validateToken(token).pipe(
             map((resp: CustomResponse) => new TokenValid(token)),
-            catchError((err: CustomResponse) => of(new TokenInvalid(err.errorMessages)))
+            catchError((err: CustomResponse) => of(new TokenInvalid()))
           );
         }
       }
@@ -43,7 +41,6 @@ export class LoginEffects {
     tap( () => {
         if (this.router.url === '/login') {
           this.router.navigate(['/perfil']);
-          this.spinner.hide();
         }
       }
     )
@@ -55,7 +52,6 @@ export class LoginEffects {
     tap( () => {
         this.tokenService.eraseToken();
         this.router.navigate(['/login']);
-        this.spinner.hide();
       }
     )
   );
@@ -67,19 +63,23 @@ export class LoginEffects {
     exhaustMap((info: string[]) =>
       this.loginService.login(info[0], info[1]).pipe(
         map((resp: CustomResponse) => new LoginSuccesfull(resp)),
-        catchError((err: CustomResponse) => of(new LoginFailed(err)))
+        catchError((err: CustomResponse) => of(new LoginFailed()))
       )
     )
   );
 
   @Effect({dispatch: false})
-  succesfullLogin$: Observable<CustomResponse> = this.actions$.pipe(
+  succesfullLogin$: Observable<[CustomResponse, State]> = this.actions$.pipe(
     ofType(LoginActionTypes.LoginSuccesfull),
     map((action: LoginSuccesfull) => action.payload),
-    tap((resp: CustomResponse) => {
+    withLatestFrom(this.store$),
+    tap(([resp, state]: [CustomResponse, State]) => {
         this.tokenService.saveJwtToken(resp.response.toString());
-        this.router.navigate(['/perfil']);
-        this.spinner.hide();
+        if (state.login.tokenInfo.activado) {
+          this.router.navigate(['/perfil']);
+        } else {
+          this.router.navigate(['/cambiar-contrasenna']);
+        }
       }
     )
   );
@@ -90,7 +90,6 @@ export class LoginEffects {
     tap( () => {
         this.tokenService.eraseToken();
         this.router.navigate(['login']);
-        this.spinner.hide();
       }
     )
   );

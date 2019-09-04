@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Estudiante } from '../../../models/estudiante.model';
 import {select, Store} from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { UserService } from 'src/core/user.service';
 import {getProfileStudent, State} from '../state';
 import {LoadProfile} from '../state/profile.actions';
 import {getTokenInfo} from '../../login/state';
 import {take} from 'rxjs/operators';
 import {JwtInfoModel} from '../../../models/jwt-info.model';
-import { NgxSpinnerService } from 'ngx-spinner';
+import {Usuario} from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-profile',
@@ -16,32 +17,32 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(
-    private store: Store<State>,
-    private spinner: NgxSpinnerService) {
-    }
   user: Observable<{email: string}>;
   diasRestantes: '';
   profile: Estudiante;
-  perfilVacio = {
-    tipo: '',
-    estado: '',
-    horasTotales: 0,
+  perfilVacio: Estudiante = {
     diasRestantes: 0,
-    proyectos: ['', ''],
+    carne: '',
+    estado: '',
     fechaFinal: '',
     fechaInicio: '',
-    carne: '',
+    horasTotales: 0,
+    proyectos: [{nombre: ''}],
+    tipo: '',
     usuario: {
+      activado: false,
+      apellidos: '',
       correo: '',
       nombre: '',
-      apellidos: '',
-      telefono: '',
+      telefono: ''
+    } as Usuario
+  } as Estudiante;
+
+  constructor(
+    private store: Store<State>) {
     }
-  };
 
   ngOnInit() {
-    this.spinner.show();
     this.store.pipe(
       select(getProfileStudent)
     ).subscribe(stu => this.profile = stu == null ? this.perfilVacio : stu);
@@ -49,6 +50,10 @@ export class ProfileComponent implements OnInit {
     this.store.pipe(
       select(getTokenInfo),
       take(1)
-    ).subscribe((info: JwtInfoModel) => this.store.dispatch(new LoadProfile(info.sub)));
+    ).subscribe((info: JwtInfoModel) => {
+      if (info != null) {
+        this.store.dispatch(new LoadProfile(info.sub));
+      }
+    });
   }
 }

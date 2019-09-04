@@ -1,30 +1,35 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {HeaderComponent} from './header/header.component';
-import {HomeLayoutComponent} from './home-layout/home-layout.component';
-import {SidebarComponent} from './sidebar/sidebar.component';
+import {HeaderComponent} from './components/header/header.component';
+import {HomeLayoutComponent} from './components/home-layout/home-layout.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {CustomMaterialModule} from '../app/material.module';
 import {RouterModule} from '@angular/router';
-import { DialogComponent } from './dialog/dialog.component';
 import { ActivityFormComponent } from './activity-form/activity-form.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgxSpinnerModule, NgxSpinnerComponent } from 'ngx-spinner';
+import { DialogComponent } from './components/dialog/dialog.component';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {SpinnerOverlayComponent} from './components/spinner-overlay/spinner-overlay.component';
+import {SpinnerOverlayService} from './components/spinner-overlay/spinner-overlay.service';
 
 @NgModule({
   imports: [
     CommonModule,
     CustomMaterialModule,
     RouterModule,
-    FormsModule,
     ReactiveFormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    OverlayModule
   ],
   declarations: [
     HeaderComponent,
     HomeLayoutComponent,
     SidebarComponent,
     DialogComponent,
-    ActivityFormComponent
+    ActivityFormComponent,
+    DialogComponent,
+    SpinnerOverlayComponent
   ],
   exports: [
     HeaderComponent,
@@ -34,9 +39,12 @@ import { NgxSpinnerModule, NgxSpinnerComponent } from 'ngx-spinner';
     NgxSpinnerComponent
   ],
   entryComponents: [
-    DialogComponent
+    DialogComponent,
+    SpinnerOverlayComponent
   ],
-  providers: [ ]
+  providers: [
+    SpinnerOverlayService
+  ]
 })
 
 export class SharedModule {

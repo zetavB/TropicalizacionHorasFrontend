@@ -4,4 +4,5 @@ export interface JwtInfoModel {
   apellidos: string;
   telefono: string;
   rol: string;
+  activado: boolean;
 }
