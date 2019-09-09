@@ -6,9 +6,7 @@ import {Login, TokenPresent} from '../state/login.actions';
 import {FormBuilder, Validators} from '@angular/forms';
 import {getLoginError, getLoginSpinner} from '../state';
 import {takeWhile} from 'rxjs/operators';
-import {Observable} from 'rxjs';
 import {SpinnerOverlayService} from '../../../shared/components/spinner-overlay/spinner-overlay.service';
-import {MatCard} from '@angular/material';
 
 @Component({
   selector: 'app-login',

@@ -1,4 +1,4 @@
-import * as fromRoot from '../../../app/state/state'; 
+import * as fromRoot from '../../../app/state/state';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import { ActivityState } from './activities.reducer';
 import { getRouterState } from 'src/app/state/router.reducer';
