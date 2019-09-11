@@ -1,7 +1,7 @@
 <form class="form-container" [formGroup]="activityForm" (ngSubmit)="onSubmit()">
   <mat-form-field>
     <mat-select placeholder="Proyecto"  formControlName="proyecto">
-      <mat-option *ngFor="let project of projects" [value]="project">{{project}}</mat-option>
+      <mat-option *ngFor="let project of projects" [value]="project.nombre">{{project.nombre}}</mat-option>
     </mat-select>
   </mat-form-field>
 

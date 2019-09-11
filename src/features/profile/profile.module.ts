@@ -8,12 +8,14 @@ import {StoreModule} from '@ngrx/store';
 import {reducer} from './state/profile.reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {ProfileEffects} from './state/profile.effects';
+import { CustomMaterialModule } from 'src/app/material.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ProfileRoutingModule,
     FormsModule,
+    CustomMaterialModule,
     StoreModule.forFeature('profile', reducer),
     EffectsModule.forFeature([ProfileEffects])
   ],

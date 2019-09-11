@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatSortable } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Activity } from 'src/models/activity.model';
 import { Store, select } from '@ngrx/store';
@@ -36,6 +36,7 @@ export class ActivitiesComponent implements OnInit {
   ngOnInit() {
     this.spinner.show();
     this.dataSource.paginator = this.paginator;
+    this.sort.sort(({ id: 'fecha', start: 'desc'}) as MatSortable);
     this.dataSource.sort = this.sort;
 
     this.store.pipe(

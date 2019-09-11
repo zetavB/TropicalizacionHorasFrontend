@@ -56,13 +56,6 @@ export class ActivitiesService {
   }
 
   modifyActivity(id: number, activity: Activity, filesToUpload: Set<File>, filesToRemove: string[]) {
-    // return this.http.put<CustomResponse>(this.ACTIVITY_URL + '/' + id, activity).pipe(
-    // map(response => {
-    //   return response.response;
-    // }),
-    // catchError(this.handleError)
-    // );
-
     const activityResponse = this.http.put<CustomResponse>(this.ACTIVITY_URL + '/' + id, activity).pipe(
       map(response => response.response),
       catchError(this.handleError)

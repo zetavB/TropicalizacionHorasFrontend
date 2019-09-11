@@ -14,5 +14,8 @@
   <p>Correo: {{profile.usuario.correo}}</p>
   <p>Carné: {{profile.carne}}</p>
   <p>Teléfono: {{profile.usuario.telefono}}</p>
-  <button mat-button color="primary" routerLink="/cambiar-contrasenna">Cambiar contraseña</button>
+  <button mat-button color="primary" routerLink="/cambiar-contrasenna" aria-label="cambiar contraseña">Cambiar contraseña</button>
+  <a mat-fab color="primary" routerLink="/registrar-actividad" class="btn-add-activity" aria-label="Registrar actividad">
+    <mat-icon>add</mat-icon>
+  </a>
 </div>

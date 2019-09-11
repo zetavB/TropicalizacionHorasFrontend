@@ -63,13 +63,15 @@ export class ActivityRegisterComponent implements OnInit {
     this.store.select('login').subscribe(state => {
         this.studentEmail = state.tokenInfo.sub;
         this.userService.getStudent(state.tokenInfo.sub).subscribe(student => {
-          this.projects = student.proyectos
+          console.log(student);
+          this.projects = student.proyectos;
           this.spinner.hide();
         });
       });
 
     this.activitiesService.getCategories().subscribe(categories => {
       this.categories = categories;
+      console.log(categories);
       this.spinner.hide();
     });
   }
