@@ -24,6 +24,11 @@ const routes: Routes = [
       .then(mod => mod.ForgotPasswordModule)
   },
   {
+    path: 'proyectos',
+    loadChildren: () => import('../features/projects/projects.module')
+      .then(mod => mod.ProjectsModule)
+  },
+  {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
