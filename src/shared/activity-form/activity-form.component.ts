@@ -1,9 +1,9 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Activity } from 'src/models/activity.model';
 import { BehaviorSubject } from 'rxjs';
 import { Archivo } from 'src/models/archivo.model';
 import { numberRangeValidator, dateMaxRangeValidator } from '../../utils/validators';
+import {Activity} from '../../models/entities/activity.model';
 
 @Component({
   selector: 'app-activity-form',

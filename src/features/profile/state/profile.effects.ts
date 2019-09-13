@@ -5,9 +5,9 @@ import {Observable, of} from 'rxjs';
 import {Action} from '@ngrx/store';
 import {LoadFailed, LoadProfile, LoadSuccessful, ProfileActionTypes} from './profile.actions';
 import {catchError , map, mergeMap} from 'rxjs/operators';
-import {Estudiante} from '../../../models/estudiante.model';
 import {CustomResponse} from '../../../models/custom-response.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {Estudiante} from '../../../models/entities/estudiante.model';
 
 @Injectable()
 export class ProfileEffects {

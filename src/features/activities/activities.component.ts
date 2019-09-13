@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatSortable } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Activity } from 'src/models/activity.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../app/state/state';
 import { getTokenInfo } from '../login/state';
@@ -11,6 +10,7 @@ import { take } from 'rxjs/operators';
 import { LoadActivity, DeleteActivity } from './state/activities.actions';
 import { getActivity } from './state';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {Activity} from '../../models/entities/activity.model';
 
 @Component({
   selector: 'app-activities',

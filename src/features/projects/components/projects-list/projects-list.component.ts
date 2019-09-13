@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {Store} from '@ngrx/store';
 import {getProjectsListProjects, State} from '../../state';
 import {Observable} from 'rxjs';
-import {ProjectModel} from '../../../../models/project.model';
 import {LoadProjects} from '../../state/projects.actions';
+import {Router} from '@angular/router';
+import {ProjectModel} from '../../../../models/entities/project.model';
 
 @Component({
   selector: 'app-projects-list',
@@ -12,7 +13,7 @@ import {LoadProjects} from '../../state/projects.actions';
 })
 export class ProjectsListComponent implements OnInit {
 
-  constructor(private store$: Store<State>) { }
+  constructor(private store$: Store<State>, private router: Router) { }
 
   projects$: Observable<ProjectModel[]>;
 
@@ -24,4 +25,7 @@ export class ProjectsListComponent implements OnInit {
     this.store$.dispatch(new LoadProjects());
   }
 
+  viewProjectDetails(project: ProjectModel) {
+    this.router.navigate(['/proyectos/detalles\?nombre\=' + project.nombre]);
+  }
 }

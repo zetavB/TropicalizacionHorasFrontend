@@ -1,5 +1,5 @@
-import { Activity } from 'src/models/activity.model';
 import { ActivityActions, ActivityActionTypes } from './activities.actions';
+import {Activity} from '../../../models/entities/activity.model';
 
 export interface ActivityState {
   activities: Activity[];

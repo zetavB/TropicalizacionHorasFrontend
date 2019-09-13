@@ -1,5 +1,5 @@
-import {Estudiante} from '../../../models/estudiante.model';
 import {ProfileActions, ProfileActionTypes} from './profile.actions';
+import {Estudiante} from '../../../models/entities/estudiante.model';
 
 export interface ProfileState {
   estudiante: Estudiante;

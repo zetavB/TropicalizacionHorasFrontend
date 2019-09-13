@@ -2,7 +2,6 @@ import * as fromRoot from '../../../app/state/state';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import { ActivityState } from './activities.reducer';
 import { getRouterState } from 'src/app/state/router.reducer';
-import { Activity } from 'src/models/activity.model';
 
 // Extends the app state to include the Activity feature.
 // This is required because Activity is lazy loaded.

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Estudiante } from '../models/estudiante.model';
 import { CustomResponse } from '../models/custom-response.model';
 import {catchError, map} from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import {Estudiante} from '../models/entities/estudiante.model';
 
 
 @Injectable({

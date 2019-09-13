@@ -1,6 +1,6 @@
 import {Action} from '@ngrx/store';
-import { Activity } from 'src/models/activity.model';
 import { Archivo } from 'src/models/archivo.model';
+import {Activity} from '../../../models/entities/activity.model';
 
 export enum ActivityActionTypes {
   LoadActivity = '[Activity] Load Activity',

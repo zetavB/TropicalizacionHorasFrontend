@@ -1,9 +1,10 @@
 import * as fromRoot from '../../../app/state/state';
 import {ProjectsState} from './projects.reducer';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
+import {ProjectModel} from '../../../models/entities/project.model';
 
 
-export interface State extends  fromRoot.State{
+export interface State extends  fromRoot.State {
   projects: ProjectsState;
 }
 
@@ -42,4 +43,24 @@ export const getAddProjectLoading = createSelector(
 export const getAddProjectError = createSelector(
   getAddProjectState,
   state => state.error
+);
+
+export const getProjectDetailsState = createSelector(
+  getProjectsFeatureState,
+  state => state.projectDetails
+);
+
+export const getProjectDetailsName = createSelector(
+  getProjectDetailsState,
+  state => state.projectName
+);
+
+export const getProjectDetailsProject = createSelector(
+  getProjectsListProjects,
+  getProjectDetailsName,
+  (projects: ProjectModel[], name: string) => {
+    return projects.find(({ nombre }) =>
+      nombre === name
+    );
+  }
 );

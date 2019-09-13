@@ -6,7 +6,7 @@ import {Observable, of} from 'rxjs';
 import {CreateFailed, CreateProject, CreateSuccessful, LoadFailed, LoadSuccessful, ProjectsActionTypes} from './projects.actions';
 import {catchError, exhaustMap, map, mergeMap} from 'rxjs/operators';
 import {ProjectsService} from '../projects.service';
-import {ProjectModel} from '../../../models/project.model';
+import {ProjectModel} from '../../../models/entities/project.model';
 
 
 

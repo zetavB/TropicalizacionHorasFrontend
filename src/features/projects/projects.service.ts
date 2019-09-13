@@ -1,10 +1,10 @@
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ProjectModel} from '../../models/project.model';
 import {environment} from '../../environments/environment';
 import {CustomResponse} from '../../models/custom-response.model';
 import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
+import {ProjectModel} from '../../models/entities/project.model';
 
 @Injectable()
 export class ProjectsService {

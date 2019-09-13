@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Activity } from 'src/models/activity.model';
 import { Store, select } from '@ngrx/store';
 import { ActivityState } from '../state/activities.reducer';
 import { getActivityId, getActivityDetails, getActivityFiles } from '../state';
@@ -8,6 +7,7 @@ import { LoadActivityDetails, UpdateActivity } from '../state/activities.actions
 import { UserService } from 'src/core/user.service';
 import { ActivitiesService } from '../activities.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {Activity} from '../../../models/entities/activity.model';
 
 @Component({
   selector: 'app-activity-edit',

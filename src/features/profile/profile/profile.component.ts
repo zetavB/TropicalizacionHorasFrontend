@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Estudiante } from '../../../models/estudiante.model';
 import {select, Store} from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/core/user.service';
@@ -8,7 +7,8 @@ import {LoadProfile} from '../state/profile.actions';
 import {getTokenInfo} from '../../login/state';
 import {take} from 'rxjs/operators';
 import {JwtInfoModel} from '../../../models/jwt-info.model';
-import {Usuario} from '../../../models/usuario.model';
+import {Estudiante} from '../../../models/entities/estudiante.model';
+import {Usuario} from '../../../models/entities/usuario.model';
 
 @Component({
   selector: 'app-profile',

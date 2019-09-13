@@ -3,11 +3,11 @@ import { ActivitiesService } from '../activities.service';
 import { Store } from '@ngrx/store';
 import { UserService } from 'src/core/user.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Activity } from 'src/models/activity.model';
 import { AddActivity } from '../state/activities.actions';
 import { ActivityState } from '../state/activities.reducer';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { numberRangeValidator, dateMaxRangeValidator } from 'src/utils/validators';
+import {Activity} from '../../../models/entities/activity.model';
 
 
 @Component({

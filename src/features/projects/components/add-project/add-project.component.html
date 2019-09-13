@@ -1,1 +1,18 @@
-<p>add-project works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Crear nuevo proyecto</mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="addProjectForm" (ngSubmit)="addProject()">
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="Nombre" formControlName="name" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Descripcion" formControlName="description" required>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+    <button mat-button type="submit" color="primary" [disabled]="addProjectForm.invalid">Crear</button>
+    </mat-card-actions>
+  </form>
+</mat-card>

@@ -1,5 +1,7 @@
-import {ProjectModel} from '../../../models/project.model';
 import {ProjectsActions, ProjectsActionTypes} from './projects.actions';
+import {Activity} from '../../../models/entities/activity.model';
+import {ProjectModel} from '../../../models/entities/project.model';
+import {Estudiante} from '../../../models/entities/estudiante.model';
 
 
 export const projectsFeatureKey = 'projects';
@@ -15,6 +17,11 @@ export interface ProjectsState {
     loading: boolean;
     error: boolean;
   };
+  projectDetails: {
+    projectName: string;
+    students: Estudiante[];
+    activities: Activity[];
+  };
 }
 
 export const initialState: ProjectsState = {
@@ -27,6 +34,11 @@ export const initialState: ProjectsState = {
   addProject: {
     loading: false,
     error: false
+  },
+  projectDetails: {
+    projectName: '',
+    students: [],
+    activities: [],
   }
 };
 
@@ -82,6 +94,14 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
         addProject: {
           loading: false,
           error: true
+        }
+      };
+    case ProjectsActionTypes.SelectProject:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          projectName: action.payload
         }
       };
     default:

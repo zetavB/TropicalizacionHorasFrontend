@@ -4,7 +4,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http'
 import {environment} from '../../environments/environment';
 import {CustomResponse} from '../../models/custom-response.model';
 import {catchError, map} from 'rxjs/operators';
-import { Activity } from 'src/models/activity.model';
+import {Activity} from '../../models/entities/activity.model';
 
 
 @Injectable()

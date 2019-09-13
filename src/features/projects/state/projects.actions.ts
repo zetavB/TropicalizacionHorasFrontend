@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import {ProjectModel} from '../../../models/project.model';
+import {ProjectModel} from '../../../models/entities/project.model';
 
 export enum ProjectsActionTypes {
   LoadProjects = '[Projects] Load Projects',
@@ -8,7 +8,9 @@ export enum ProjectsActionTypes {
 
   CreateProject = '[Projects] Create Project',
   CreateSuccessful = '[Projects] Create Successful',
-  CreateFailed = '[Projects] Create Failed'
+  CreateFailed = '[Projects] Create Failed',
+
+  SelectProject = '[Projects] Select Project name'
 }
 
 export class LoadProjects implements Action {
@@ -39,10 +41,17 @@ export class CreateFailed implements Action {
   readonly  type = ProjectsActionTypes.CreateFailed;
 }
 
+export class SelectProject implements Action {
+  readonly type = ProjectsActionTypes.SelectProject;
+
+  constructor(public payload: string) {}
+}
+
 
 export type ProjectsActions = LoadProjects
   | LoadSuccessful
   | LoadFailed
   | CreateProject
   | CreateSuccessful
-  | CreateFailed;
+  | CreateFailed
+  | SelectProject;

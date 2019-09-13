@@ -20,12 +20,12 @@ import { ActivityActionTypes,
   UpdateFailed,
   UpdateSuccessful} from './activities.actions';
 import { map, mergeMap, catchError, switchMap, tap } from 'rxjs/operators';
-import { Activity } from 'src/models/activity.model';
 import { Injectable } from '@angular/core';
 import { CustomResponse } from 'src/models/custom-response.model';
 import { Router } from '@angular/router';
 import { Archivo } from 'src/models/archivo.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {Activity} from '../../../models/entities/activity.model';
 
 @Injectable()
 export class ActivityEffects {

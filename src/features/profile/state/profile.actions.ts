@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {Estudiante} from '../../../models/estudiante.model';
+import {Estudiante} from '../../../models/entities/estudiante.model';
 
 export enum ProfileActionTypes {
   LoadProfile = '[Profile] Load Profile',
