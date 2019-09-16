@@ -64,3 +64,8 @@ export const getProjectDetailsProject = createSelector(
     );
   }
 );
+
+export const getProjectDetailsStudents = createSelector(
+  getProjectDetailsState,
+  state => state.students
+);

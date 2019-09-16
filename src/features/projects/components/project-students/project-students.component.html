@@ -1,1 +1,26 @@
-<p>project-students works!</p>
+<table mat-table [dataSource]="students$ | async">
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Correo</th>
+    <td mat-cell *matCellDef="let element">{{element.usuario.correo}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let element">{{element.usuario.nombre}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="lastN1">
+    <th mat-header-cell *matHeaderCellDef>Primer apellido</th>
+    <td mat-cell *matCellDef="let element">{{element.usuario.apellidos.split(' ')[0]}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="lastN2">
+    <th mat-header-cell *matHeaderCellDef>Segundo apellido</th>
+    <td mat-cell *matCellDef="let element">{{element.usuario.apellidos.split(' ')[1]}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      [routerLink]="['/estudiantes/detalles/', row.usuario.correo]"></tr>
+</table>

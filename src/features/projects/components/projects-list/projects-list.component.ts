@@ -24,8 +24,4 @@ export class ProjectsListComponent implements OnInit {
 
     this.store$.dispatch(new LoadProjects());
   }
-
-  viewProjectDetails(project: ProjectModel) {
-    this.router.navigate(['/proyectos/detalles\?nombre\=' + project.nombre]);
-  }
 }

@@ -1,5 +1,4 @@
 import {ProjectsActions, ProjectsActionTypes} from './projects.actions';
-import {Activity} from '../../../models/entities/activity.model';
 import {ProjectModel} from '../../../models/entities/project.model';
 import {Estudiante} from '../../../models/entities/estudiante.model';
 
@@ -20,7 +19,10 @@ export interface ProjectsState {
   projectDetails: {
     projectName: string;
     students: Estudiante[];
-    activities: Activity[];
+    loadingEdit: boolean;
+    errorEdit: boolean;
+    loadingStudents: boolean;
+    errorStudents: boolean;
   };
 }
 
@@ -38,7 +40,10 @@ export const initialState: ProjectsState = {
   projectDetails: {
     projectName: '',
     students: [],
-    activities: [],
+    loadingEdit: false,
+    errorEdit: false,
+    loadingStudents: false,
+    errorStudents: false
   }
 };
 
@@ -59,7 +64,7 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
           ...state.projectsList,
           loading: false,
           error: false,
-          projects: action.payload
+          projects: action.projects
         }
       };
     case ProjectsActionTypes.LoadFailed:
@@ -101,7 +106,70 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
         ...state,
         projectDetails: {
           ...state.projectDetails,
-          projectName: action.payload
+          projectName: action.projectName
+        }
+      };
+    case ProjectsActionTypes.ChangeDescription:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          loadingEdit: true
+        }
+      };
+    case ProjectsActionTypes.ChangeDescriptionS:
+      return {
+        ...state,
+        projectsList: {
+          ...state.projectsList,
+          projects: [
+            // Add the changed project
+            action.newProject,
+            // Remove the old one but copy the rest of the array
+            ...state.projectsList.projects.filter(
+              (p: ProjectModel) => p.nombre !== action.newProject.nombre)
+          ]
+        },
+        projectDetails: {
+          ...state.projectDetails,
+          loadingEdit: false,
+          errorEdit: false
+        }
+      };
+    case ProjectsActionTypes.ChangeDescriptionF:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          loadingEdit: false,
+          errorEdit: true
+        }
+      };
+    case ProjectsActionTypes.LoadProjectStudents:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          loadingStudents: true
+        }
+      };
+    case ProjectsActionTypes.LoadProjectStudentsS:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          students: action.students,
+          loadingStudents: false,
+          errorStudents: false
+        }
+      };
+    case ProjectsActionTypes.LoadProjectStudentsF:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          loadingStudents: false,
+          errorStudents: true
         }
       };
     default:

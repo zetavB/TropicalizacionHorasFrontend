@@ -1,4 +1,23 @@
-<div *ngIf="project$ | async; let project">
-  <p>{{project.nombre}}</p>
-  <p>{{project.descripcion}}</p>
-</div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title><p>{{project.nombre}}</p></mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="editDescriptionForm" (ngSubmit)="changeDescription()">
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput formControlName="description" [readonly]="!editing">
+        <mat-error *ngIf="description.errors?.required">Favor no dejar la descripción vacía</mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button *ngIf="!editing; else editButtons" color="primary" (click)="editing = true;">Editar
+        descripción
+      </button>
+      <ng-template #editButtons>
+        <button mat-button color="primary" type="submit" [disabled]="editDescriptionForm.invalid">Guardar</button>
+        <button mat-button color="accent" (click)="stopEditing()">Cancelar</button>
+      </ng-template>
+    </mat-card-actions>
+  </form>
+</mat-card>
+<app-project-students [projectName]="project.nombre"></app-project-students>
