@@ -2,6 +2,7 @@ import * as fromRoot from '../../../app/state/state';
 import {ProjectsState} from './projects.reducer';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {ProjectModel} from '../../../models/entities/project.model';
+import {Page} from '../../../models/Page';
 
 
 export interface State extends  fromRoot.State {
@@ -10,6 +11,7 @@ export interface State extends  fromRoot.State {
 
 export const getProjectsFeatureState = createFeatureSelector<ProjectsState>('projects');
 
+// -------------------------------- Projects Home ----------------------------------
 export const getProjectsListState = createSelector(
   getProjectsFeatureState,
   state => state.projectsList
@@ -17,7 +19,7 @@ export const getProjectsListState = createSelector(
 
 export const getProjectsListProjects = createSelector(
   getProjectsListState,
-  state => state.projects
+  state => state.projectsPage
 );
 
 export const getProjectsListLoading = createSelector(
@@ -45,6 +47,7 @@ export const getAddProjectError = createSelector(
   state => state.error
 );
 
+// -------------------------------- Project details ----------------------------------
 export const getProjectDetailsState = createSelector(
   getProjectsFeatureState,
   state => state.projectDetails
@@ -58,8 +61,8 @@ export const getProjectDetailsName = createSelector(
 export const getProjectDetailsProject = createSelector(
   getProjectsListProjects,
   getProjectDetailsName,
-  (projects: ProjectModel[], name: string) => {
-    return projects.find(({ nombre }) =>
+  (projects: Page<ProjectModel>, name: string) => {
+    return projects.content.find(({ nombre }) =>
       nombre === name
     );
   }
@@ -67,5 +70,21 @@ export const getProjectDetailsProject = createSelector(
 
 export const getProjectDetailsStudents = createSelector(
   getProjectDetailsState,
-  state => state.students
+  state => state.studentsPage.content
+);
+
+// -------------------------------- Add Students ----------------------------------
+export const getProjectAddStudentsState = createSelector(
+  getProjectsFeatureState,
+  state => state.addStudents
+);
+
+export const getProjectAddStudentsPage = createSelector(
+  getProjectAddStudentsState,
+  state => state.studentsPage
+);
+
+export const getProjectAddStudentsContent = createSelector(
+  getProjectAddStudentsPage,
+  state => state.content
 );

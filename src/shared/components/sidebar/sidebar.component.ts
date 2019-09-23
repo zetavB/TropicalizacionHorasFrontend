@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {TokenService} from '../../../core/token.service';
 import {Router} from '@angular/router';
-import { Store } from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {Logout} from '../../../features/login/state/login.actions';
 
 @Component({
@@ -12,19 +12,24 @@ import {Logout} from '../../../features/login/state/login.actions';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(private tokenService: TokenService, private router: Router, private store: Store<{email: string, rol: string}>) { }
+  constructor(private tokenService: TokenService, private router: Router, private store: Store<{ email: string, rol: string }>) {
+  }
 
-  events: string[] = [];
-  opened = true;
   content = [];
 
   ngOnInit() {
-    this.content = this.content;
     this.store.select('login').subscribe(login => {
       if (login.tokenInfo != null && login.tokenInfo.rol === 'Estudiante') {
-        this.content = [{id: 1, name: 'Perfil', url: '/perfil'}, {id: 2, name: 'Actividades', url: '/actividades'}];
+        this.content = [
+          {id: 1, name: 'Perfil', url: '/perfil'},
+          {id: 2, name: 'Actividades', url: '/actividades'}
+        ];
       } else {
-        this.content = [{id: 1, name: 'Perfil', url: '/perfil'}, {id: 2, name: 'Actividades Admin', url: '/actividades'}];
+        this.content = [
+          {id: 1, name: 'Perfil', url: '/perfil'},
+          {id: 2, name: 'Actividades Admin', url: '/actividades'},
+          {id: 3, name: 'Proyectos', url: '/proyectos'}
+        ];
       }
     });
   }

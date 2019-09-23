@@ -20,7 +20,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   });
 
   editing = false;
-  project: ProjectModel;
+  project: ProjectModel = {
+    nombre: '',
+    descripcion: ''
+  };
 
   alive = true;
 
@@ -37,7 +40,9 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) =>
+    this.route.paramMap.pipe(
+      takeWhile(() => this.alive)
+    ).subscribe((params: ParamMap) =>
       this.store$.dispatch(new SelectProject(params.get('nombre')))
     );
 

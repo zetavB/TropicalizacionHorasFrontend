@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {ProjectModel} from '../../models/entities/project.model';
 import {Estudiante} from '../../models/entities/estudiante.model';
+import {Page} from '../../models/Page';
 
 @Injectable()
 export class ProjectsService {
@@ -13,9 +14,10 @@ export class ProjectsService {
 
   constructor(private httpClient: HttpClient) {}
 
-  public getAllProjects(): Observable<ProjectModel[]> {
-    return this.httpClient.get<CustomResponse>(this.resourceURL + '?pagina=0&limite=5').pipe(
-        map((resp: CustomResponse) => resp.response.content as ProjectModel[])
+  public getAllProjects(page: number, limit: number): Observable<Page<ProjectModel>> {
+    return this.httpClient.get<CustomResponse>(this.resourceURL
+      + '?pagina=' + page + '&limite=' + limit).pipe(
+        map((resp: CustomResponse) => resp.response as Page<ProjectModel>)
       );
   }
 
@@ -27,9 +29,17 @@ export class ProjectsService {
     return this.httpClient.put<CustomResponse>(this.resourceURL + '/' + project.nombre, project.descripcion);
   }
 
-  getProjectStudents(projectName: string): Observable<Estudiante[]> {
-    return this.httpClient.get<CustomResponse>(this.resourceURL + '/' + projectName + '/estudiantes' + + '?pagina=0&limite=5').pipe(
-      map((resp: CustomResponse) => resp.response as Estudiante[])
+  getProjectStudents(projectName: string, page: number, limit: number): Observable<Page<Estudiante>> {
+    return this.httpClient.get<CustomResponse>(this.resourceURL + '/' + projectName + '/estudiantes'
+      + '?pagina=' + page + '&limite=' + limit).pipe(
+      map((resp: CustomResponse) => resp.response.content as Page<Estudiante>)
+    );
+  }
+
+  getNotStudents(projectName: string, page: number, limit: number): Observable<Page<Estudiante>> {
+    return this.httpClient.get<CustomResponse>(this.resourceURL + '/' + projectName + '/no-estudiantes'
+      + '?pagina=' + page + '&limite=' + limit).pipe(
+      map((resp: CustomResponse) => resp.response as Page<Estudiante>)
     );
   }
 }

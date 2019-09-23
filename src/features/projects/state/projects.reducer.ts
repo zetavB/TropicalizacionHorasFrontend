@@ -1,16 +1,16 @@
 import {ProjectsActions, ProjectsActionTypes} from './projects.actions';
 import {ProjectModel} from '../../../models/entities/project.model';
 import {Estudiante} from '../../../models/entities/estudiante.model';
-
+import {Projects} from '@angular/cli/lib/config/schema';
+import {Page} from '../../../models/Page';
 
 export const projectsFeatureKey = 'projects';
 
 export interface ProjectsState {
   projectsList: {
-    projects: ProjectModel[];
+    projectsPage: Page<Projects>
     loading: boolean
     error: boolean;
-    currentPage: number;
   };
   addProject: {
     loading: boolean;
@@ -18,20 +18,33 @@ export interface ProjectsState {
   };
   projectDetails: {
     projectName: string;
-    students: Estudiante[];
+    studentsPage: Page<Estudiante>;
     loadingEdit: boolean;
     errorEdit: boolean;
     loadingStudents: boolean;
     errorStudents: boolean;
   };
+  addStudents: {
+    studentsPage: Page<Estudiante>,
+    selectedStudents: Estudiante[],
+    loadingStudents: boolean,
+    loadingAddStudents: boolean,
+    errorLoadingStudents: boolean,
+    errorAddingStudents: boolean
+  };
 }
 
 export const initialState: ProjectsState = {
   projectsList: {
-    projects: [],
+    projectsPage: {
+      content: [],
+      number: 0,
+      size: 5,
+      totalElements: 0,
+      totalPages: 0
+    },
     loading: false,
     error: false,
-    currentPage: 1,
   },
   addProject: {
     loading: false,
@@ -39,16 +52,38 @@ export const initialState: ProjectsState = {
   },
   projectDetails: {
     projectName: '',
-    students: [],
+    studentsPage: {
+      content: [],
+      number: 0,
+      size: 5,
+      totalElements: 0,
+      totalPages: 0
+    },
     loadingEdit: false,
     errorEdit: false,
     loadingStudents: false,
     errorStudents: false
+  },
+  addStudents: {
+    studentsPage: {
+      content: [],
+      number: 0,
+      size: 5,
+      totalElements: 0,
+      totalPages: 0
+    },
+    selectedStudents: [],
+    loadingStudents: false,
+    loadingAddStudents: false,
+    errorLoadingStudents: false,
+    errorAddingStudents: false
   }
-};
+}
+;
 
 export function reducer(state = initialState, action: ProjectsActions): ProjectsState {
   switch (action.type) {
+    // -------------- Project home ------------------------
     case ProjectsActionTypes.LoadProjects:
       return {
         ...state,
@@ -64,7 +99,7 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
           ...state.projectsList,
           loading: false,
           error: false,
-          projects: action.projects
+          projectsPage: action.projects
         }
       };
     case ProjectsActionTypes.LoadFailed:
@@ -74,7 +109,22 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
           ...state.projectsList,
           loading: false,
           error: true,
-          projects: []
+          projectsPage: {
+            ...state.projectsList.projectsPage,
+            content: []
+          }
+        }
+      };
+    case ProjectsActionTypes.ProjectsListChangePage:
+      return {
+        ...state,
+        projectsList: {
+          ...state.projectsList,
+          projectsPage: {
+            ...state.projectsList.projectsPage,
+            number: action.newNumber,
+            size: action.newSize
+          }
         }
       };
     case ProjectsActionTypes.CreateProject:
@@ -101,6 +151,7 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
           error: true
         }
       };
+      // ---------------------------- Project details ------------------------
     case ProjectsActionTypes.SelectProject:
       return {
         ...state,
@@ -122,13 +173,16 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
         ...state,
         projectsList: {
           ...state.projectsList,
-          projects: [
-            // Add the changed project
-            action.newProject,
-            // Remove the old one but copy the rest of the array
-            ...state.projectsList.projects.filter(
-              (p: ProjectModel) => p.nombre !== action.newProject.nombre)
-          ]
+          projectsPage: {
+            ...state.projectsList.projectsPage,
+            content: [
+              // Add the changed project
+              action.newProject,
+              // Remove the old one but copy the rest of the array
+              ...state.projectsList.projectsPage.content.filter(
+                (p: ProjectModel) => p.nombre !== action.newProject.nombre)
+            ]
+          }
         },
         projectDetails: {
           ...state.projectDetails,
@@ -158,7 +212,7 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
         ...state,
         projectDetails: {
           ...state.projectDetails,
-          students: action.students,
+          studentsPage: action.students,
           loadingStudents: false,
           errorStudents: false
         }
@@ -170,6 +224,106 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
           ...state.projectDetails,
           loadingStudents: false,
           errorStudents: true
+        }
+      };
+    case ProjectsActionTypes.ProjectStudentsChangePage:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          studentsPage: {
+            ...state.projectDetails.studentsPage,
+            number: action.newNumber,
+            size: action.newSize
+          }
+        }
+      };
+      // ---------------------------- Project add students -----------------
+    case ProjectsActionTypes.LoadProjectNotStudents:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          loadingStudents: true
+        }
+      };
+    case ProjectsActionTypes.LoadProjectNotStudentsS:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          loadingStudents: false,
+          studentsPage: action.studentsRetrieved
+        }
+      };
+    case ProjectsActionTypes.LoadProjectNotStudentsF:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          loadingStudents: false,
+          errorLoadingStudents: true
+        }
+      };
+    case ProjectsActionTypes.ProjectNotStudentsChangePage:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          studentsPage: {
+            ...state.addStudents.studentsPage,
+            number: action.newNumber,
+            size: action.newSize
+          }
+        }
+      };
+    case ProjectsActionTypes.SelectStudent:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          selectedStudents: [
+            action.studentSelected,
+            ...state.addStudents.selectedStudents
+          ]
+        }
+      };
+    case ProjectsActionTypes.DeselectStudent:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          selectedStudents: [
+            ...state.addStudents.selectedStudents.filter(
+              (s: Estudiante) => s.usuario.correo !== action.deselectedStudent.usuario.correo
+            )
+          ]
+        }
+      };
+    case ProjectsActionTypes.AddStudentsToProject:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          loadingAddStudents: true
+        }
+      };
+    case ProjectsActionTypes.AddStudentsToProjectS:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          loadingAddStudents: false,
+          selectedStudents: []
+        }
+      };
+    case ProjectsActionTypes.AddStudentsToProjectF:
+      return {
+        ...state,
+        addStudents: {
+          ...state.addStudents,
+          loadingAddStudents: false,
+          errorAddingStudents: true
         }
       };
     default:
