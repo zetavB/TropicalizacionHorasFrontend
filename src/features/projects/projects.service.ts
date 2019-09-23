@@ -32,7 +32,7 @@ export class ProjectsService {
   getProjectStudents(projectName: string, page: number, limit: number): Observable<Page<Estudiante>> {
     return this.httpClient.get<CustomResponse>(this.resourceURL + '/' + projectName + '/estudiantes'
       + '?pagina=' + page + '&limite=' + limit).pipe(
-      map((resp: CustomResponse) => resp.response.content as Page<Estudiante>)
+      map((resp: CustomResponse) => resp.response as Page<Estudiante>)
     );
   }
 

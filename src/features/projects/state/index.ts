@@ -1,8 +1,12 @@
 import * as fromRoot from '../../../app/state/state';
 import {ProjectsState} from './projects.reducer';
-import {createFeatureSelector, createSelector} from '@ngrx/store';
+import {createFeatureSelector, createSelector, select} from '@ngrx/store';
 import {ProjectModel} from '../../../models/entities/project.model';
 import {Page} from '../../../models/Page';
+import {map, withLatestFrom} from 'rxjs/operators';
+import {Estudiante} from '../../../models/entities/estudiante.model';
+import {StudentToAddModel} from '../components/add-students-to-project/student-to-add.model';
+import {Observable} from 'rxjs';
 
 
 export interface State extends  fromRoot.State {
@@ -68,9 +72,9 @@ export const getProjectDetailsProject = createSelector(
   }
 );
 
-export const getProjectDetailsStudents = createSelector(
+export const getProjectDetailsStudentsPage = createSelector(
   getProjectDetailsState,
-  state => state.studentsPage.content
+  state => state.studentsPage
 );
 
 // -------------------------------- Add Students ----------------------------------
@@ -84,7 +88,23 @@ export const getProjectAddStudentsPage = createSelector(
   state => state.studentsPage
 );
 
+export const getProjectAddStudentsSelected = createSelector(
+  getProjectAddStudentsState,
+  state => state.selectedStudents
+);
+
+export const getProjectAddStudentsSelectedExist = createSelector(
+  getProjectAddStudentsState,
+  state => state.selectedStudents.length !== 0
+);
+
 export const getProjectAddStudentsContent = createSelector(
   getProjectAddStudentsPage,
-  state => state.content
+  getProjectAddStudentsSelected,
+  (page: Page<Estudiante>, selectedStudents: Estudiante[]) => page.content.map((student: Estudiante) => {
+    return {
+      student,
+      selected: selectedStudents.find((selectedStudent) => student.usuario.correo === selectedStudent.usuario.correo ) != null
+    } as StudentToAddModel;
+  })
 );

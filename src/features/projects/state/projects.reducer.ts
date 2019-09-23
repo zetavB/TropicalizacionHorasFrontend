@@ -1,14 +1,13 @@
 import {ProjectsActions, ProjectsActionTypes} from './projects.actions';
 import {ProjectModel} from '../../../models/entities/project.model';
 import {Estudiante} from '../../../models/entities/estudiante.model';
-import {Projects} from '@angular/cli/lib/config/schema';
 import {Page} from '../../../models/Page';
 
 export const projectsFeatureKey = 'projects';
 
 export interface ProjectsState {
   projectsList: {
-    projectsPage: Page<Projects>
+    projectsPage: Page<ProjectModel>
     loading: boolean
     error: boolean;
   };

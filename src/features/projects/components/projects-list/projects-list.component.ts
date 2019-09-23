@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {LoadProjects} from '../../state/projects.actions';
 import {Router} from '@angular/router';
 import {ProjectModel} from '../../../../models/entities/project.model';
+import {Page} from '../../../../models/Page';
 
 @Component({
   selector: 'app-projects-list',
@@ -15,7 +16,7 @@ export class ProjectsListComponent implements OnInit {
 
   constructor(private store$: Store<State>, private router: Router) { }
 
-  projects$: Observable<ProjectModel[]>;
+  projects$: Observable<Page<ProjectModel>>;
 
   displayedColumns: string[] = ['nombre', 'descripcion'];
 
