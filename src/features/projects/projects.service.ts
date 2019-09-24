@@ -42,4 +42,12 @@ export class ProjectsService {
       map((resp: CustomResponse) => resp.response as Page<Estudiante>)
     );
   }
+
+  addStudentsToProject(projectName: string, selectedStudents: string[]): Observable<CustomResponse> {
+    return this.httpClient.put<CustomResponse>(this.resourceURL + '/' + projectName + '/asignar-estudiantes', selectedStudents);
+  }
+
+  removeStudent(projectName: string, studentMail: string): Observable<CustomResponse> {
+    return this.httpClient.delete<CustomResponse>(this.resourceURL + '/' + projectName + '/asignar-estudiantes/' + studentMail);
+  }
 }

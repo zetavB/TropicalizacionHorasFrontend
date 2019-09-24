@@ -73,4 +73,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
 
+  deleteProject() {
+
+  }
 }

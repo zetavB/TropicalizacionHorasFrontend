@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {act, Actions, Effect, ofType} from '@ngrx/effects';
-import {Action, Store} from '@ngrx/store';
-import {State} from './index';
+import {Action, select, Store} from '@ngrx/store';
+import {getProjectAddStudentsSelected, State} from './index';
 import {Observable, of} from 'rxjs';
 import {
+  AddStudentsToProject, AddStudentsToProjectF, AddStudentsToProjectS,
   ChangeDescription,
   ChangeDescriptionF,
   ChangeDescriptionS,
@@ -16,14 +17,15 @@ import {
   LoadProjectStudents,
   LoadProjectStudentsF,
   LoadProjectStudentsS,
-  LoadSuccessful,
+  LoadSuccessful, ProjectRemoveStudent, ProjectRemoveStudentF, ProjectRemoveStudentS,
   ProjectsActionTypes, ProjectStudentsChangePage
 } from './projects.actions';
-import {catchError, exhaustMap, map, mergeMap, switchMap, withLatestFrom} from 'rxjs/operators';
+import {catchError, exhaustMap, map, mergeMap, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {ProjectsService} from '../projects.service';
 import {ProjectModel} from '../../../models/entities/project.model';
 import {Estudiante} from '../../../models/entities/estudiante.model';
 import {Page} from '../../../models/Page';
+import {Router} from '@angular/router';
 
 
 
@@ -58,12 +60,13 @@ export class ProjectsEffects {
     map((action: CreateProject) => action.newProject),
     exhaustMap((project: ProjectModel) =>
       this.projectsService.createProject(project).pipe(
-        map(() => new CreateSuccessful()),
+        map(() => new CreateSuccessful(project)),
         catchError(() => of(new CreateFailed()))
       )
     )
   );
 
+  // --------------------------Project details----------------------------------
   @Effect()
   changeDescription$: Observable<Action> = this.actions$.pipe(
     ofType(ProjectsActionTypes.ChangeDescription),
@@ -103,6 +106,19 @@ export class ProjectsEffects {
   );
 
   @Effect()
+  projectRemoveStudent$: Observable<Action> = this.actions$.pipe(
+    ofType(ProjectsActionTypes.ProjectRemoveStudent),
+    withLatestFrom(this.store$),
+    map(([action, state]: [ProjectRemoveStudent, State]) => [action.student.usuario.correo, state.projects.projectDetails.projectName]),
+    exhaustMap(([student, projectName]: [string, string]) =>
+      this.projectsService.removeStudent(projectName, student).pipe(
+        map(() => new ProjectRemoveStudentS(student)),
+        catchError(() => of(new ProjectRemoveStudentF()))
+      )
+    )
+  );
+  // -----------------------------------------Add students----------------------------
+  @Effect()
   loadNotStudents$: Observable<Action> = this.actions$.pipe(
     ofType(ProjectsActionTypes.LoadProjectNotStudents),
     map((a: LoadProjectStudents) => a.projectName),
@@ -128,9 +144,36 @@ export class ProjectsEffects {
     )
   );
 
+  @Effect()
+  addStudentsToProject$: Observable<Action> = this.actions$.pipe(
+    ofType(ProjectsActionTypes.AddStudentsToProject),
+    withLatestFrom(this.store$),
+    map(([action, state]: [AddStudentsToProject, State]) =>
+      [
+        state.projects.projectDetails.projectName,
+        state.projects.addStudents.selectedStudents.map((student) => student.usuario.correo)
+      ]
+    ),
+    mergeMap(([projectName, selectedStudents]: [string, string[]]) =>
+      this.projectsService.addStudentsToProject(projectName, selectedStudents).pipe(
+        map(() => new AddStudentsToProjectS()),
+        catchError(() => of(new AddStudentsToProjectF()))
+      )
+    )
+  );
+
+  @Effect({dispatch: false})
+  addStudentsToProjectS$ = this.actions$.pipe(
+    ofType(ProjectsActionTypes.AddStudentsToProjectS),
+    withLatestFrom(this.store$),
+    map(([action, state]: [Action, State]) => state.projects.projectDetails.projectName),
+    tap((projectName: string) => this.router.navigate(['proyectos/detalles/', projectName]))
+  );
+
   constructor(
     private actions$: Actions,
     private store$: Store<State>,
-    private projectsService: ProjectsService) {}
+    private projectsService: ProjectsService,
+    private router: Router) {}
 
 }

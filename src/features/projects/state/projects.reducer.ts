@@ -22,6 +22,8 @@ export interface ProjectsState {
     errorEdit: boolean;
     loadingStudents: boolean;
     errorStudents: boolean;
+    loadingRemoveStudent: boolean;
+    errorRemovingStudent: boolean;
   };
   addStudents: {
     studentsPage: Page<Estudiante>,
@@ -61,7 +63,9 @@ export const initialState: ProjectsState = {
     loadingEdit: false,
     errorEdit: false,
     loadingStudents: false,
-    errorStudents: false
+    errorStudents: false,
+    loadingRemoveStudent: false,
+    errorRemovingStudent: false
   },
   addStudents: {
     studentsPage: {
@@ -137,6 +141,13 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
     case ProjectsActionTypes.CreateSuccessful:
       return {
         ...state,
+        projectsList: {
+          ...state.projectsList,
+          projectsPage: {
+            ...state.projectsList.projectsPage,
+            content: [action.newProject, ...state.projectsList.projectsPage.content]
+          }
+        },
         addProject: {
           loading: false,
           error: false
@@ -235,6 +246,36 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
             number: action.newNumber,
             size: action.newSize
           }
+        }
+      };
+    case ProjectsActionTypes.ProjectRemoveStudent:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          loadingRemoveStudent: true
+        }
+      };
+    case ProjectsActionTypes.ProjectRemoveStudentS:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          loadingRemoveStudent: false,
+          studentsPage: {
+            ...state.projectDetails.studentsPage,
+            content: [...state.projectDetails.studentsPage.content]
+              .filter(student => student.usuario.correo !== action.studentMail)
+          }
+        }
+      };
+    case ProjectsActionTypes.ProjectRemoveStudentF:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          errorRemovingStudent: true,
+          loadingRemoveStudent: false
         }
       };
       // ---------------------------- Project add students -----------------

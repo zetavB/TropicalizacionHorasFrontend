@@ -20,6 +20,9 @@ export enum ProjectsActionTypes {
   LoadProjectStudentsS = '[Projects] Load Project Students Successful',
   LoadProjectStudentsF= '[Projects] Load Project Students Failed',
   ProjectStudentsChangePage = '[Projects] Project students list change page',
+  ProjectRemoveStudent = '[Projects] Project remove student',
+  ProjectRemoveStudentS = '[Projects] Project remove student successful',
+  ProjectRemoveStudentF = '[Projects] Project remove student failed',
 
   LoadProjectNotStudents = '[Projects] Load Students not on project',
   LoadProjectNotStudentsS = '[Projects] Load Students not on project successful',
@@ -61,6 +64,8 @@ export class CreateProject implements Action {
 
 export class CreateSuccessful implements  Action {
   readonly type = ProjectsActionTypes.CreateSuccessful;
+
+  constructor(public newProject: ProjectModel) {}
 }
 
 export class CreateFailed implements Action {
@@ -110,6 +115,22 @@ export class ProjectStudentsChangePage implements  Action {
   readonly type = ProjectsActionTypes.ProjectStudentsChangePage;
 
   constructor(public newSize: number, public newNumber: number) {}
+}
+
+export class ProjectRemoveStudent implements Action {
+  readonly type = ProjectsActionTypes.ProjectRemoveStudent;
+
+  constructor(public student: Estudiante) {}
+}
+
+export class ProjectRemoveStudentS implements Action {
+  readonly type = ProjectsActionTypes.ProjectRemoveStudentS;
+
+  constructor(public studentMail: string) {}
+}
+
+export class ProjectRemoveStudentF implements Action {
+  readonly type = ProjectsActionTypes.ProjectRemoveStudentF;
 }
 // ------------------------Add students----------------------------------------------------------------
 export class LoadProjectNotStudents implements  Action {
@@ -173,6 +194,9 @@ export type ProjectsActions = LoadProjects
   | LoadProjectStudentsS
   | LoadProjectStudentsF
   | ProjectStudentsChangePage
+  | ProjectRemoveStudent
+  | ProjectRemoveStudentS
+  | ProjectRemoveStudentF
   | LoadProjectNotStudents
   | LoadProjectNotStudentsS
   | LoadProjectNotStudentsF

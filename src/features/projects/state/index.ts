@@ -21,9 +21,14 @@ export const getProjectsListState = createSelector(
   state => state.projectsList
 );
 
-export const getProjectsListProjects = createSelector(
+export const getProjectsListProjectsPage = createSelector(
   getProjectsListState,
   state => state.projectsPage
+);
+
+export const getProjectsListProjectsPageContent = createSelector(
+  getProjectsListState,
+  state => state.projectsPage.content
 );
 
 export const getProjectsListLoading = createSelector(
@@ -63,7 +68,7 @@ export const getProjectDetailsName = createSelector(
 );
 
 export const getProjectDetailsProject = createSelector(
-  getProjectsListProjects,
+  getProjectsListProjectsPage,
   getProjectDetailsName,
   (projects: Page<ProjectModel>, name: string) => {
     return projects.content.find(({ nombre }) =>
@@ -75,6 +80,11 @@ export const getProjectDetailsProject = createSelector(
 export const getProjectDetailsStudentsPage = createSelector(
   getProjectDetailsState,
   state => state.studentsPage
+);
+
+export const getProjectDetailsStudentsPageContent = createSelector(
+  getProjectDetailsState,
+  state => state.studentsPage.content
 );
 
 // -------------------------------- Add Students ----------------------------------
