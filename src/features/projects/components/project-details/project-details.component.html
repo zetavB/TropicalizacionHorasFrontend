@@ -5,7 +5,7 @@
   <form [formGroup]="editDescriptionForm" (ngSubmit)="changeDescription()">
     <mat-card-content>
       <mat-form-field>
-        <input matInput formControlName="description" [readonly]="!editing">
+        <textarea matInput formControlName="description" [readonly]="!editing"></textarea>
         <mat-error *ngIf="description.errors?.required">Favor no dejar la descripción vacía</mat-error>
       </mat-form-field>
     </mat-card-content>

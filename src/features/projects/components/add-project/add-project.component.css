@@ -1,0 +1,15 @@
+.add-project-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.mat-form-field {
+  width: 20rem;
+}
+
+textarea {
+  height: 5rem;
+}

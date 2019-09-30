@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ActivitiesComponent } from 'src/features/activities/activities.component';
 
 const routes: Routes = [
   {
@@ -27,6 +26,11 @@ const routes: Routes = [
     path: 'proyectos',
     loadChildren: () => import('../features/projects/projects.module')
       .then(mod => mod.ProjectsModule)
+  },
+  {
+    path: 'categorias',
+    loadChildren: () => import('../features/categories/categories.module')
+      .then(mod => mod.CategoriesModule)
   },
   {
     path: '',

@@ -28,7 +28,8 @@ export class SidebarComponent implements OnInit {
         this.content = [
           {id: 1, name: 'Perfil', url: '/perfil'},
           {id: 2, name: 'Actividades Admin', url: '/actividades'},
-          {id: 3, name: 'Proyectos', url: '/proyectos'}
+          {id: 3, name: 'Proyectos', url: '/proyectos'},
+          {id: 4, name: 'Categorías', url: '/categorias'}
         ];
       }
     });
