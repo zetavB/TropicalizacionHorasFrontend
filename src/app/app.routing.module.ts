@@ -33,6 +33,11 @@ const routes: Routes = [
       .then(mod => mod.CategoriesModule)
   },
   {
+    path: 'usuarios',
+    loadChildren: () => import('../features/users/users.module')
+      .then(mod => mod.UsersModule)
+  },
+  {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
