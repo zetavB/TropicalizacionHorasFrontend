@@ -11,8 +11,8 @@ import {
   CreateFailed,
   CreateProject,
   CreateSuccessful,
-  LoadFailed, LoadProjectNotStudents,
-  LoadProjectNotStudentsF, LoadProjectNotStudentsS,
+  LoadFailed, LoadProject, LoadProjectF, LoadProjectNotStudents,
+  LoadProjectNotStudentsF, LoadProjectNotStudentsS, LoadProjectS,
   LoadProjects,
   LoadProjectStudents,
   LoadProjectStudentsF,
@@ -20,7 +20,7 @@ import {
   LoadSuccessful, ProjectRemoveStudent, ProjectRemoveStudentF, ProjectRemoveStudentS,
   ProjectsActionTypes, ProjectStudentsChangePage
 } from './projects.actions';
-import {catchError, exhaustMap, map, mergeMap, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {catchError, concatMap, exhaustMap, map, mergeMap, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {ProjectsService} from '../projects.service';
 import {ProjectModel} from '../../../models/entities/project.model';
 import {Estudiante} from '../../../models/entities/estudiante.model';
@@ -49,9 +49,7 @@ export class ProjectsEffects {
   @Effect()
   projectsListChangePage$: Observable<Action> = this.actions$.pipe(
     ofType(ProjectsActionTypes.ProjectsListChangePage),
-    map( () =>
-      new LoadProjects()
-    )
+    map( () => new LoadProjects())
   );
 
   @Effect()
@@ -114,6 +112,18 @@ export class ProjectsEffects {
       this.projectsService.removeStudent(projectName, student).pipe(
         map(() => new ProjectRemoveStudentS(student)),
         catchError(() => of(new ProjectRemoveStudentF()))
+      )
+    )
+  );
+
+  @Effect()
+  projectLoadProject$: Observable<Action> = this.actions$.pipe(
+    ofType(ProjectsActionTypes.LoadProject),
+    map((action: LoadProject) => action.name),
+    concatMap((name: string) =>
+      this.projectsService.getProject(name).pipe(
+        map((project: ProjectModel) => new LoadProjectS(project)),
+        catchError(() => of(new LoadProjectF()))
       )
     )
   );

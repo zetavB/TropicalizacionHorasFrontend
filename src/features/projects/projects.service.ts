@@ -50,4 +50,10 @@ export class ProjectsService {
   removeStudent(projectName: string, studentMail: string): Observable<CustomResponse> {
     return this.httpClient.delete<CustomResponse>(this.resourceURL + '/' + projectName + '/asignar-estudiantes/' + studentMail);
   }
+
+  getProject(name: string): Observable<ProjectModel> {
+    return this.httpClient.get<CustomResponse>(this.resourceURL + '/' + name).pipe(
+      map(resp => resp.response as ProjectModel)
+    );
+  }
 }

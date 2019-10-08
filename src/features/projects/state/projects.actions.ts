@@ -23,6 +23,9 @@ export enum ProjectsActionTypes {
   ProjectRemoveStudent = '[Projects] Project remove student',
   ProjectRemoveStudentS = '[Projects] Project remove student successful',
   ProjectRemoveStudentF = '[Projects] Project remove student failed',
+  LoadProject = '[Projects] Load Project',
+  LoadProjectS = '[Projects] Load Project successful',
+  LoadProjectF = '[Projects] Load Project failed',
 
   LoadProjectNotStudents = '[Projects] Load Students not on project',
   LoadProjectNotStudentsS = '[Projects] Load Students not on project successful',
@@ -132,6 +135,23 @@ export class ProjectRemoveStudentS implements Action {
 export class ProjectRemoveStudentF implements Action {
   readonly type = ProjectsActionTypes.ProjectRemoveStudentF;
 }
+
+export class LoadProject implements Action {
+  readonly type = ProjectsActionTypes.LoadProject;
+
+  constructor(public name: string) {}
+}
+
+export class LoadProjectS implements Action {
+  readonly type = ProjectsActionTypes.LoadProjectS;
+
+  constructor(public proyecto: ProjectModel) {}
+}
+
+export class LoadProjectF implements Action {
+  readonly type = ProjectsActionTypes.LoadProjectF;
+}
+
 // ------------------------Add students----------------------------------------------------------------
 export class LoadProjectNotStudents implements  Action {
   readonly type = ProjectsActionTypes.LoadProjectNotStudents;
@@ -197,6 +217,9 @@ export type ProjectsActions = LoadProjects
   | ProjectRemoveStudent
   | ProjectRemoveStudentS
   | ProjectRemoveStudentF
+  | LoadProject
+  | LoadProjectS
+  | LoadProjectF
   | LoadProjectNotStudents
   | LoadProjectNotStudentsS
   | LoadProjectNotStudentsF

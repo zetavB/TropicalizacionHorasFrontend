@@ -19,6 +19,11 @@
     <td mat-cell *matCellDef="let element">{{element.usuario.apellidos.split(' ')[1]}}</td>
   </ng-container>
 
+  <ng-container matColumnDef="carne">
+    <th mat-header-cell *matHeaderCellDef>Carné</th>
+    <td mat-cell *matCellDef="let element">{{element.carne}}</td>
+  </ng-container>
+
   <ng-container matColumnDef="erase">
     <th mat-header-cell *matHeaderCellDef>Remover</th>
     <td mat-cell *matCellDef="let element">

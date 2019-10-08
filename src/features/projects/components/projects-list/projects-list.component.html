@@ -1,21 +1,19 @@
-<div *ngIf="projects$ | async as project">
-  <table mat-table [dataSource]="project">
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef>Nombre</th>
-      <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
-    </ng-container>
+<table mat-table [dataSource]="projects$ | async">
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
+  </ng-container>
 
-    <ng-container matColumnDef="descripcion">
-      <th mat-header-cell *matHeaderCellDef>Descripcion</th>
-      <td mat-cell *matCellDef="let element">{{element.descripcion}}</td>
-    </ng-container>
+  <ng-container matColumnDef="descripcion">
+    <th mat-header-cell *matHeaderCellDef>Descripcion</th>
+    <td mat-cell *matCellDef="let element">{{element.descripcion}}</td>
+  </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row
-        *matRowDef="let row; columns: displayedColumns;"
-        [routerLink]="['/proyectos/detalles/', row.nombre]"></tr>
-  </table>
-</div>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      [routerLink]="['/proyectos/detalles/', row.nombre]"></tr>
+</table>
 <div *ngIf="projectsPage$ |async as page">
   <mat-paginator
     [length]="page.totalElements"

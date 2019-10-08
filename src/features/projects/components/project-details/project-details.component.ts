@@ -5,7 +5,7 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {ProjectModel} from '../../../../models/entities/project.model';
-import {ChangeDescription, SelectProject} from '../../state/projects.actions';
+import {ChangeDescription, LoadProject, SelectProject} from '../../state/projects.actions';
 import {takeWhile} from 'rxjs/operators';
 
 @Component({
@@ -50,10 +50,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
       select(getProjectDetailsProject),
       takeWhile(() => this.alive)
     ).subscribe((p: ProjectModel) => {
-      if (p === undefined || p === null) {
-        this.router.navigate(['proyectos']);
+      this.project = p;
+      if (p.descripcion === undefined) {
+        this.store$.dispatch(new LoadProject(p.nombre));
       } else {
-        this.project = p;
         this.description.patchValue(this.project.descripcion);
       }
     });

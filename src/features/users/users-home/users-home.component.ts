@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {State} from '../../../app/state/state';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {getUserRole} from '../../login/state';
+import {UserRoles} from '../../../models/user-roles.model';
 
 @Component({
   selector: 'app-users-home',
@@ -7,9 +12,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsersHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store$: Store<State>) { }
+
+  userRole$: Observable<string>;
+  coordinatorRole: string = UserRoles.Coordinator;
 
   ngOnInit() {
+    this.userRole$ = this.store$.select(getUserRole);
   }
 
 }

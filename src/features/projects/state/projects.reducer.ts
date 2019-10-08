@@ -24,6 +24,8 @@ export interface ProjectsState {
     errorStudents: boolean;
     loadingRemoveStudent: boolean;
     errorRemovingStudent: boolean;
+    loadingStudent: boolean;
+    errorLoadingStudent: boolean;
   };
   addStudents: {
     studentsPage: Page<Estudiante>,
@@ -65,7 +67,9 @@ export const initialState: ProjectsState = {
     loadingStudents: false,
     errorStudents: false,
     loadingRemoveStudent: false,
-    errorRemovingStudent: false
+    errorRemovingStudent: false,
+    loadingStudent: false,
+    errorLoadingStudent: false
   },
   addStudents: {
     studentsPage: {
@@ -276,6 +280,30 @@ export function reducer(state = initialState, action: ProjectsActions): Projects
           ...state.projectDetails,
           errorRemovingStudent: true,
           loadingRemoveStudent: false
+        }
+      };
+    case ProjectsActionTypes.LoadProject:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          loadingStudent: true,
+        }
+      };
+    case ProjectsActionTypes.LoadProjectS:
+      return {
+        ...state,
+        projectDetails: {
+          ...state.projectDetails,
+          loadingStudent: false,
+          errorLoadingStudent: false,
+        },
+        projectsList: {
+          ...state.projectsList,
+          projectsPage: {
+            ...state.projectsList.projectsPage,
+            content: [...state.projectsList.projectsPage.content, action.proyecto]
+          }
         }
       };
       // ---------------------------- Project add students -----------------

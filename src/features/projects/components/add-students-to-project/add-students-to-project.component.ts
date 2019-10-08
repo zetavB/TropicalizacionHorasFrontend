@@ -36,7 +36,7 @@ export class AddStudentsToProjectComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  displayedColumns: string[] = ['email', 'name', 'lastN1', 'lastN2', 'select'];
+  displayedColumns: string[] = ['email', 'name', 'lastN1', 'lastN2', 'select', 'carne'];
 
   alive = true;
   studentsPage$: Observable<Page<Estudiante>>;

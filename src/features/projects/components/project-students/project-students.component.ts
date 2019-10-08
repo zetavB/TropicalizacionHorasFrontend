@@ -20,7 +20,7 @@ export class ProjectStudentsComponent implements OnInit {
   studentsPage$: Observable<Page<Estudiante>>;
   students$: Observable<Estudiante[]>;
 
-  displayedColumns: string[] = ['email', 'name', 'lastN1', 'lastN2', 'erase'];
+  displayedColumns: string[] = ['email', 'name', 'lastN1', 'lastN2', 'erase', 'carne'];
 
   ngOnInit() {
     this.studentsPage$ = this.store$.select(getProjectDetailsStudentsPage);

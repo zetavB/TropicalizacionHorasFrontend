@@ -9,10 +9,10 @@ import {AddStudentComponent} from './admin-students/components/add-student/add-s
 
 const usersRoutes: Routes = [
   {path: '', component: UsersHomeComponent},
+  {path: 'agregar-revisor', component: AddReviewerComponent},
   {path: 'revisor/:correo', component: ReviewerProfileComponent},
-  {path: 'revisor/agregar', component: AddReviewerComponent},
-  {path: 'estudiante/:correo', component: StudentProfileComponent},
-  {path: 'estudiante/agregar', component: AddStudentComponent}
+  {path: 'agregar-estudiante', component: AddStudentComponent},
+  {path: 'estudiante/:correo', component: StudentProfileComponent}
 ];
 
 @NgModule({

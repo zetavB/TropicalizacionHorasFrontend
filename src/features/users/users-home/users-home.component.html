@@ -1,1 +1,26 @@
-<p>users-home works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Revisores y coordinadores</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <app-reviewers-list></app-reviewers-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary"
+            [routerLink]="['usuarios/revisor/agregar']"
+            *ngIf="(userRole$ | async) === coordinatorRole"
+    >Agregar revisor/coordinador</button>
+  </mat-card-actions>
+</mat-card>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Estudiantes</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <app-students-list></app-students-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary"
+    [routerLink]="['agregar-estudiante']">Agregar estudiante</button>
+  </mat-card-actions>
+</mat-card>

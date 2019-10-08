@@ -71,9 +71,10 @@ export const getProjectDetailsProject = createSelector(
   getProjectsListProjectsPage,
   getProjectDetailsName,
   (projects: Page<ProjectModel>, name: string) => {
-    return projects.content.find(({ nombre }) =>
+    const proyecto = projects.content.find(({ nombre }) =>
       nombre === name
     );
+    return proyecto === undefined ? {nombre: name} as ProjectModel : proyecto;
   }
 );
 
