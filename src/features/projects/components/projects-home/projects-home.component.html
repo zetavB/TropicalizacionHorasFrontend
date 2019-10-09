@@ -7,5 +7,5 @@
   </mat-card-content>
   <mat-card-actions></mat-card-actions>
 </mat-card>
-<app-add-project></app-add-project>
+<app-add-project *ngIf="!(isStudent$ | async)"></app-add-project>
 

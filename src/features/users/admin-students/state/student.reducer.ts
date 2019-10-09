@@ -17,6 +17,9 @@ export interface StudentState {
     loadingActivities: boolean,
     errorLoadingActivities: boolean,
   };
+  editProjects: {
+    selectedProjects: string[]
+  };
   editStudent: {
     loading: boolean,
     error: boolean
@@ -54,6 +57,9 @@ export const initialState: StudentState = {
     },
     loadingActivities: false,
     errorLoadingActivities: false,
+  },
+  editProjects: {
+    selectedProjects: []
   },
   editStudent: {
     loading: false,
@@ -158,7 +164,27 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
           }
         }
       };
-
+    case StudentActionTypes.SelectStudentProjects:
+      return {
+        ...state,
+        editProjects: {
+          selectedProjects: [...state.studentProfile.selectedStudent.proyectos.map(p => p.nombre)]
+        }
+      };
+    case StudentActionTypes.SelectProject:
+      return {
+        ...state,
+        editProjects: {
+          selectedProjects: [...state.editProjects.selectedProjects, action.projectName]
+        }
+      };
+    case StudentActionTypes.DeselectProject:
+      return {
+        ...state,
+        editProjects: {
+          selectedProjects: [...state.editProjects.selectedProjects.filter(p => p !== action.projectName)]
+        }
+      };
     case StudentActionTypes.AddStudent:
       return {
         ...state,

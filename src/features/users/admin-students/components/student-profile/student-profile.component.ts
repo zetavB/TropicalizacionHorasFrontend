@@ -5,8 +5,10 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {takeWhile} from 'rxjs/operators';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {SelectProject} from '../../../../projects/state/projects.actions';
-import {LoadStudentActivities, SelectStudent} from '../../state/student.actions';
+import {EditStudent, LoadStudentActivities, SelectStudent, SelectStudentProjects} from '../../state/student.actions';
 import {Estudiante} from '../../../../../models/entities/estudiante.model';
+import {Usuario} from '../../../../../models/entities/usuario.model';
+import {UserService} from '../../../../../core/user.service';
 
 @Component({
   selector: 'app-student-profile',
@@ -18,12 +20,14 @@ export class StudentProfileComponent implements OnInit, OnDestroy {
   constructor(private store$: Store<State>,
               private route: ActivatedRoute,
               private fb: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private userService: UserService) {
   }
 
   alive = true;
   editing = false;
   proyectos: string[];
+  student: Estudiante = null;
 
   statuses = ['Activo', 'Prórroga', 'Finalizado', 'Inactivo'];
   types = ['Traslado', 'Regular', 'Pasantía'];
@@ -31,10 +35,11 @@ export class StudentProfileComponent implements OnInit, OnDestroy {
   studentForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     phone: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-    name: ['', [Validators.required, Validators.pattern('[a-z A-Z]+')]],
-    lastNames: ['', [Validators.required, Validators.pattern('[a-z A-Z]+')]],
+    name: ['', [Validators.required, Validators.pattern('[a-z A-ZáéíóúÁÉÍÓÚ]+')]],
+    lastNames: ['', [Validators.required, Validators.pattern('[a-z A-ZáéíóúÁÉÍÓÚ]+')]],
     carne: ['', [Validators.required, Validators.pattern('[A-Z]?[0-9]+')]],
     hours: ['', [Validators.required, Validators.pattern('[0-9]')]],
+    days: [''],
     type: ['', [Validators.required]],
     status: ['', [Validators.required]],
     startDate: ['', [Validators.required]],
@@ -65,6 +70,10 @@ export class StudentProfileComponent implements OnInit, OnDestroy {
     return this.studentForm.get('hours');
   }
 
+  get days() {
+    return this.studentForm.get('days');
+  }
+
   get type() {
     return this.studentForm.get('type');
   }
@@ -82,6 +91,8 @@ export class StudentProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.studentForm.disable();
+
     this.route.paramMap.pipe(
       takeWhile(() => this.alive)
     ).subscribe((params: ParamMap) =>
@@ -89,8 +100,9 @@ export class StudentProfileComponent implements OnInit, OnDestroy {
     );
 
     this.store$.select(getSelectedStudent).subscribe((student: Estudiante) => {
+      this.student = student;
       if (student !== undefined) {
-        this.showStudent(student);
+        this.showStudent();
       } else {
         this.router.navigate(['/usuarios']);
       }
@@ -101,19 +113,56 @@ export class StudentProfileComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
 
-  private showStudent(student: Estudiante) {
-    this.store$.dispatch(new LoadStudentActivities(student.usuario.correo));
-    this.proyectos = student.proyectos.map(obj => obj.nombre);
+  public startEditing(): void {
+    this.editing = true;
+    this.studentForm.enable();
+  }
+  public stopEditing(): void {
+    this.editing = false;
+    this.studentForm.disable();
+    this.showStudent();
+  }
 
-    this.email.setValue(student.usuario.correo);
-    this.name.setValue(student.usuario.nombre);
-    this.phone.setValue(student.usuario.telefono);
-    this.lastNames.setValue(student.usuario.apellidos);
-    this.carne.setValue(student.carne);
-    this.hours.setValue(student.horasTotales);
-    this.type.setValue(student.tipo);
-    this.status.setValue(student.estado);
-    this.startDate.setValue(student.fechaInicio);
-    this.startDate.setValue(student.fechaFinal);
+  private showStudent(): void {
+    this.store$.dispatch(new LoadStudentActivities(this.student.usuario.correo));
+    this.proyectos = this.student.proyectos.map(obj => obj.nombre);
+
+    this.email.setValue(this.student.usuario.correo);
+    this.name.setValue(this.student.usuario.nombre);
+    this.phone.setValue(this.student.usuario.telefono);
+    this.lastNames.setValue(this.student.usuario.apellidos);
+    this.carne.setValue(this.student.carne);
+    this.hours.setValue(this.student.horasTotales);
+    this.days.setValue(this.userService.getDateDifference(this.student.fechaFinal));
+    this.type.setValue(this.student.tipo);
+    this.status.setValue(this.student.estado);
+    this.startDate.setValue(this.student.fechaInicio);
+    this.endDate.setValue(this.student.fechaFinal);
+  }
+
+  public editStudent(): void {
+    const newStudent = {
+      usuario: {
+        correo: this.email.value,
+        nombre: this.name.value,
+        apellidos: this.lastNames.value,
+        telefono: this.phone.value,
+        activado: true
+      } as Usuario,
+      fechaInicio: this.startDate.value,
+      fechaFinal: this.endDate.value,
+      tipo: this.type.value,
+      estado: this.status.value,
+      horasTotales: this.hours.value,
+      carne: this.carne.value,
+      diasRestantes: this.student.diasRestantes
+    } as Estudiante;
+    this.store$.dispatch(new EditStudent(newStudent));
+    this.stopEditing();
+  }
+
+  editProjects() {
+    this.store$.dispatch(new SelectStudentProjects());
+    this.router.navigate(['/usuarios/editar-proyectos-estudiante/', this.student.usuario.correo]);
   }
 }

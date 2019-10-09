@@ -22,7 +22,8 @@ export class SidebarComponent implements OnInit {
       if (login.tokenInfo != null && login.tokenInfo.rol === 'Estudiante') {
         this.content = [
           {id: 1, name: 'Perfil', url: '/perfil'},
-          {id: 2, name: 'Actividades', url: '/actividades'}
+          {id: 2, name: 'Actividades', url: '/actividades'},
+          {id: 2, name: 'Proyectos', url: '/proyectos'},
         ];
       } else {
         this.content = [

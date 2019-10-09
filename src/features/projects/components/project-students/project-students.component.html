@@ -36,7 +36,7 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row
       *matRowDef="let row; columns: displayedColumns;"
-      [routerLink]="['/estudiantes/detalles/', row.usuario.correo]"></tr>
+      [routerLink]="['/usuarios/estudiante/', row.usuario.correo]"></tr>
 </table>
 <div *ngIf="studentsPage$ |async as page">
   <mat-paginator

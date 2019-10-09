@@ -9,7 +9,7 @@
         <mat-error *ngIf="description.errors?.required">Favor no dejar la descripción vacía</mat-error>
       </mat-form-field>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions *ngIf="!(isStudent$ | async)">
       <button mat-raised-button *ngIf="!editing; else editButtons" color="primary" (click)="editing = true;">Editar
         descripción
       </button>
@@ -27,11 +27,11 @@
   <mat-card-content>
     <app-project-students [projectName]="project.nombre"></app-project-students>
   </mat-card-content>
-  <mat-card-actions>
+  <mat-card-actions *ngIf="!(isStudent$ | async)">
     <button mat-raised-button color="primary" [routerLink]="['/proyectos/agregar-estudiantes', project.nombre]">Agregar estudiantes</button>
   </mat-card-actions>
 </mat-card>
-<mat-card>
+<mat-card *ngIf="!(isStudent$ | async)">
   <mat-card-actions>
     <button mat-raised-button color="warn" (click)="deleteProject()">Borrar proyecto</button>
   </mat-card-actions>

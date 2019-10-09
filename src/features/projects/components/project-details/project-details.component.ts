@@ -6,7 +6,9 @@ import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {ProjectModel} from '../../../../models/entities/project.model';
 import {ChangeDescription, LoadProject, SelectProject} from '../../state/projects.actions';
-import {takeWhile} from 'rxjs/operators';
+import {map, takeWhile} from 'rxjs/operators';
+import {getUserRole} from '../../../login/state';
+import {UserRoles} from '../../../../models/user-roles.model';
 
 @Component({
   selector: 'app-project-details',
@@ -26,6 +28,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   };
 
   alive = true;
+  isStudent$: Observable<boolean>;
 
   get description() {
     return this.editDescriptionForm.get('description');
@@ -57,6 +60,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         this.description.patchValue(this.project.descripcion);
       }
     });
+
+    this.isStudent$ = this.store$.select(getUserRole).pipe(
+      map(role => role === UserRoles.Student)
+    );
   }
 
   private changeDescription(): void {

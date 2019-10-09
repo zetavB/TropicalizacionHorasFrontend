@@ -4,3 +4,7 @@
   align-content: center;
   justify-content: flex-start;
 }
+
+.mat-icon {
+  margin-left: 0.5rem;
+}

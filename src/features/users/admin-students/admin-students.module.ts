@@ -11,11 +11,12 @@ import {AdminStudentsService} from './admin-students.service';
 import {CustomMaterialModule} from '../../../app/material.module';
 import {UserRoutingModule} from '../user-routing.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import { StudentProjectsEditComponent } from './components/student-projects-edit/student-projects-edit.component';
 
 
 
 @NgModule({
-  declarations: [StudentsListComponent, StudentProfileComponent, AddStudentComponent],
+  declarations: [StudentsListComponent, StudentProfileComponent, AddStudentComponent, StudentProjectsEditComponent],
   imports: [
     CommonModule,
     CustomMaterialModule,

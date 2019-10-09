@@ -16,6 +16,13 @@ export enum StudentActionTypes {
   LoadStudentActivitiesF = '[Students] Load student activities failed',
   ChangeStudentActivitiesPage = '[Students] Change Students activities page',
 
+  SelectStudentProjects = '[Students] Select student projects',
+  SelectProject = '[Students] Select Project',
+  DeselectProject = '[Students] Deselect Project',
+  EditStudentProjects = '[Students] Edit Student Projects',
+  EditStudentProjectsS = '[Students] Edit Student Projects successful',
+  EditStudentProjectsF = '[Students] Edit Student Projects failed',
+
   AddStudent = '[Students] Add student',
   AddStudentS = '[Students] Add student successful',
   AddStudentF = '[Students] Add student failed',
@@ -71,6 +78,29 @@ export class ChangeStudentActivitiesPage implements Action {
   constructor(public newSize: number, public newNumber: number) {}
 }
 
+export class SelectStudentProjects implements Action {
+  readonly type = StudentActionTypes.SelectStudentProjects;
+}
+export class SelectProject implements Action {
+  readonly type = StudentActionTypes.SelectProject;
+
+  constructor(public projectName: string) {}
+}
+export class DeselectProject implements Action {
+  readonly type = StudentActionTypes.DeselectProject;
+
+  constructor(public projectName: string) {}
+}
+export class EditStudentProjects implements Action {
+  readonly type = StudentActionTypes.EditStudentProjects;
+}
+export class EditStudentProjectsS implements Action {
+  readonly type = StudentActionTypes.EditStudentProjectsS;
+}
+export class EditStudentProjectsF implements Action {
+  readonly type = StudentActionTypes.EditStudentProjectsF;
+}
+
 export class AddStudent implements Action {
   readonly type = StudentActionTypes.AddStudent;
 
@@ -116,6 +146,11 @@ export type StudentActions = LoadStudents
   | LoadStudentActivitiesS
   | LoadStudentActivitiesF
   | ChangeStudentActivitiesPage
+  | SelectStudentProjects
+  | SelectProject
+  | DeselectProject
+  | EditStudentProjects
+  | EditStudentProjectsF
   | AddStudent
   | AddStudentS
   | AddStudentF

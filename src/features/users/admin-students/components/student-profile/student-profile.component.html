@@ -2,10 +2,10 @@
   <mat-card-header>
     <mat-card-title>Perfil de estudiante</mat-card-title>
   </mat-card-header>
-  <form [formGroup]="studentForm">
+  <form [formGroup]="studentForm" (ngSubmit)="editStudent()">
     <mat-card-content>
       <mat-form-field>
-        <input matInput placeholder="Correo" formControlName="email" [required]="editing">
+        <input matInput placeholder="Correo" formControlName="email" [required]="editing" [readonly]="editing">
         <mat-error *ngIf="email.hasError('email')">Digite un email valido</mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -25,10 +25,6 @@
         <mat-error *ngIf="carne.hasError('pattern')">El carné no cumple con el formato válido</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Horas" formControlName="hours" [required]="editing">
-        <mat-error *ngIf="hours.hasError('pattern')">Solo se permiten números</mat-error>
-      </mat-form-field>
-      <mat-form-field>
         <mat-label>Tipo</mat-label>
         <mat-select formControlName="type" [required]="editing">
           <mat-option *ngFor="let type of types" [value]="type">{{type}}</mat-option>
@@ -41,17 +37,30 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepicker]="startPicker" placeholder="Fecha de inicio" formControlName="startDate" [required]="editing">
+        <input matInput placeholder="Horas realizadas" formControlName="hours" [required]="editing">
+        <mat-error *ngIf="hours.hasError('pattern')">Solo se permiten números</mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="!editing">
+        <input matInput placeholder="Días restantes" formControlName="days" [required]="editing">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="startPicker" placeholder="Fecha de inicio" formControlName="startDate"
+               [required]="editing">
         <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
         <mat-datepicker #startPicker></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepicker]="endPicker" placeholder="Fecha de finalización" formControlName="endDate" [required]="editing">
+        <input matInput [matDatepicker]="endPicker" placeholder="Fecha de finalización" formControlName="endDate"
+               [required]="editing">
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
       </mat-form-field>
-      <mat-list>
-        <h3 mat-subheader>Proyectos</h3>
+      <mat-list *ngIf="!editing">
+        <h3 mat-subheader>Proyectos
+          <button mat-icon-button (click)="editProjects()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </h3>
         <mat-list-item *ngFor="let proyecto of proyectos" [routerLink]="['/proyectos/detalles/', proyecto]">
           <mat-icon mat-list-icon>perm_data_setting</mat-icon>
           <h4 mat-line>{{proyecto}}</h4>
@@ -59,12 +68,16 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit"
+      <button mat-raised-button color="primary"
+              (click)="startEditing()"
               *ngIf=" !editing else editButtons"
-              [disabled]="">Editar</button>
+              [disabled]="">Editar
+      </button>
       <ng-template #editButtons>
-        <button mat-raised-button color="warn" (click)="editing = !editing;">Cancelar</button>
-        <button mat-raised-button color="primary">Guardar cambios</button>
+        <button mat-raised-button color="warn" (click)="stopEditing()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit"
+                [disabled]="studentForm.invalid || !studentForm.touched">Guardar cambios
+        </button>
       </ng-template>
     </mat-card-actions>
   </form>
