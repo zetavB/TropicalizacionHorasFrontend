@@ -40,4 +40,8 @@ export class AdminStudentsService {
   public deleteStudent(studentEmail: string): Observable<CustomResponse> {
     return this.httpClient.delete<CustomResponse>(this.resourceURL + '/' + studentEmail);
   }
+
+  editProjects(email: string, projects: string[]) {
+    return this.httpClient.put<CustomResponse>(this.resourceURL + '/proyectos/' + email, projects);
+  }
 }

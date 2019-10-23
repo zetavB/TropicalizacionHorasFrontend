@@ -1,3 +1,7 @@
 table {
   width: 100%;
 }
+
+.mat-row:hover {
+  background: rgba(200, 200, 200, 50);
+}

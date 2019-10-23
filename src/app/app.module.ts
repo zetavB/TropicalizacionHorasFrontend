@@ -15,7 +15,7 @@ import { ProfileModule } from '../features/profile/profile.module';
 import { EffectsModule } from '@ngrx/effects';
 import { ActivitiesModule } from 'src/features/activities/activities.module';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
-import { CustomSerializer, reducers } from './state/router.reducer';
+import {CustomSerializer, getInitialState, reducers} from './state/router.reducer';
 import {TokenInterceptor} from '../core/token-interceptor.service';
 
 @NgModule({
@@ -32,7 +32,7 @@ import {TokenInterceptor} from '../core/token-interceptor.service';
     ActivitiesModule,
     ProfileModule,
     SharedModule.forRoot(),
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(reducers, {initialState: getInitialState}),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({

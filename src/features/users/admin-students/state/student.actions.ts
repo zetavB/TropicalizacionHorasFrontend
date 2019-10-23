@@ -96,6 +96,8 @@ export class EditStudentProjects implements Action {
 }
 export class EditStudentProjectsS implements Action {
   readonly type = StudentActionTypes.EditStudentProjectsS;
+
+  constructor(public studentEmail: string) {}
 }
 export class EditStudentProjectsF implements Action {
   readonly type = StudentActionTypes.EditStudentProjectsF;
@@ -108,6 +110,8 @@ export class AddStudent implements Action {
 }
 export class AddStudentS implements Action {
   readonly type = StudentActionTypes.AddStudentS;
+
+  constructor(public student: Estudiante) {}
 }
 export class AddStudentF implements Action {
   readonly type = StudentActionTypes.AddStudentF;
@@ -120,6 +124,8 @@ export class EditStudent implements Action {
 }
 export class EditStudentS implements Action {
   readonly type = StudentActionTypes.EditStudentS;
+
+  constructor(public newStudent: Estudiante) {}
 }
 export class EditStudentF implements Action {
   readonly type = StudentActionTypes.EditStudentF;
@@ -132,6 +138,8 @@ export class DeleteStudent implements Action {
 }
 export class DeleteStudentS implements Action {
   readonly type = StudentActionTypes.DeleteStudentS;
+
+  constructor(public email: string) {}
 }
 export class DeleteStudentF implements Action {
   readonly type = StudentActionTypes.DeleteStudentF;
@@ -150,6 +158,7 @@ export type StudentActions = LoadStudents
   | SelectProject
   | DeselectProject
   | EditStudentProjects
+  | EditStudentProjectsS
   | EditStudentProjectsF
   | AddStudent
   | AddStudentS

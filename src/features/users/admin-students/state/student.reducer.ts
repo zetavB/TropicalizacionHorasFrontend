@@ -2,6 +2,7 @@ import {StudentActions, StudentActionTypes} from './student.actions';
 import {Estudiante} from '../../../../models/entities/estudiante.model';
 import {Page} from '../../../../models/Page';
 import {Activity} from '../../../../models/entities/activity.model';
+import {act} from '@ngrx/effects';
 
 export const studentFeatureKey = 'students';
 
@@ -18,7 +19,9 @@ export interface StudentState {
     errorLoadingActivities: boolean,
   };
   editProjects: {
-    selectedProjects: string[]
+    selectedProjects: string[],
+    loading: boolean,
+    error: boolean
   };
   editStudent: {
     loading: boolean,
@@ -59,7 +62,9 @@ export const initialState: StudentState = {
     errorLoadingActivities: false,
   },
   editProjects: {
-    selectedProjects: []
+    selectedProjects: [],
+    loading: false,
+    error: false
   },
   editStudent: {
     loading: false,
@@ -115,17 +120,15 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
           }
         }
       };
-
     case StudentActionTypes.SelectStudent:
       return {
         ...state,
         studentProfile: {
           ...state.studentProfile,
-          loadingActivities: true,
           selectedStudent: state.studentsList.studentsPage.content.find(student => student.usuario.correo === action.email)
         }
       };
-    case  StudentActionTypes.LoadStudentActivities:
+    case StudentActionTypes.LoadStudentActivities:
       return {
         ...state,
         studentProfile: {
@@ -133,7 +136,7 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
           loadingActivities: true,
         }
       };
-    case  StudentActionTypes.LoadStudentActivitiesS:
+    case StudentActionTypes.LoadStudentActivitiesS:
       return {
         ...state,
         studentProfile: {
@@ -143,7 +146,7 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
           errorLoadingActivities: false
         }
       };
-    case  StudentActionTypes.LoadStudentActivitiesF:
+    case StudentActionTypes.LoadStudentActivitiesF:
       return {
         ...state,
         studentProfile: {
@@ -168,6 +171,7 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
       return {
         ...state,
         editProjects: {
+          ...state.editProjects,
           selectedProjects: [...state.studentProfile.selectedStudent.proyectos.map(p => p.nombre)]
         }
       };
@@ -175,6 +179,7 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
       return {
         ...state,
         editProjects: {
+          ...state.editProjects,
           selectedProjects: [...state.editProjects.selectedProjects, action.projectName]
         }
       };
@@ -182,7 +187,45 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
       return {
         ...state,
         editProjects: {
+          ...state.editProjects,
           selectedProjects: [...state.editProjects.selectedProjects.filter(p => p !== action.projectName)]
+        }
+      };
+    case StudentActionTypes.EditStudentProjects:
+      return {
+        ...state,
+        editProjects: {
+          ...state.editProjects,
+          loading: true
+        }
+      };
+    case StudentActionTypes.EditStudentProjectsS:
+      return {
+        ...state,
+        editProjects: {
+          ...state.editProjects,
+          loading: false,
+          error: false
+        },
+        studentsList: {
+          ...state.studentsList,
+          studentsPage: {
+            ...state.studentsList.studentsPage,
+            content: [{
+                ...state.studentsList.studentsPage.content.find(s => s.usuario.correo === action.studentEmail),
+                proyectos: state.editProjects.selectedProjects.map(p => ({nombre: p}))
+              },
+              ...state.studentsList.studentsPage.content.filter(s => s.usuario.correo !== action.studentEmail)]
+          }
+        }
+      };
+    case StudentActionTypes.EditStudentProjectsF:
+      return {
+        ...state,
+        editProjects: {
+          ...state.editProjects,
+          loading: false,
+          error: true
         }
       };
     case StudentActionTypes.AddStudent:
@@ -191,7 +234,7 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
         addStudent: {
           ...state.addStudent,
           loading: true
-        }
+        },
       };
     case StudentActionTypes.AddStudentS:
       return {
@@ -199,6 +242,17 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
         addStudent: {
           loading: false,
           error: false
+        },
+        studentsList: {
+          ...state.studentsList,
+          studentsPage: {
+            ...state.studentsList.studentsPage,
+            content: [...state.studentsList.studentsPage.content, action.student]
+          }
+        },
+        studentProfile: {
+          ...state.studentProfile,
+          selectedStudent: action.student
         }
       };
     case StudentActionTypes.AddStudentF:
@@ -209,7 +263,6 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
           error: true
         }
       };
-
     case StudentActionTypes.EditStudent:
       return {
         ...state,
@@ -224,6 +277,20 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
         editStudent: {
           loading: false,
           error: false
+        },
+        studentProfile: {
+          ...state.studentProfile,
+          selectedStudent: action.newStudent
+        },
+        studentsList: {
+          ...state.studentsList,
+          studentsPage: {
+            ...state.studentsList.studentsPage,
+            content: [...state.studentsList.studentsPage.content
+              .filter(s => s.usuario.correo !== action.newStudent.usuario.correo),
+            action.newStudent
+            ]
+          }
         }
       };
     case StudentActionTypes.EditStudentF:
@@ -234,7 +301,6 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
           error: true
         }
       };
-
     case StudentActionTypes.DeleteStudent:
       return {
         ...state,
@@ -249,6 +315,13 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
         deleteStudent: {
           loading: false,
           error: false
+        },
+        studentsList: {
+          ...state.studentsList,
+          studentsPage: {
+            ...state.studentsList.studentsPage,
+            content: [...state.studentsList.studentsPage.content.filter(s => s.usuario.correo !== action.email)]
+          }
         }
       };
     case StudentActionTypes.DeleteStudentF:
@@ -259,7 +332,6 @@ export function reducer(state = initialState, action: StudentActions): StudentSt
           error: true
         }
       };
-
     default:
       return state;
   }

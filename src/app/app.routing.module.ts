@@ -20,7 +20,7 @@ const routes: Routes = [
   {
     path: 'cambiar-contrasenna',
     loadChildren: () => import('../features/change-password/change-password.module')
-      .then(mod => mod.ForgotPasswordModule)
+      .then(mod => mod.ChangePasswordModule)
   },
   {
     path: 'proyectos',

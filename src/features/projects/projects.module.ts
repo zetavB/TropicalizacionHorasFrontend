@@ -14,6 +14,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {CustomMaterialModule} from '../../app/material.module';
 import {ProjectsRoutingModule} from './projects-routing.module';
 import {ProjectsService} from './projects.service';
+import {StudentProjectsEditComponent} from './components/student-projects-edit/student-projects-edit.component';
 
 
 
@@ -24,7 +25,8 @@ import {ProjectsService} from './projects.service';
     AddProjectComponent,
     ProjectsHomeComponent,
     ProjectStudentsComponent,
-    AddStudentsToProjectComponent
+    AddStudentsToProjectComponent,
+    StudentProjectsEditComponent
   ],
   imports: [
     CommonModule,

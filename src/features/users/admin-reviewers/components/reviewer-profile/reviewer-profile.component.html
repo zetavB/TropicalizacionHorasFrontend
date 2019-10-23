@@ -1,1 +1,51 @@
-<p>reviewer-profile works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{this.adding ? 'Agregar nuevo revisor' :
+        this.editing ? 'Editar revisor' :
+            'Perfil del revisor'}}</mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="reviewerForm">
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="Correo" formControlName="email" [required]="editing" [readonly]="editing">
+        <mat-error *ngIf="email.hasError('email')">Digite un email valido</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Teléfono" formControlName="phone" [required]="editing">
+        <mat-error *ngIf="phone.hasError('pattern')">Solo se permiten números en el teléfono</mat-error>
+        <mat-error *ngIf="phone.hasError('min')  || phone.hasError('max')">El número de teléfono consiste de 8 números</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Nombre" formControlName="name" [required]="editing">
+        <mat-error *ngIf="name.hasError('pattern')">Solo se permiten letras en el nombre</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Apellidos" formControlName="lastNames" [required]="editing">
+        <mat-error *ngIf="lastNames.hasError('pattern')">Solo se permiten letras en los apellidos</mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="coordinator">Coordinador</mat-checkbox>
+    </mat-card-content>
+    <mat-card-actions>
+      <ng-container *ngIf=" !editing && !adding && (userRole$ | async) === coordinatorRole">
+        <button mat-raised-button color="primary"
+                (click)="startEditing()">Editar</button>
+        <button mat-raised-button color="warn"
+                (click)="deleteReviewer()">Borrar</button>
+      </ng-container>
+      <ng-container *ngIf="!adding && editing">
+        <button mat-raised-button color="warn"
+                (click)="stopEditing()">Cancelar</button>
+        <button mat-raised-button color="primary"
+                (click)="editReviewer()"
+                [disabled]="reviewerForm.invalid || !reviewerForm.touched">Guardar cambios
+        </button>
+      </ng-container>
+      <ng-container *ngIf="adding">
+        <button mat-raised-button color="primary"
+                (click)="addReviewer()"
+                [disabled]="reviewerForm.invalid || !reviewerForm.touched">Guardar nuevo revisor
+        </button>
+      </ng-container>
+    </mat-card-actions>
+  </form>
+</mat-card>

@@ -1,15 +1,15 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Revisores y coordinadores</mat-card-title>
+    <mat-card-title>Revisores</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <app-reviewers-list></app-reviewers-list>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary"
-            [routerLink]="['usuarios/revisor/agregar']"
+            [routerLink]="['revisor/agregar']"
             *ngIf="(userRole$ | async) === coordinatorRole"
-    >Agregar revisor/coordinador</button>
+    >Agregar revisor</button>
   </mat-card-actions>
 </mat-card>
 <mat-card>
@@ -21,6 +21,6 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary"
-    [routerLink]="['agregar-estudiante']">Agregar estudiante</button>
+    [routerLink]="['estudiante/agregar']">Agregar estudiante</button>
   </mat-card-actions>
 </mat-card>

@@ -22,4 +22,4 @@ import {ChangePasswordRoutingModule} from './change-password-routing.module';
   ],
   providers: [ChangePasswordService]
 })
-export class ForgotPasswordModule { }
+export class ChangePasswordModule { }

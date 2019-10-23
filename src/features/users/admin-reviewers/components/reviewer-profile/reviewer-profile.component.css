@@ -1,0 +1,6 @@
+.mat-card-content {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: flex-start;
+}

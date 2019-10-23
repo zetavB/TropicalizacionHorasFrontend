@@ -1,6 +1,6 @@
 <mat-card>
-  <mat-card-header>
-    <mat-card-title></mat-card-title>
+  <mat-card-header *ngIf="student$ | async as student">
+    <mat-card-title>Proyectos del estudiante {{student.usuario.nombre}} {{student.usuario.apellidos}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <table mat-table [dataSource]="projects$ | async">
@@ -41,8 +41,8 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary"
-            (click)="addStudents()"
-            [disabled]="!(selectedExist$ | async)">Agregar estudiantes seleccionados
+            (click)="editStudentProjects()">
+      Guardar cambios en proyectos
     </button>
   </mat-card-actions>
 </mat-card>

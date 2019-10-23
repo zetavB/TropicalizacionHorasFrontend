@@ -2,7 +2,7 @@ import {StudentState} from './student.reducer';
 import * as fromRoot from '../../../../app/state/state';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {getProjectsListProjectsPageContent} from '../../../projects/state';
-import {ProjectToAddModel} from '../components/student-projects-edit/project-to-add.model';
+import {ProjectToAddModel} from '../../../projects/components/student-projects-edit/project-to-add.model';
 import {ProjectsState} from '../../../projects/state/projects.reducer';
 
 export interface State extends fromRoot.State {
@@ -37,6 +37,11 @@ export const getStudentProfileState = createSelector(
 export const getSelectedStudent = createSelector(
   getStudentProfileState,
   state => state.selectedStudent
+);
+
+export const getSelectedStudentProjects = createSelector(
+  getSelectedStudent,
+  state => state.proyectos.map(p => p.nombre)
 );
 
 // ------------------------------------------------Edit Projects-----------------------------------------

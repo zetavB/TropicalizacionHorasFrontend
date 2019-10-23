@@ -1,8 +1,10 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Perfil de estudiante</mat-card-title>
+    <mat-card-title>{{this.adding ? 'Agregar nuevo estudiante' :
+                        this.editing ? 'Editar estudiante' :
+                                        'Perfil del estudiante'}}</mat-card-title>
   </mat-card-header>
-  <form [formGroup]="studentForm" (ngSubmit)="editStudent()">
+  <form [formGroup]="studentForm">
     <mat-card-content>
       <mat-form-field>
         <input matInput placeholder="Correo" formControlName="email" [required]="editing" [readonly]="editing">
@@ -11,6 +13,7 @@
       <mat-form-field>
         <input matInput placeholder="Teléfono" formControlName="phone" [required]="editing">
         <mat-error *ngIf="phone.hasError('pattern')">Solo se permiten números en el teléfono</mat-error>
+        <mat-error *ngIf="phone.hasError('min')  || phone.hasError('max')">El número de teléfono consiste de 8 números</mat-error>
       </mat-form-field>
       <mat-form-field>
         <input matInput placeholder="Nombre" formControlName="name" [required]="editing">
@@ -40,7 +43,7 @@
         <input matInput placeholder="Horas realizadas" formControlName="hours" [required]="editing">
         <mat-error *ngIf="hours.hasError('pattern')">Solo se permiten números</mat-error>
       </mat-form-field>
-      <mat-form-field *ngIf="!editing">
+      <mat-form-field *ngIf="!editing && !adding">
         <input matInput placeholder="Días restantes" formControlName="days" [required]="editing">
       </mat-form-field>
       <mat-form-field>
@@ -55,30 +58,39 @@
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
       </mat-form-field>
-      <mat-list *ngIf="!editing">
+      <mat-list *ngIf="!editing && !adding">
         <h3 mat-subheader>Proyectos
           <button mat-icon-button (click)="editProjects()">
             <mat-icon>edit</mat-icon>
           </button>
         </h3>
-        <mat-list-item *ngFor="let proyecto of proyectos" [routerLink]="['/proyectos/detalles/', proyecto]">
+        <mat-list-item *ngFor="let proyecto of proyectos$ | async" [routerLink]="['/proyectos/detalles/', proyecto]">
           <mat-icon mat-list-icon>perm_data_setting</mat-icon>
           <h4 mat-line>{{proyecto}}</h4>
         </mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary"
-              (click)="startEditing()"
-              *ngIf=" !editing else editButtons"
-              [disabled]="">Editar
-      </button>
-      <ng-template #editButtons>
-        <button mat-raised-button color="warn" (click)="stopEditing()">Cancelar</button>
-        <button mat-raised-button color="primary" type="submit"
+      <ng-container *ngIf=" !editing && !adding">
+        <button mat-raised-button color="primary"
+                (click)="startEditing()">Editar</button>
+        <button mat-raised-button color="warn"
+                (click)="deleteStudent()">Borrar</button>
+      </ng-container>
+      <ng-container *ngIf="!adding && editing">
+        <button mat-raised-button color="warn"
+                (click)="stopEditing()">Cancelar</button>
+        <button mat-raised-button color="primary"
+                (click)="editStudent()"
                 [disabled]="studentForm.invalid || !studentForm.touched">Guardar cambios
         </button>
-      </ng-template>
+      </ng-container>
+      <ng-container *ngIf="adding">
+        <button mat-raised-button color="primary"
+                (click)="addStudent()"
+                [disabled]="studentForm.invalid || !studentForm.touched">Guardar nuevo estudiante
+        </button>
+      </ng-container>
     </mat-card-actions>
   </form>
 </mat-card>
