@@ -3,7 +3,15 @@ import {UserService} from '../../../core/user.service';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Observable, of} from 'rxjs';
 import {Action} from '@ngrx/store';
-import {LoadFailed, LoadProfile, LoadSuccessful, ProfileActionTypes} from './profile.actions';
+import {
+  LoadFailed,
+  LoadPendingHours,
+  LoadPendingHoursF,
+  LoadPendingHoursS,
+  LoadProfile,
+  LoadSuccessful,
+  ProfileActionTypes
+} from './profile.actions';
 import {catchError , map, mergeMap} from 'rxjs/operators';
 import {CustomResponse} from '../../../models/custom-response.model';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -29,7 +37,20 @@ export class ProfileEffects {
         }),
         catchError((err: CustomResponse) => {
           this.spinner.hide();
-          return of(new LoadFailed(err.errorMessages))})
+          return of(new LoadFailed(err.errorMessages));
+        })
+      )
+    )
+  );
+
+  @Effect()
+  loadPendingHours$: Observable<Action> = this.actions$.pipe(
+    ofType(ProfileActionTypes.LoadPendingHours),
+    map((action: LoadPendingHours) => action.studentEmail),
+    mergeMap((email: string) =>
+      this.userService.getPendingHours(email).pipe(
+        map(hours => new LoadPendingHoursS(hours)),
+        catchError(() => of(new LoadPendingHoursF()))
       )
     )
   );

@@ -25,6 +25,18 @@
     <textarea matInput placeholder="Detalles" formControlName="detalles"></textarea>
   </mat-form-field>
 
+  <mat-form-field *ngIf="(role$ | async) !== 'Estudiante'">
+    <mat-select placeholder="Estado" formControlName="estado">
+      <mat-option [value]="'Pendiente'">Pendiente</mat-option>
+      <mat-option [value]="'Aprobada'">Aprobada</mat-option>
+      <mat-option [value]="'Rechazada'">Rechazada</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="(role$ | async) !== 'Estudiante' && activityForm.value.estado === 'Rechazada'">
+    <textarea matInput placeholder="Justificación rechazo" formControlName="justificacionRechazo"></textarea>
+  </mat-form-field>
+
   <input formControlName="archivos" type="file" #file style="display: none" (change)="onFilesAdded()" multiple />
   <button type="button" mat-raised-button color="primary" class="add-files-btn" (click)="addFiles()">Add Files</button>
   <mat-list>
@@ -33,7 +45,7 @@
       <button mat-button type="button" (click)="removeFile(file)"><i class="material-icons">cancel</i></button>
     </mat-list-item>
   </mat-list>
-  
+
   <mat-list>
     <mat-list-item *ngFor="let file of files">
       <h4 mat-line>{{file.nombre}}</h4>

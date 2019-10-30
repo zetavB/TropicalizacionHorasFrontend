@@ -21,6 +21,8 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary"
-    [routerLink]="['estudiante/agregar']">Agregar estudiante</button>
+            [routerLink]="['estudiante/agregar']"
+            *ngIf="(userRole$ | async) !== 'Estudiante'"
+    >Agregar estudiante</button>
   </mat-card-actions>
 </mat-card>

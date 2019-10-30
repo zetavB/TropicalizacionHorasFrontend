@@ -21,7 +21,7 @@ export const getTokenInfo = createSelector(
 
 export const getUserRole = createSelector(
   getTokenInfo,
-  info => info.rol
+  info => info !== null ? info.rol : null
 );
 
 export const getLoginError = createSelector(

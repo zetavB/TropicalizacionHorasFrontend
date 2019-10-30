@@ -4,7 +4,10 @@ import {Estudiante} from '../../../models/entities/estudiante.model';
 export enum ProfileActionTypes {
   LoadProfile = '[Profile] Load Profile',
   LoadSuccessful = '[Profile] Load Successful',
-  LoadFailed = '[Profile] Load Failed'
+  LoadFailed = '[Profile] Load Failed',
+  LoadPendingHours = '[Profile] Load Pending hours',
+  LoadPendingHoursS = '[Profile] Load Pending hours successful',
+  LoadPendingHoursF = '[Profile] Load Pending hours failed'
 }
 
 export class LoadProfile implements  Action {
@@ -28,6 +31,21 @@ export class LoadFailed implements Action {
   constructor(public payload: string) {}
 }
 
+export class LoadPendingHours implements Action {
+  readonly type = ProfileActionTypes.LoadPendingHours;
+  constructor(public studentEmail: string) {}
+}
+export class LoadPendingHoursS implements Action {
+  readonly type = ProfileActionTypes.LoadPendingHoursS;
+  constructor(public hours: number) {}
+}
+export class LoadPendingHoursF implements Action {
+  readonly type = ProfileActionTypes.LoadPendingHoursF;
+}
+
 export type ProfileActions = LoadProfile
   | LoadSuccessful
-  | LoadFailed;
+  | LoadFailed
+  | LoadPendingHours
+  | LoadPendingHoursS
+  | LoadPendingHoursF;

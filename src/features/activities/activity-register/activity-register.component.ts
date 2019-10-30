@@ -55,7 +55,8 @@ export class ActivityRegisterComponent implements OnInit {
     categoria: {nombre: ''},
     proyecto: {nombre: ''},
     estudiante: {usuario: {correo: ''}},
-    detalles: ''
+    detalles: '',
+    justificacionRechazo: null
   };
 
   ngOnInit() {
@@ -96,7 +97,8 @@ export class ActivityRegisterComponent implements OnInit {
       categoria: {nombre: this.activityForm.value.categoria},
       proyecto: {nombre: this.activityForm.value.proyecto},
       estudiante: {usuario: {correo: this.studentEmail}},
-      detalles: this.activityForm.value.detalles
+      detalles: this.activityForm.value.detalles,
+      justificacionRechazo: null
     };
     const files = this.files;
     this.store.dispatch(new AddActivity({activity, files}));

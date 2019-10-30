@@ -17,6 +17,7 @@ import { ActivitiesModule } from 'src/features/activities/activities.module';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
 import {CustomSerializer, getInitialState, reducers} from './state/router.reducer';
 import {TokenInterceptor} from '../core/token-interceptor.service';
+import {ChangePasswordModule} from '../features/change-password/change-password.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {TokenInterceptor} from '../core/token-interceptor.service';
     LoginModule,
     ActivitiesModule,
     ProfileModule,
+    ChangePasswordModule,
     SharedModule.forRoot(),
     StoreModule.forRoot(reducers, {initialState: getInitialState}),
     EffectsModule.forRoot([]),

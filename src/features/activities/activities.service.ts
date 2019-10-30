@@ -17,7 +17,7 @@ export class ActivitiesService {
   private FILE_URL = environment.serverUrl + '/actividad/archivo';
 
   getActivities(email: string): Observable<Activity[]> {
-    return this.http.get<CustomResponse>(this.ACTIVITY_URL + '?correo=' + email).pipe(
+    return this.http.get<CustomResponse>(this.ACTIVITY_URL + '/estudiante?correo=' + email).pipe(
       map(
         response => {
           const actividad: Activity[] = [];
@@ -136,5 +136,12 @@ export class ActivitiesService {
     // return an observable with a user-facing error message
     return throwError(
       'Something bad happened; please try again later.');
+  }
+
+  getAllActivities(showAccepted: boolean, showPending: boolean, showDeclined: boolean): Observable<Activity[]> {
+    return this.http.get<CustomResponse>(this.ACTIVITY_URL +
+      '?aceptadas=' + showAccepted + '&pendientes=' + showPending + '&rechazadas=' + showDeclined).pipe(
+      map(resp => resp.response as Activity[])
+    );
   }
 }

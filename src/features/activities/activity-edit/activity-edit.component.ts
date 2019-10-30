@@ -8,6 +8,7 @@ import { UserService } from 'src/core/user.service';
 import { ActivitiesService } from '../activities.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {Activity} from '../../../models/entities/activity.model';
+import {getSortHeaderNotContainedWithinSortError} from '@angular/material/sort/typings/sort-errors';
 
 @Component({
   selector: 'app-activity-edit',
@@ -41,16 +42,14 @@ export class ActivityEditComponent implements OnInit {
 
     this.store.pipe(
       select(getActivityDetails)
-    ).subscribe(activity => this.activity = activity);
+    ).subscribe(activity => {
+      this.activity = activity;
+      this.userService.getStudent(activity.estudiante.usuario.correo).subscribe(student => this.projects = student.proyectos);
+    });
 
     this.store.pipe(
       select(getActivityFiles)
     ).subscribe(files => this.files = files);
-
-    this.store.select('login').subscribe(state => {
-      this.studentEmail = state.tokenInfo.sub;
-      this.userService.getStudent(state.tokenInfo.sub).subscribe(student => this.projects = student.proyectos);
-    });
 
     this.activitiesService.getCategories().subscribe(categories => this.categories = categories);
   }

@@ -17,6 +17,7 @@ import {Estudiante} from '../../../../../models/entities/estudiante.model';
 import {Usuario} from '../../../../../models/entities/usuario.model';
 import {UserService} from '../../../../../core/user.service';
 import {Observable} from 'rxjs';
+import {getUserRole} from '../../../../login/state';
 
 @Component({
   selector: 'app-student-profile',
@@ -37,6 +38,7 @@ export class StudentProfileComponent implements OnInit, OnDestroy {
   adding = false;
   proyectos$: Observable<string[]>;
   student: Estudiante = null;
+  role$: Observable<string>;
 
   statuses = ['Activo', 'Prórroga', 'Finalizado', 'Inactivo'];
   types = ['Traslado', 'Regular', 'Pasantía'];
@@ -105,6 +107,7 @@ export class StudentProfileComponent implements OnInit, OnDestroy {
     );
 
     this.proyectos$ = this.store$.select(getSelectedStudentProjects);
+    this.role$ = this.store$.select(getUserRole);
 
     this.store$.select(getSelectedStudent).subscribe((student: Estudiante) => {
       if (!this.adding) {

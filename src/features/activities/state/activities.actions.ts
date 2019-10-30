@@ -6,21 +6,30 @@ export enum ActivityActionTypes {
   LoadActivity = '[Activity] Load Activity',
   LoadSuccessful = '[Activity] Load Successful',
   LoadFailed = '[Activity] Load Failed',
+  ChangeShowAccepted = '[Activity] Change show accepted',
+  ChangeShowPending = '[Activity] Change show Pending',
+  ChangeShowDeclined = '[Activity] Change show Declined',
+
   LoadActivityDetails = '[Activity] Load Activity Details',
   LoadActivityDetailsSuccessful = '[Activity] Load Activity Details Successful',
   LoadActivityDetailsFail = '[Activity] Load Activity Details Fail',
+
   DeleteActivity = '[Activity] Delete Activity',
   DeleteSuccessful = '[Activity] Delete Successful',
   DeleteFailed = '[Activity] Delete Failed',
+
   UpdateActivity = '[Activity] Update Activity',
   UpdateSuccessful = '[Activity] Update Successful',
   UpdateFailed = '[Activity] Update Failed',
+
   AddActivity = '[Activity] Add Activity',
   AddSuccessful = '[Activity] Add Successful',
   AddFailed = '[Activity] Add Failed',
+
   AddActivityFiles = '[Activity] Add Activity Files',
   AddFilesSuccessful = '[Activity] Add Files Successful',
   AddFilesFailed = '[Activity] Add Files Failed',
+
   UpdateFilesProgress = '[Activity] Update Files Progress'
 }
 
@@ -30,19 +39,26 @@ export class LoadActivity implements  Action {
   // Payload is the user email
   constructor(public payload: string) {}
 }
-
 export class LoadSuccessful implements Action {
   readonly type = ActivityActionTypes.LoadSuccessful;
 
   // Payload is the array of activities
   constructor(public payload: Activity[]) {}
 }
-
 export class LoadFailed implements Action {
   readonly type = ActivityActionTypes.LoadFailed;
 
   // Payload is the error message
   constructor(public payload: string) {}
+}
+export class ChangeShowAccepted implements Action {
+  readonly  type = ActivityActionTypes.ChangeShowAccepted;
+}
+export class ChangeShowPending implements Action {
+  readonly  type = ActivityActionTypes.ChangeShowPending;
+}
+export class ChangeShowDeclined implements Action {
+  readonly  type = ActivityActionTypes.ChangeShowDeclined;
 }
 
 export class UpdateActivity implements  Action {
@@ -160,6 +176,9 @@ export class DeleteFailed implements Action {
 export type ActivityActions = LoadActivity
   | LoadSuccessful
   | LoadFailed
+  | ChangeShowAccepted
+  | ChangeShowPending
+  | ChangeShowDeclined
   | UpdateActivity
   | UpdateSuccessful
   | UpdateFailed

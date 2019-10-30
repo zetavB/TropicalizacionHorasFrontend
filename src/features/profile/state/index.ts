@@ -20,3 +20,8 @@ export const getProfileError = createSelector(
   getProfileFeatureState,
   state => state.error
 );
+
+export const getPendingHours = createSelector(
+  getProfileFeatureState,
+  state => state.pendingHours
+);

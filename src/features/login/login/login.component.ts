@@ -4,7 +4,7 @@ import {select, Store} from '@ngrx/store';
 import {LoginState} from '../state/login.reducer';
 import {Login, TokenPresent} from '../state/login.actions';
 import {FormBuilder, Validators} from '@angular/forms';
-import {getLoginError, getLoginSpinner} from '../state';
+import {getIsLoggedIn, getLoginError, getLoginSpinner} from '../state';
 import {takeWhile} from 'rxjs/operators';
 import {SpinnerOverlayService} from '../../../shared/components/spinner-overlay/spinner-overlay.service';
 
@@ -26,10 +26,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private store$: Store<LoginState>,
     private fb: FormBuilder,
-    private spinnerService: SpinnerOverlayService) { }
+    private spinnerService: SpinnerOverlayService) {
+  }
 
-  get email() { return this.loginForm.get('email'); }
-  get password() { return this.loginForm.get('password'); }
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
 
   ngOnInit() {
     if (this.tokenService.isTokenPresent()) {

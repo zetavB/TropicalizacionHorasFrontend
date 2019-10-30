@@ -1,9 +1,14 @@
 import { Component, OnInit, Output, EventEmitter, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { Archivo } from 'src/models/archivo.model';
 import { numberRangeValidator, dateMaxRangeValidator } from '../../utils/validators';
 import {Activity} from '../../models/entities/activity.model';
+import {select, Store} from '@ngrx/store';
+import {State} from '../../app/state/state';
+import {getUserRole} from '../../features/login/state';
+import {tap} from 'rxjs/operators';
+import {UserRoles} from '../../models/user-roles.model';
 
 @Component({
   selector: 'app-activity-form',
@@ -14,7 +19,10 @@ export class ActivityFormComponent implements OnInit {
 
   @ViewChild('file', { static: false }) file;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private store$: Store<State>) { }
+
+  role$: Observable<string>;
+  role: string;
 
   activityForm = this.fb.group({
     proyecto: ['', Validators.required],
@@ -22,6 +30,8 @@ export class ActivityFormComponent implements OnInit {
     horas: ['', [Validators.required, numberRangeValidator(0, 301)]],
     fecha: ['', [Validators.required, dateMaxRangeValidator(new Date())]],
     detalles: [''],
+    estado: [''],
+    justificacionRechazo: [''],
     archivos: []
   });
   filesToUpload: Set<File> = new Set();
@@ -32,11 +42,12 @@ export class ActivityFormComponent implements OnInit {
       idGenerado: 0,
       fecha: '',
       horas: 0,
-      estado: '',
       categoria: {nombre: ''},
       proyecto: {nombre: ''},
       estudiante: {usuario: {correo: ''}},
-      detalles: ''
+      detalles: '',
+      estado: '',
+      justificacionRechazo: ''
     }
   );
 
@@ -56,14 +67,20 @@ export class ActivityFormComponent implements OnInit {
 
   ngOnInit() {
     this.activity.subscribe(newActivity => this.loadActivity(newActivity));
+
+    this.role$ = this.store$.pipe(
+      select(getUserRole),
+      tap(role => this.role = role)
+    );
   }
 
   loadActivity(activity: Activity) {
-    this.activityForm.setValue({
+    this.activityForm.patchValue({
       proyecto: activity.proyecto.nombre,
       categoria: activity.categoria.nombre,
       horas: activity.horas,
       fecha: activity.fecha,
+      estado: activity.estado,
       detalles: activity.detalles,
       archivos: []
     });
@@ -102,7 +119,8 @@ export class ActivityFormComponent implements OnInit {
       idGenerado: this.activity.value.idGenerado,
       fecha: this.activityForm.value.fecha,
       horas: this.activityForm.value.horas,
-      estado: 'Pendiente',
+      estado: this.role === UserRoles.Student ? 'Pendiente' : this.activityForm.value.estado,
+      justificacionRechazo: this.role === UserRoles.Student ? null : this.activityForm.value.justificacionRechazo,
       categoria: {nombre: this.activityForm.value.categoria},
       proyecto: {nombre: this.activityForm.value.proyecto},
       estudiante: {usuario: {correo: this.studentEmail}},

@@ -1,7 +1,7 @@
 import { ActivitiesService } from '../activities.service';
 import {Actions, Effect, ofType, createEffect} from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
-import { Action } from '@ngrx/store';
+import {Action, select, Store} from '@ngrx/store';
 import { ActivityActionTypes,
   LoadActivity,
   LoadSuccessful,
@@ -19,13 +19,14 @@ import { ActivityActionTypes,
   UpdateActivity,
   UpdateFailed,
   UpdateSuccessful} from './activities.actions';
-import { map, mergeMap, catchError, switchMap, tap } from 'rxjs/operators';
+import {map, mergeMap, catchError, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CustomResponse } from 'src/models/custom-response.model';
 import { Router } from '@angular/router';
-import { Archivo } from 'src/models/archivo.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {Activity} from '../../../models/entities/activity.model';
+import {State} from './index';
+import {UserRoles} from '../../../models/user-roles.model';
 
 @Injectable()
 export class ActivityEffects {
@@ -33,7 +34,8 @@ export class ActivityEffects {
     private activitiesService: ActivitiesService,
     private actions$: Actions,
     private router: Router,
-    private spinner: NgxSpinnerService) {}
+    private spinner: NgxSpinnerService,
+    private store$: Store<State>) {}
 
   @Effect()
   loadActivityDetails$: Observable<Action> = this.actions$.pipe(
@@ -57,18 +59,51 @@ export class ActivityEffects {
   loadActivities$: Observable<Action> = this.actions$.pipe(
     ofType(ActivityActionTypes.LoadActivity),
     map((action: LoadActivity) => action.payload),
-    mergeMap((email: string) =>
-      this.activitiesService.getActivities(email).pipe(
-        map( (activities: Activity[]) => {
-          this.spinner.hide();
-          return new LoadSuccessful(activities);
-        }),
-        catchError((err: CustomResponse) => {
-          this.spinner.hide();
-          return of(new LoadFailed(err.errorMessages));
-        })
-      )
-    )
+    withLatestFrom(this.store$),
+    mergeMap(([email, state]: [string, State]) => {
+      if (state.login.tokenInfo.rol === UserRoles.Student) {
+        return this.activitiesService.getActivities(email).pipe(
+          map((activities: Activity[]) => {
+            this.spinner.hide();
+            return new LoadSuccessful(activities);
+          }),
+          catchError((err: CustomResponse) => {
+            this.spinner.hide();
+            return of(new LoadFailed(err.errorMessages));
+          })
+        );
+      } else {
+        // tslint:disable-next-line:max-line-length
+        return this.activitiesService.getAllActivities(state.activity.showAccepted, state.activity.showPending, state.activity.showDeclined).pipe(
+          map((activities: Activity[]) => {
+            this.spinner.hide();
+            return new LoadSuccessful(activities);
+          }),
+          catchError( (err: CustomResponse) => {
+            this.spinner.hide();
+            return of(new LoadFailed(err.errorMessages));
+          })
+        );
+      }
+    })
+  );
+
+  @Effect()
+  changeShowAccepted$: Observable<Action> = this.actions$.pipe(
+    ofType(ActivityActionTypes.ChangeShowAccepted),
+    map(() => new LoadActivity(''))
+  );
+
+  @Effect()
+  changeShowPending$: Observable<Action> = this.actions$.pipe(
+    ofType(ActivityActionTypes.ChangeShowPending),
+    map(() => new LoadActivity(''))
+  );
+
+  @Effect()
+  changeShowDeclined$: Observable<Action> = this.actions$.pipe(
+    ofType(ActivityActionTypes.ChangeShowDeclined),
+    map(() => new LoadActivity(''))
   );
 
   @Effect()

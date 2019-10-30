@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivitiesService } from '../activities.service';
-import { take } from 'rxjs/operators'; 
+import { take } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { getActivityId, getActivityDetails, getActivityFiles } from '../state';
 import { LoadActivityDetails } from '../state/activities.actions';
@@ -28,7 +28,8 @@ export class ActivityDetailsComponent implements OnInit {
     categoria: {nombre: ''},
     proyecto: {nombre: ''},
     estudiante: {usuario: {correo: ''}},
-    detalles: ''
+    detalles: '',
+    justificacionRechazo: null
   };
   files = [];
   imageURIs = [];

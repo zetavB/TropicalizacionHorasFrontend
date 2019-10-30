@@ -3,11 +3,11 @@ import {createFeatureSelector, createSelector} from '@ngrx/store';
 import { ActivityState } from './activities.reducer';
 import { getRouterState } from 'src/app/state/router.reducer';
 
-// Extends the app state to include the Activity feature.
-// This is required because Activity is lazy loaded.
+// Extends the app state to include the activity feature.
+// This is required because activity is lazy loaded.
 // So the reference to ActivityState cannot be added to app/state/state.ts directly.
 export interface State extends fromRoot.State {
-  Activity: ActivityState;
+  activity: ActivityState;
 }
 
 const getActivityFeatureState = createFeatureSelector<ActivityState>('activity');
@@ -36,6 +36,19 @@ export const getActivityFiles = createSelector(
 export const getActivity = createSelector(
   getActivityFeatureState,
   state => state.activities
+);
+
+export const getShowAccepted = createSelector(
+  getActivityFeatureState,
+  state => state.showAccepted
+);
+export const getShowDeclined = createSelector(
+  getActivityFeatureState,
+  state => state.showDeclined
+);
+export const getShowPending = createSelector(
+  getActivityFeatureState,
+  state => state.showPending
 );
 
 export const getActivityError = createSelector(

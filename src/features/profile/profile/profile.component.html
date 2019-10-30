@@ -2,6 +2,7 @@
   <h1>{{profile.usuario.nombre}} {{profile.usuario.apellidos}}</h1>
   <h2>Progreso</h2>
   <p>Horas realizadas: {{profile.horasTotales}}</p>
+  <p>Horas pendientes: {{pendingHours$ | async}}</p>
   <p>Días restantes: {{profile.diasRestantes}}</p>
   <p>Fecha de finalización: {{profile.fechaFinal}}</p>
   <p>Fecha de inicio: {{profile.fechaInicio}}</p>

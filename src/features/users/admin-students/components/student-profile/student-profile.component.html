@@ -60,7 +60,7 @@
       </mat-form-field>
       <mat-list *ngIf="!editing && !adding">
         <h3 mat-subheader>Proyectos
-          <button mat-icon-button (click)="editProjects()">
+          <button mat-icon-button *ngIf="(role$| async) !== 'Estudiante'" (click)="editProjects()">
             <mat-icon>edit</mat-icon>
           </button>
         </h3>
@@ -71,7 +71,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <ng-container *ngIf=" !editing && !adding">
+      <ng-container *ngIf=" !editing && !adding && (role$| async) !== 'Estudiante'">
         <button mat-raised-button color="primary"
                 (click)="startEditing()">Editar</button>
         <button mat-raised-button color="warn"

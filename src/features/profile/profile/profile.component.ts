@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/core/user.service';
-import {getProfileStudent, State} from '../state';
-import {LoadProfile} from '../state/profile.actions';
+import {getPendingHours, getProfileStudent, State} from '../state';
+import {LoadPendingHours, LoadPendingHoursS, LoadProfile} from '../state/profile.actions';
 import {getTokenInfo} from '../../login/state';
 import {take} from 'rxjs/operators';
 import {JwtInfoModel} from '../../../models/jwt-info.model';
@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
       telefono: ''
     } as Usuario
   } as Estudiante;
+  pendingHours$: Observable<number>;
 
   constructor(
     private store: Store<State>) {
@@ -53,7 +54,10 @@ export class ProfileComponent implements OnInit {
     ).subscribe((info: JwtInfoModel) => {
       if (info != null) {
         this.store.dispatch(new LoadProfile(info.sub));
+        this.store.dispatch(new LoadPendingHours(info.sub));
       }
     });
+
+    this.pendingHours$ = this.store.select(getPendingHours);
   }
 }

@@ -18,9 +18,7 @@ export class HomeLayoutComponent implements  OnInit, OnDestroy {
   constructor(private store: Store<LoginState>, private tokenService: TokenService) {}
 
   ngOnInit(): void {
-    if (this.tokenService.isTokenPresent()) {
-      this.store.dispatch(new TokenPresent(this.tokenService.getToken()));
-    }
+
     this.store.pipe(
       select(getIsLoggedIn),
       takeWhile(() => this.alive)

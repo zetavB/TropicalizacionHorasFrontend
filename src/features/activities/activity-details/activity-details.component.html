@@ -4,8 +4,9 @@
 <p>Proyecto: {{activity.proyecto.nombre}}</p>
 <p>Categoría {{activity.categoria.nombre}}</p>
 <p>Estado: {{activity.estado}}</p>
+<p *ngIf="activity.justificacionRechazo != null && activity.justificacionRechazo !== ''">Justificación del rechazo: {{activity.justificacionRechazo}}</p>
 <p>Detalles: {{activity.detalles}}</p>
-<p>Archivos: <span *ngIf="files === null || files.length === 0">No tiene archivos.</span></p> 
+<p>Archivos: <span *ngIf="files === null || files.length === 0">No tiene archivos.</span></p>
 
 <div *ngFor="let file of fileURIs" >
   <a href="{{file.uri}}" download>{{file.nombre}}</a>

@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit {
           {id: 1, name: 'Perfil', url: '/perfil'},
           {id: 2, name: 'Actividades', url: '/actividades'},
           {id: 2, name: 'Proyectos', url: '/proyectos'},
+          {id: 2, name: 'Estudiantes', url: '/usuarios'},
         ];
       } else {
         this.content = [

@@ -9,6 +9,7 @@ import {TokenService} from '../../../core/token.service';
 import {CustomResponse} from '../../../models/custom-response.model';
 import {Router} from '@angular/router';
 import {State} from '../../../app/state/state';
+import {UserRoles} from '../../../models/user-roles.model';
 
 @Injectable()
 export class LoginEffects {
@@ -36,11 +37,16 @@ export class LoginEffects {
   );
 
   @Effect({dispatch: false})
-  tokenValid$: Observable<boolean> = this.actions$.pipe(
+  tokenValid$ = this.actions$.pipe(
     ofType(LoginActionTypes.TokenValid),
-    tap( () => {
+    withLatestFrom(this.store$),
+    tap( ([action, state]) => {
         if (this.router.url === '/login') {
-          this.router.navigate(['/perfil']);
+          if (state.login.tokenInfo.activado) {
+            this.router.navigate([state.login.tokenInfo.rol === UserRoles.Student ? '/perfil' : '/actividades']);
+          } else {
+            this.router.navigate(['/cambiar-contrasenna']);
+          }
         }
       }
     )
@@ -76,7 +82,7 @@ export class LoginEffects {
     tap(([resp, state]: [CustomResponse, State]) => {
         this.tokenService.saveJwtToken(resp.response.toString());
         if (state.login.tokenInfo.activado) {
-          this.router.navigate(['/perfil']);
+          this.router.navigate([state.login.tokenInfo.rol === UserRoles.Student ? '/perfil' : '/actividades']);
         } else {
           this.router.navigate(['/cambiar-contrasenna']);
         }

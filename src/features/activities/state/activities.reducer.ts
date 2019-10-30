@@ -1,8 +1,11 @@
-import { ActivityActions, ActivityActionTypes } from './activities.actions';
+import {ActivityActions, ActivityActionTypes} from './activities.actions';
 import {Activity} from '../../../models/entities/activity.model';
 
 export interface ActivityState {
   activities: Activity[];
+  showAccepted: boolean;
+  showPending: boolean;
+  showDeclined: boolean;
   activityDetails: Activity;
   activityFiles: string[];
   error: string;
@@ -11,6 +14,9 @@ export interface ActivityState {
 
 const initialState: ActivityState = {
   activities: [],
+  showAccepted: true,
+  showPending: true,
+  showDeclined: true,
   error: '',
   progress: [],
   activityDetails: {
@@ -21,7 +27,8 @@ const initialState: ActivityState = {
     categoria: {nombre: ''},
     proyecto: {nombre: ''},
     estudiante: {usuario: {correo: ''}},
-    detalles: ''
+    detalles: '',
+    justificacionRechazo: null
   },
   activityFiles: []
 };
@@ -41,6 +48,21 @@ export function reducer(state = initialState, action: ActivityActions): Activity
         ...state,
         activities: null,
         error: action.payload
+      };
+    case ActivityActionTypes.ChangeShowAccepted:
+      return {
+        ...state,
+        showAccepted: !state.showAccepted
+      };
+    case ActivityActionTypes.ChangeShowPending:
+      return {
+        ...state,
+        showPending: !state.showPending
+      };
+    case ActivityActionTypes.ChangeShowDeclined:
+      return {
+        ...state,
+        showDeclined: !state.showDeclined
       };
 
     case ActivityActionTypes.LoadActivityDetailsSuccessful:

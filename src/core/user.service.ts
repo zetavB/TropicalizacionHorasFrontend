@@ -39,4 +39,10 @@ export class UserService {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   }
+
+  getPendingHours(email: string): Observable<number> {
+    return this.http.get<CustomResponse>(this.url + email + '/horas-pendientes').pipe(
+      map(resp => resp.response as number)
+    );
+  }
 }
