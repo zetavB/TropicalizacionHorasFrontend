@@ -32,6 +32,7 @@ export class ActivityRegisterComponent implements OnInit {
   categories = [];
   projects = [];
   studentEmail = '';
+  id = '';
   activityForm = this.fb.group({
     proyecto: ['', Validators.required],
     categoria: ['', Validators.required],
